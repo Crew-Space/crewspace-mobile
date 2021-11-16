@@ -39,17 +39,17 @@
     "baseUrl": "./src" /* Base directory to resolve non-absolute module names. */,
     "paths": {
       "~/*": ["./*"],
-      "assets/*": ["assets/*"],
-      "components/*": ["components/*"],
-      "hooks/*": ["hooks/*"],
-      "mocks/*": ["mocks/*"],
-      "navigation/*": ["navigation/*"],
-      "screens/*": ["screens/*"],
-      "store/*": ["store/*"],
-      "styles/*": ["styles/*"],
-      "theme/*": ["types/*"],
-      "types/*": ["types/*"],
-      "utils/*": ["utils/*"]
+      "assets/*": ["./assets/*"],
+      "components/*": ["./components/*"],
+      "containers/*": ["./containers/*"],
+      "hooks/*": ["./hooks/*"],
+      "mocks/*": ["./mocks/*"],
+      "navigation/*": ["./navigation/*"],
+      "store/*": ["./store/*"],
+      "styles/*": ["./styles/*"],
+      "theme/*": ["./theme/*"],
+      "types/*": ["./types/*"],
+      "utils/*": ["./utils/*"]
     },
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
     // "typeRoots": [],                       /* List of folders to include type definitions from. */

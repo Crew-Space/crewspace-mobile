@@ -5,19 +5,22 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "start": "cd ios && pod install && cd .. && react-native start",
+    "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "pod-install": "cd ios && pod install && cd .."
   },
   "dependencies": {
     "@react-native-masked-view/masked-view": "^0.2.6",
+    "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/stack": "^6.0.11",
     "react": "17.0.2",
     "react-native": "0.66.2",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-safe-area-context": "^3.3.2",
-    "react-native-screens": "^3.9.0"
+    "react-native-screens": "^3.9.0",
+    "react-native-splash-screen": "^3.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
