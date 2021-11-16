@@ -4,9 +4,6 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 export type RootRouterParamList = {
   Auth: undefined;
   Contents: undefined;
-};
-
-export type ContentsRouterParamList = {
   Invitation: undefined;
   Main: undefined;
   Post: undefined;
@@ -39,7 +36,6 @@ export type SearchParamList = {
 };
 
 export type RootRouterParams = StackNavigationProp<RootRouterParamList>;
-export type ContentsRouterParams = StackNavigationProp<ContentsRouterParamList>;
 export type InvitationParams = BottomTabNavigationProp<InvitationParamList>;
 export type MainRouterParams = BottomTabNavigationProp<MainRouterParamList>;
 export type SearchParams = StackNavigationProp<SearchParamList>;

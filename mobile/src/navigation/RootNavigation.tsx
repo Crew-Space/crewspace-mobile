@@ -4,16 +4,27 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
 import LoginScreen from 'containers/LoginScreen';
-import { ContentsNavigation } from 'navigation';
 import { RootRouterParamList } from 'types/Route';
+import { InvitationNavigation, MainNavigation } from 'navigation';
 
 const Stack = createStackNavigator<RootRouterParamList>();
 
 const RootNavigation = () => {
   return (
     <Stack.Navigator initialRouteName='Auth'>
-      <Stack.Screen name='Auth' component={LoginScreen} />
-      <Stack.Screen name='Contents' component={ContentsNavigation} />
+      <Stack.Screen
+        name='Auth'
+        component={LoginScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen name='Invitation' component={InvitationNavigation} />
+      <Stack.Screen name='Main' component={MainNavigation} />
+      <Stack.Screen name='Post' component={LoginScreen} />
+      <Stack.Screen name='EditCategory' component={LoginScreen} />
+      <Stack.Screen name='PostDetails' component={LoginScreen} />
+      <Stack.Screen name='Search' component={LoginScreen} />
     </Stack.Navigator>
   );
 };
