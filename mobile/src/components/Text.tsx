@@ -6,18 +6,18 @@ import { BLACK } from 'theme/Colors';
 
 interface TextProps extends RNTextProps {
   fontType?: TypoType;
-  isParagraph?: boolean;
+  paragraph?: boolean;
 }
 
-const textStyles = (typo: TypoType = 'REGULAR_16', isParagraph = false) => ({
+const textStyles = (typo: TypoType = 'REGULAR_16', paragraph = false) => ({
   fontFamily: FONT[Typo[typo].weight],
   fontSize: scaleFont(Typo[typo].size),
-  ...(isParagraph && { isParagraph: scaleFont(Typo[typo].size) * 1.5 }),
+  ...(paragraph && { lineHeight: scaleFont(Typo[typo].size) * 1.5 }),
 });
 
-const Text = ({ children, style, fontType, isParagraph, ...restProps }: TextProps) => {
+const Text = ({ children, style, fontType, paragraph, ...restProps }: TextProps) => {
   return (
-    <RNText style={[styles.base, style, textStyles(fontType, isParagraph)]} {...restProps}>
+    <RNText style={[styles.base, style, textStyles(fontType, paragraph)]} {...restProps}>
       {children}
     </RNText>
   );
