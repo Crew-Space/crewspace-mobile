@@ -1,26 +1,23 @@
 import React from 'react';
 import { StyleSheet, Text as RNText, TextProps as RNTextProps } from 'react-native';
 
-import { FONT, FONT_SIZE, FONT_WEIGHT, scaleFont } from 'theme/Typography';
+import { FONT, Typo, TypoType, scaleFont } from 'theme/Typography';
 import { BLACK } from 'theme/Colors';
 
 interface TextProps extends RNTextProps {
-  fontType?: FontType;
+  fontType?: TypoType;
+  isParagraph?: boolean;
 }
 
-type FontType = {
-  size: FONT_SIZE;
-  weight: FONT_WEIGHT;
-};
-
-const textStyles = (fontType: FontType = { size: 16, weight: 'R' }) => ({
-  fontFamily: FONT[fontType.weight],
-  fontSize: scaleFont(fontType.size),
+const textStyles = (typo: TypoType = 'REGULAR_16', isParagraph = false) => ({
+  fontFamily: FONT[Typo[typo].weight],
+  fontSize: scaleFont(Typo[typo].size),
+  ...(isParagraph && { isParagraph: scaleFont(Typo[typo].size) * 1.5 }),
 });
 
-const Text = ({ children, style, fontType, ...restProps }: TextProps) => {
+const Text = ({ children, style, fontType, isParagraph, ...restProps }: TextProps) => {
   return (
-    <RNText style={[styles.base, style, textStyles(fontType)]} {...restProps}>
+    <RNText style={[styles.base, style, textStyles(fontType, isParagraph)]} {...restProps}>
       {children}
     </RNText>
   );
