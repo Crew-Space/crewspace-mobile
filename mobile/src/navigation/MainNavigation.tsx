@@ -8,6 +8,7 @@ import LoginScreen from 'containers/LoginScreen';
 import Text from 'components/Text';
 import { GRAY2, PRIMARY } from 'theme/Colors';
 import { home, notice, community, member, settings } from 'assets/svg/icons';
+import HomeScreen from 'containers/Main/HomeScreen';
 
 const Tab = createBottomTabNavigator<MainRouterParamList>();
 
@@ -30,7 +31,7 @@ const MainNavigation = () => {
       }}>
       <Tab.Screen
         name='Home'
-        component={LoginScreen}
+        component={HomeScreen}
         options={() => ({
           headerShown: false,
           tabBarLabel: ({ focused }) => <TarBarLabel focused={focused} text={'홈'} />,
@@ -52,7 +53,9 @@ const MainNavigation = () => {
         options={{
           headerShown: false,
           tabBarLabel: ({ focused }) => <TarBarLabel focused={focused} text={'커뮤니티'} />,
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} xml={community} />,
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} xml={focused ? community.on : community.off} />
+          ),
         }}
       />
       <Tab.Screen
@@ -61,7 +64,9 @@ const MainNavigation = () => {
         options={{
           headerShown: false,
           tabBarLabel: ({ focused }) => <TarBarLabel focused={focused} text={'회원'} />,
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} xml={member} />,
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} xml={focused ? member.on : member.off} />
+          ),
         }}
       />
       <Tab.Screen
@@ -70,7 +75,9 @@ const MainNavigation = () => {
         options={{
           headerShown: false,
           tabBarLabel: ({ focused }) => <TarBarLabel focused={focused} text={'설정'} />,
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} xml={settings} />,
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} xml={focused ? settings.on : settings.off} />
+          ),
         }}
       />
     </Tab.Navigator>
