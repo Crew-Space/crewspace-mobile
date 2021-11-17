@@ -18,7 +18,7 @@ module.exports = {
         ],
         alias: {
           'assets/*': './assets/*',
-          'constants/*': './constants/*',
+          'constant/*': './constant/*',
           'components/*': './components/*',
           'containers/*': './containers/*',
           'hooks/*': './hooks/*',

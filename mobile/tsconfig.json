@@ -39,7 +39,7 @@
     "baseUrl": "./src" /* Base directory to resolve non-absolute module names. */,
     "paths": {
       "assets/*": ["./assets/*"],
-      "constants/*": ["./constants/*"],
+      "constant/*": ["./constant/*"],
       "components/*": ["./components/*"],
       "containers/*": ["./containers/*"],
       "hooks/*": ["./hooks/*"],

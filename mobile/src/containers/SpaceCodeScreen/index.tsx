@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/core';
 
-import { INITIAL_INVITATION_CODE, NUM_OF_INVITATION_CODE } from 'constants';
+import { INITIAL_INVITATION_CODE, NUM_OF_INVITATION_CODE } from 'constant';
 import { scaleFont } from 'theme/Typography';
 import { BLACK, GRAY1, GRAY2, GRAY4, WHITE } from 'theme/Colors';
 import { InvitationParams } from 'types/Route';
