@@ -1,14 +1,12 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { RouteProp } from '@react-navigation/native';
+import { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
 
 export type RootRouterParamList = {
   Auth: undefined;
   Contents: undefined;
-  Invitation: {
-    screen: keyof InvitationParamList;
-  };
-  Main: undefined;
+  Invitation: NavigatorScreenParams<InvitationParamList> | undefined;
+  Main: NavigatorScreenParams<MainRouterParamList> | undefined;
   Post: undefined;
   EditCategory: undefined;
   PostDetails: undefined;
@@ -21,23 +19,9 @@ export type InvitationParamList = {
   EnterSpace: undefined;
   Welcome: {
     darkTheme?: boolean;
-    data: ScreenProps;
+    data: WelcomeScreenProps;
   };
 };
-
-type ProfileType = {
-  name: string;
-  imageUrl: string;
-  description: string;
-};
-
-interface ScreenProps {
-  title?: string;
-  profile: ProfileType;
-  mainButtonName: string;
-  linkButtonName?: string;
-  spaceInvitationCode?: string;
-}
 
 export type MainRouterParamList = {
   Home: undefined;
@@ -63,5 +47,24 @@ export type SearchParams = StackNavigationProp<SearchParamList>;
 export type SettingsParams = StackNavigationProp<SettingsParamList>;
 
 /*** WelcomScreen ***/
-export type WelcomScreenType = 'makeSpace' | 'enterSpace' | 'beMember';
-export type WelcomScreenProps = RouteProp<InvitationParamList, 'Welcome'>;
+export type WelcomeScreenType = 'makeSpace' | 'enterSpace' | 'beMember';
+export type WelcomeScreenPropsType = RouteProp<InvitationParamList, 'Welcome'>;
+
+type ProfileType = {
+  name: string;
+  imageUrl: string;
+  description: string;
+};
+
+export type WelcomeScreenBaseProps = {
+  title?: string;
+  profile?: ProfileType;
+  mainButtonName: string;
+  linkButtonName?: string;
+};
+
+export type EnterScreenBaseProps = {
+  spaceInvitationCode?: string;
+};
+
+export type WelcomeScreenProps = WelcomeScreenBaseProps & EnterScreenBaseProps;
