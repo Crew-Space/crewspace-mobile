@@ -26,7 +26,13 @@ const RootNavigation = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen name='Main' component={MainNavigation} />
+      <Stack.Screen
+        name='Main'
+        component={MainNavigation}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen name='Post' component={LoginScreen} />
       <Stack.Screen name='EditCategory' component={LoginScreen} />
       <Stack.Screen name='PostDetails' component={LoginScreen} />
