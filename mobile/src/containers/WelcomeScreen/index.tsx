@@ -1,21 +1,28 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/core';
+import { SvgXml } from 'react-native-svg';
 
+import confetti from 'assets/svg/confetti';
 import { BLACK, GRAY1, WHITE } from 'theme/Colors';
+import { WelcomeScreenPropsType } from 'types/Route';
+import CustomEvent from 'constant/customEvent';
 import Text from 'components/Text';
 import Button from 'components/Button';
-import { WelcomScreenProps } from 'types/Route';
 import LinkButton from 'components/LinkButton';
-import { SvgXml } from 'react-native-svg';
-import confetti from 'assets/svg/confetti';
 import ProfileImage from 'components/ProfileImage';
 import InvitationCode from './InvitationCode';
 
 const WelcomeScreen = () => {
-  const { params } = useRoute<WelcomScreenProps>();
+  const { params } = useRoute<WelcomeScreenPropsType>();
   const { data, darkTheme } = params;
+
+  useEffect(() => {
+    return () => {
+      DeviceEventEmitter.removeAllListeners(CustomEvent.mainbutton.name);
+    };
+  }, []);
 
   return (
     <>
@@ -27,17 +34,23 @@ const WelcomeScreen = () => {
             </Text>
           )}
           <SvgXml style={styles(darkTheme).confetti} xml={confetti} />
-          <ProfileImage uri={data.profile.imageUrl} />
-          <Text fontType={'BOLD_18'} style={styles(darkTheme).name}>
-            {data.profile.name}
-          </Text>
-          <Text paragraph fontType={'REGULAR_14'} style={styles(darkTheme).description}>
-            {data.profile.description}
-          </Text>
+          {data.profile && (
+            <>
+              <ProfileImage uri={data.profile.imageUrl} />
+              <Text fontType={'BOLD_18'} style={styles(darkTheme).name}>
+                {data.profile.name}
+              </Text>
+              <Text paragraph fontType={'REGULAR_14'} style={styles(darkTheme).description}>
+                {data.profile.description}
+              </Text>
+            </>
+          )}
         </View>
         <View style={styles(darkTheme).bottomView}>
           {data.spaceInvitationCode && <InvitationCode code={data.spaceInvitationCode} />}
-          <Button>{data.mainButtonName}</Button>
+          <Button onPress={() => DeviceEventEmitter.emit(CustomEvent.mainbutton.name)}>
+            {data.mainButtonName}
+          </Button>
           <LinkButton style={{ marginTop: 30 }}>{data.linkButtonName}</LinkButton>
         </View>
       </SafeAreaView>

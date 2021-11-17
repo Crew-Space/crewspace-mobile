@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { KeyboardAvoidingView, StyleSheet, View } from 'react-native';
+import { DeviceEventEmitter, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/core';
@@ -7,24 +7,11 @@ import { useNavigation } from '@react-navigation/core';
 import { INITIAL_INVITATION_CODE, NUM_OF_INVITATION_CODE } from 'constant';
 import { scaleFont } from 'theme/Typography';
 import { BLACK, GRAY1, GRAY2, GRAY4, WHITE } from 'theme/Colors';
-import { InvitationParams } from 'types/Route';
+import { RootRouterParams } from 'types/Route';
 import LinkButton from 'components/LinkButton';
 import Text from 'components/Text';
-
-const test = {
-  darkTheme: true,
-  data: {
-    title: '해커톤 동아리\n스페이스를 만들었어요',
-    profile: {
-      name: '해커톤 동아리',
-      imageUrl: 'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
-      description: '초대코드를 복사하여\n동아리 팀원들을 초대해보세요!',
-    },
-    mainButtonName: '초대코드 복사하기',
-    linkButtonName: '동아리 스페이스로 이동하기',
-    spaceInvitationCode: 'DSGFD2',
-  },
-};
+import { welcomeParams } from 'constant/welcome';
+import CustomEvent from 'constant/customEvent';
 
 const CodeText = ({ char }: { char: string }) => {
   return (
@@ -37,13 +24,19 @@ const CodeText = ({ char }: { char: string }) => {
 };
 
 const SpaceCodeScreen = () => {
-  const navigation = useNavigation<InvitationParams>();
+  const navigation = useNavigation<RootRouterParams>();
   const inputRef = useRef<TextInput>(null);
   const [inputCode, setInputCode] = useState<string[]>(INITIAL_INVITATION_CODE);
 
   const onMakeSpacePress = useCallback(() => {
-    navigation.navigate('CreateSpace');
+    navigation.navigate('Invitation', { screen: 'CreateSpace' });
   }, [navigation]);
+
+  DeviceEventEmitter.addListener(CustomEvent.mainbutton.name, () =>
+    navigation.replace('Main', {
+      screen: 'Home',
+    }),
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -71,7 +64,20 @@ const SpaceCodeScreen = () => {
           }}
           onSubmitEditing={() => {
             if (inputCode.filter((str) => str !== '-').length === 6) {
-              navigation.replace('Welcome', test);
+              navigation.replace('Invitation', {
+                screen: 'Welcome',
+                params: {
+                  data: {
+                    ...welcomeParams.enterSpace,
+                    profile: {
+                      name: '해커톤 동아리',
+                      imageUrl:
+                        'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
+                      description: '초대코드를 복사하여\n동아리 팀원들을 초대해보세요!',
+                    },
+                  },
+                },
+              });
             }
           }}
         />
