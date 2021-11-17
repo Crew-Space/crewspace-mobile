@@ -1,6 +1,5 @@
+import { GUIDELINE_BASE_WIDTH } from 'constant';
 import { SCREEN_WIDTH } from 'theme/Metrics';
-
-const GUIDELINE_BASE_WIDTH = 375;
 
 export const FONT = {
   R: 'AppleSDGothicNeoR00',
