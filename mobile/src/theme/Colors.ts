@@ -11,3 +11,4 @@ export const GRAY4 = '#F3F5F5';
 export const GRAY5 = '#FBFBFB';
 export const BACKGROUND = '#F7F7F7';
 export const WHITE = '#ffffff';
+export const LINE = '#F5F5F5';
