@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text as RNText, TextProps as RNTextProps } from 'react-native';
+import { StyleSheet, Text as RNText, TextProps as RNTextProps, View } from 'react-native';
 
 import { FONT, Typo, TypoType, scaleFont } from 'theme/Typography';
 import { BLACK } from 'theme/Colors';
@@ -17,9 +17,11 @@ const textStyles = (typo: TypoType = 'REGULAR_16', paragraph = false) => ({
 
 const Text = ({ children, style, fontType, paragraph, ...restProps }: TextProps) => {
   return (
-    <RNText style={[styles.base, style, textStyles(fontType, paragraph)]} {...restProps}>
-      {children}
-    </RNText>
+    <View>
+      <RNText style={[textStyles(fontType, paragraph), styles.base, style]} {...restProps}>
+        {children}
+      </RNText>
+    </View>
   );
 };
 
