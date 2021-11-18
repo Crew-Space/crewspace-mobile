@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface PostHeaderSubTextProps {
   left: string;
   right: string;
@@ -5,7 +7,7 @@ export interface PostHeaderSubTextProps {
 
 export interface PostHeaderProps {
   subText: PostHeaderSubTextProps;
-  title: string | React.ReactNode;
+  Title: string | React.FunctionComponent;
   isSaved?: boolean;
 }
 
@@ -18,5 +20,4 @@ export interface PostPreviewProps {
 
 export interface PinnedNoticeProps {
   header: Omit<PostHeaderProps, 'isSaved'>;
-  isPinned: boolean;
 }
