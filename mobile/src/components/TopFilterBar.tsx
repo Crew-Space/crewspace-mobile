@@ -14,7 +14,7 @@ const TopFilterBar = ({ children, items, defaultIndex = 0, onIndexChange }: Prop
   const [selectedIndex, setSelectedIndex] = useState<number>(defaultIndex);
 
   return (
-    <View style={styles.topTabBar}>
+    <View style={[styles.topTabBar, { ...(!children && { paddingVertical: 18 }) }]}>
       <View style={styles.topTabBarFilter}>
         {items.map((item, index) => (
           <Text
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     borderBottomColor: LINE,
     borderBottomWidth: 1,
     backgroundColor: WHITE,
-    marginBottom: 8,
+    marginBottom: 10,
   },
   topTabBarFilter: {
     flexDirection: 'row',
