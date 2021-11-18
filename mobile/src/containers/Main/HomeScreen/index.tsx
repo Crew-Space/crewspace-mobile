@@ -1,7 +1,9 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/core';
 
+import { MainRouterParams } from 'types/Route';
 import { BACKGROUND, GRAY2, LINE, WHITE } from 'theme/Colors';
 import Text from 'components/Text';
 import PinnedNotice from './PinnedNotice';
@@ -9,6 +11,7 @@ import PostPreview from 'components/PostPreview';
 import BottomTabSafeAreaView from 'components/BottomTabSafeAreaView';
 
 const HomeScreen = () => {
+  const navigation = useNavigation<MainRouterParams>();
   return (
     <BottomTabSafeAreaView style={styles.container}>
       <View>
@@ -29,7 +32,7 @@ const HomeScreen = () => {
                     left: '일반 공지',
                     right: '2021.10.14(금)',
                   },
-                  title: '10월 3차 오프 모임 안내',
+                  Title: '10월 3차 오프 모임 안내',
                 }}
               />
             )}
@@ -45,7 +48,10 @@ const HomeScreen = () => {
               backgroundColor: WHITE,
             }}>
             <Text fontType={'BOLD_18'}>최근 공지</Text>
-            <Text fontType={'REGULAR_14'} color={GRAY2}>
+            <Text
+              fontType={'REGULAR_14'}
+              color={GRAY2}
+              onPress={() => navigation.navigate('Notice')}>
               더 보기
             </Text>
           </View>
@@ -53,7 +59,7 @@ const HomeScreen = () => {
             <PostPreview
               header={{
                 subText: { left: '과제 공지', right: '10분 전' },
-                title: '1차 과제 마감 안내',
+                Title: '1차 과제 마감 안내',
               }}
               description={
                 '안녕하세요 :) 1차 과제 마감 관련하여 공지드립니다. 사전에 고지드린대로 인당 3개씩 아이디어 조사하여, 간단히 PPT 자료 제작해오시면 될 것 같습니다. 궁금한 점 언제든 문의...'
