@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/core';
 import { BACKGROUND, BLACK, GRAY2, GRAY3, GRAY5, LINE, WHITE } from 'theme/Colors';
 import Text from 'components/Text';
 import { RootRouterParams } from 'types/Route';
-import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import TopFilterBar from 'components/TopFilterBar';
 import { SvgXml } from 'react-native-svg';
 import { close, search } from 'assets/svg/icons';
@@ -55,27 +55,30 @@ const SearchScreen = () => {
                 전체 삭제
               </Text>
             </View>
-            <ScrollView>
-              {recentSearchKeywords.map((item, index) => (
-                <View
-                  key={index}
-                  style={{
-                    flexDirection: 'row',
-                    width: '100%',
-                    paddingVertical: 14,
-                    paddingHorizontal: 20,
-                    borderBottomWidth: 1,
-                    borderBottomColor: LINE,
-                    backgroundColor: WHITE,
-                  }}>
-                  <SvgXml xml={search} width={24} fill={GRAY3} />
-                  <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text fontType={'REGULAR_16'}>{item}</Text>
-                    <SvgXml xml={close} width={24} fill={GRAY3} />
+            <View style={{ height: '100%' }}>
+              <ScrollView>
+                {recentSearchKeywords.map((item, index) => (
+                  <View
+                    key={index}
+                    style={{
+                      flexDirection: 'row',
+                      width: '100%',
+                      paddingVertical: 14,
+                      paddingHorizontal: 20,
+                      borderBottomWidth: 1,
+                      borderBottomColor: LINE,
+                      backgroundColor: WHITE,
+                    }}>
+                    <SvgXml xml={search} width={24} fill={GRAY3} />
+                    <View
+                      style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+                      <Text fontType={'REGULAR_16'}>{item}</Text>
+                      <SvgXml xml={close} width={24} fill={GRAY3} />
+                    </View>
                   </View>
-                </View>
-              ))}
-            </ScrollView>
+                ))}
+              </ScrollView>
+            </View>
           </View>
         )}
       </View>
