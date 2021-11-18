@@ -1,15 +1,16 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View, ViewProps } from 'react-native';
 
-interface ProfileImageProps {
+interface ProfileImageProps extends ViewProps {
   uri: string;
+  width?: number;
 }
 
-const ProfileImage = ({ uri }: ProfileImageProps) => {
+const ProfileImage = ({ uri, width, style }: ProfileImageProps) => {
   return (
-    <View style={[styles.container]}>
+    <View style={[styles.container, { ...(width && { width, height: width }) }, style]}>
       <Image
-        style={[styles.image]}
+        style={[styles.image, { ...(width && { width, height: width }) }]}
         source={{
           uri,
         }}
@@ -22,6 +23,8 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 100,
     overflow: 'hidden',
+    width: 100,
+    height: 100,
   },
   image: {
     width: 100,
