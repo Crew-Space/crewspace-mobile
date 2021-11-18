@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/core';
 
-import { MainRouterParams } from 'types/Route';
+import { MainRouterParams, RootRouterParams } from 'types/Route';
 import { BACKGROUND, GRAY2, LINE, WHITE } from 'theme/Colors';
 import Text from 'components/Text';
 import PinnedNotice from './PinnedNotice';
@@ -11,12 +11,12 @@ import PostPreview from 'components/PostPreview';
 import BottomTabSafeAreaView from 'components/BottomTabSafeAreaView';
 
 const HomeScreen = () => {
-  const navigation = useNavigation<MainRouterParams>();
+  const navigation = useNavigation<RootRouterParams>();
   return (
     <BottomTabSafeAreaView style={styles.container}>
       <View>
         <ScrollView>
-          <Text>Header</Text>
+          <Text onPress={() => navigation.navigate('Search')}>Header</Text>
           <FlatList
             horizontal
             contentContainerStyle={{
@@ -51,7 +51,11 @@ const HomeScreen = () => {
             <Text
               fontType={'REGULAR_14'}
               color={GRAY2}
-              onPress={() => navigation.navigate('Notice')}>
+              onPress={() =>
+                navigation.navigate('Main', {
+                  screen: 'Notice',
+                })
+              }>
               더 보기
             </Text>
           </View>
