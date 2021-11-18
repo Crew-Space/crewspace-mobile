@@ -1,11 +1,11 @@
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { createStackNavigator } from '@react-navigation/stack';
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
-import LoginScreen from 'containers/LoginScreen';
 import { RootRouterParamList } from 'types/Route';
 import { InvitationNavigation, MainNavigation } from 'navigation';
+import { LoginScreen, SearchScreen } from 'containers';
 
 const Stack = createStackNavigator<RootRouterParamList>();
 
@@ -36,7 +36,14 @@ const RootNavigation = () => {
       <Stack.Screen name='Post' component={LoginScreen} />
       <Stack.Screen name='EditCategory' component={LoginScreen} />
       <Stack.Screen name='PostDetails' component={LoginScreen} />
-      <Stack.Screen name='Search' component={LoginScreen} />
+      <Stack.Screen
+        name='Search'
+        component={SearchScreen}
+        options={{
+          headerShown: false,
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
+        }}
+      />
     </Stack.Navigator>
   );
 };
