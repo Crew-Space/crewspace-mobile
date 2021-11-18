@@ -2,13 +2,12 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SvgXml } from 'react-native-svg';
 
-import { MainRouterParamList } from 'types/Route';
-import { SettingsNavigation } from 'navigation';
-import LoginScreen from 'containers/LoginScreen';
-import Text from 'components/Text';
-import { GRAY2, PRIMARY } from 'theme/Colors';
 import { home, notice, community, member, settings } from 'assets/svg/icons';
-import HomeScreen from 'containers/Main/HomeScreen';
+import { GRAY2, PRIMARY } from 'theme/Colors';
+import { MainRouterParamList } from 'types/Route';
+import Text from 'components/Text';
+import { SettingsNavigation } from 'navigation';
+import { LoginScreen, HomeScreen, NoticeScreen, CommunityScreen } from 'containers';
 
 const Tab = createBottomTabNavigator<MainRouterParamList>();
 
@@ -40,7 +39,7 @@ const MainNavigation = () => {
       />
       <Tab.Screen
         name='Notice'
-        component={LoginScreen}
+        component={NoticeScreen}
         options={{
           headerShown: false,
           tabBarLabel: ({ focused }) => <TarBarLabel focused={focused} text={'공지'} />,
@@ -49,7 +48,7 @@ const MainNavigation = () => {
       />
       <Tab.Screen
         name='Community'
-        component={LoginScreen}
+        component={CommunityScreen}
         options={{
           headerShown: false,
           tabBarLabel: ({ focused }) => <TarBarLabel focused={focused} text={'커뮤니티'} />,
