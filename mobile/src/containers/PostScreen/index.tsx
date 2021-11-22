@@ -15,17 +15,23 @@ const PostScreen = () => {
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
       <View style={styles.input}>
-        <View style={styles.inputTitle}>
-          <TextInput fontType={'BOLD_20'} placeholder={'제목'} />
-        </View>
+        {params.postingType === 'notice' && (
+          <View style={styles.inputTitle}>
+            <TextInput fontType={'BOLD_20'} placeholder={'제목'} />
+          </View>
+        )}
         <View style={styles.inputContents}>
           <TextInput placeholder={'터치하여 내용을 입력해 주세요'} multiline />
         </View>
       </View>
       <View style={styles.bottomTab}>
         <SvgIcon xml={image} />
-        <SvgIcon xml={attachFile} />
-        <SvgIcon xml={settings.off} />
+        {params.postingType === 'notice' && (
+          <>
+            <SvgIcon xml={attachFile} />
+            <SvgIcon xml={settings.off} />
+          </>
+        )}
       </View>
     </SafeAreaView>
   );
