@@ -11,6 +11,11 @@ export interface PostHeaderProps {
   isSaved?: boolean;
 }
 
+export interface PinnedNoticeHeaderProps {
+  subText: PostHeaderSubTextProps;
+  Title: string;
+}
+
 export interface PostPreviewProps {
   header: Omit<PostHeaderProps, 'isSaved'>;
   description: string;
@@ -19,5 +24,5 @@ export interface PostPreviewProps {
 }
 
 export interface PinnedNoticeProps {
-  header: Omit<PostHeaderProps, 'isSaved'>;
+  header: PinnedNoticeHeaderProps;
 }
