@@ -1,10 +1,6 @@
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import {
-  CardStyleInterpolators,
-  createStackNavigator,
-  HeaderStyleInterpolators,
-} from '@react-navigation/stack';
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
 import { RootRouterParamList } from 'types/Route';
@@ -58,8 +54,6 @@ const RootNavigation = () => {
           ),
           headerLeftContainerStyle: { paddingLeft: 20, paddingVertical: 18 },
           headerRightContainerStyle: { paddingRight: 20 },
-          headerStyleInterpolator: HeaderStyleInterpolators.forSlideUp,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
         }}
       />
       <Stack.Screen name='EditCategory' component={LoginScreen} />
