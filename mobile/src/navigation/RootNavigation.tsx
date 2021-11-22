@@ -10,6 +10,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { RootRouterParamList } from 'types/Route';
 import { InvitationNavigation, MainNavigation } from 'navigation';
 import { LoginScreen, PostScreen, SearchScreen } from 'containers';
+import { SvgXml } from 'react-native-svg';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { close } from 'assets/svg/icons';
+import { BLACK, PRIMARY } from 'theme/Colors';
+import Text from 'components/Text';
 
 const Stack = createStackNavigator<RootRouterParamList>();
 
@@ -41,6 +46,18 @@ const RootNavigation = () => {
         name='Post'
         component={PostScreen}
         options={{
+          headerLeft: ({ onPress }) => (
+            <TouchableOpacity onPress={onPress}>
+              <SvgXml xml={close} width={24} fill={BLACK} />
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <TouchableOpacity onPress={() => console.log('완료')}>
+              <Text color={PRIMARY}>완료</Text>
+            </TouchableOpacity>
+          ),
+          headerLeftContainerStyle: { paddingLeft: 20, paddingVertical: 18 },
+          headerRightContainerStyle: { paddingRight: 20 },
           headerStyleInterpolator: HeaderStyleInterpolators.forSlideUp,
           cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
         }}
