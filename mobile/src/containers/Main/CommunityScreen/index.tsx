@@ -35,7 +35,7 @@ const CommunityScreen = () => {
         <ScrollView>
           <Text>Header</Text>
           <TopFilterBar items={['모든 글', '저장한 글']} onIndexChange={setSelectedItem}>
-            <PostButton />
+            <PostButton postingType={'notice'} />
           </TopFilterBar>
           {Array.from('-'.repeat(10)).map((_, index) => (
             <PostPreview

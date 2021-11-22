@@ -7,8 +7,14 @@ import { WHITE, PRIMARY } from 'theme/Colors';
 import { normalize } from 'utils';
 import { pen } from 'assets/svg/icons';
 
-const PostButton = (props: TouchableOpacityProps) => (
+type PostingType = 'notice' | 'community';
+interface Props extends TouchableOpacityProps {
+  postingType: PostingType;
+}
+
+const PostButton = ({ postingType, ...restProps }: Props) => (
   <TouchableOpacity
+    {...restProps}
     style={{
       backgroundColor: PRIMARY,
       flexDirection: 'row',
@@ -17,7 +23,7 @@ const PostButton = (props: TouchableOpacityProps) => (
       borderRadius: 8,
       alignItems: 'center',
     }}
-    {...props}>
+    onPress={() => console.log(postingType)}>
     <SvgXml xml={pen} fill={WHITE} width={normalize(16)} style={{ marginRight: 4 }} />
     <Text fontType={'BOLD_14'} color={WHITE}>
       글 쓰기
