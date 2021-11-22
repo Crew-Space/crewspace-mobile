@@ -1,5 +1,7 @@
 import React from 'react';
 
+export type PostingType = 'notice' | 'community';
+
 export interface PostHeaderSubTextProps {
   left: string;
   right: string;
