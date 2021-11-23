@@ -1,24 +1,43 @@
 import React from 'react';
-import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import { StyleSheet, Text as RNText, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
-import { TypoType } from 'theme/Typography';
-import Text from 'components/Text';
+import { FONT, Typo, TypoType, scaleFont } from 'theme/Typography';
+import { BLACK } from 'theme/Colors';
 
-type PropsType = TouchableOpacityProps & typeof Text;
-interface TextProps extends PropsType {
+interface TextProps extends TouchableOpacityProps {
   fontType?: TypoType;
   paragraph?: boolean;
   color?: string;
 }
 
-const TouchableText = ({ children, fontType, paragraph, color, ...restProps }: TextProps) => {
+const textStyles = (typo: TypoType = 'REGULAR_16', paragraph = false) => ({
+  fontFamily: FONT[Typo[typo].weight],
+  fontSize: scaleFont(Typo[typo].size),
+  ...(paragraph && { lineHeight: scaleFont(Typo[typo].size) * 1.5 }),
+});
+
+const TouchableText = ({
+  children,
+  style,
+  color,
+  fontType,
+  paragraph,
+  ...restProps
+}: TextProps) => {
   return (
     <TouchableOpacity {...restProps}>
-      <Text fontType={fontType} paragraph={paragraph} color={color}>
+      <RNText
+        style={[textStyles(fontType, paragraph), styles.base, style, { ...(color && { color }) }]}>
         {children}
-      </Text>
+      </RNText>
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  base: {
+    color: BLACK,
+  },
+});
 
 export default TouchableText;
