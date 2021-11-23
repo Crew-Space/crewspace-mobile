@@ -1,14 +1,15 @@
 import React, { useRef, useState } from 'react';
-import { Animated, RefreshControl, StyleSheet, View } from 'react-native';
+import { Animated, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 
 import { RootRouterParams } from 'types/Route';
-import { WHITE } from 'theme/Colors';
+import { GRAY2, WHITE } from 'theme/Colors';
 import PostPreview from 'components/PostPreview';
 import PinnedNoticeList from './PinnedNoticeList';
 import SectionHeader from 'components/SectionHeader';
 import HomeHeader from './HomeHeader';
 import { HEADER_MAX_HEIGHT, STICKY_EXPANDABLE_HEADER_HEIGHT } from './constant';
+import Text from 'components/Text';
 
 const HomeScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
@@ -52,15 +53,18 @@ const HomeScreen = () => {
             },
           ]}
         />
-        <SectionHeader
-          text={'최근 공지'}
-          LeftButton={'더 보기'}
-          onLeftButtonPress={() =>
-            navigation.navigate('Main', {
-              screen: 'Notice',
-            })
-          }
-        />
+        <SectionHeader text={'최근 공지'}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Main', {
+                screen: 'Notice',
+              })
+            }>
+            <Text fontType={'REGULAR_14'} color={GRAY2}>
+              {'더보기'}
+            </Text>
+          </TouchableOpacity>
+        </SectionHeader>
         {Array.from('-'.repeat(10)).map(() => (
           <PostPreview
             header={{

@@ -1,29 +1,18 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewProps } from 'react-native';
 
 import Text from 'components/Text';
-import { GRAY2, LINE, WHITE } from 'theme/Colors';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { LINE, WHITE } from 'theme/Colors';
 
-interface Props {
+interface Props extends ViewProps {
   text: string;
-  LeftButton: string | React.FunctionComponent;
-  onLeftButtonPress: () => void;
 }
 
-const SectionHeader = ({ text, LeftButton, onLeftButtonPress }: Props) => {
+const SectionHeader = ({ children, text, style, ...restProps }: Props) => {
   return (
-    <View style={styles.container}>
+    <View {...restProps} style={[styles.container, style]}>
       <Text fontType={'BOLD_18'}>{text}</Text>
-      <TouchableOpacity onPress={onLeftButtonPress}>
-        {typeof LeftButton === 'string' ? (
-          <Text fontType={'REGULAR_14'} color={GRAY2}>
-            {LeftButton}
-          </Text>
-        ) : (
-          <LeftButton />
-        )}
-      </TouchableOpacity>
+      {children}
     </View>
   );
 };
