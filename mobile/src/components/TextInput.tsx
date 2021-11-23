@@ -21,16 +21,18 @@ const textStyles = (typo: TypoType = 'REGULAR_16', paragraph = false) => ({
   ...(paragraph && { lineHeight: scaleFont(Typo[typo].size) * 1.5 }),
 });
 
-const TextInput = ({ style, color, fontType, paragraph, ...restProps }: TextProps) => {
-  return (
-    <View>
-      <RNTextInput
-        style={[textStyles(fontType, paragraph), styles.base, style, { ...(color && { color }) }]}
-        {...restProps}
-      />
-    </View>
-  );
-};
+const TextInput = React.forwardRef(
+  ({ style, color, fontType, paragraph, ...restProps }: TextProps) => {
+    return (
+      <View>
+        <RNTextInput
+          style={[textStyles(fontType, paragraph), styles.base, style, { ...(color && { color }) }]}
+          {...restProps}
+        />
+      </View>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   base: {
