@@ -5,7 +5,13 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { RootRouterParamList } from 'types/Route';
 import { InvitationNavigation, MainNavigation } from 'navigation';
-import { EditCategory, LoginScreen, PostScreen, SearchScreen } from 'containers';
+import {
+  EditCategoryScreen,
+  EnterCrewScreen,
+  LoginScreen,
+  PostScreen,
+  SearchScreen,
+} from 'containers';
 import { SvgXml } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { close } from 'assets/svg/icons';
@@ -58,7 +64,7 @@ const RootNavigation = () => {
       />
       <Stack.Screen
         name='EditCategory'
-        component={EditCategory}
+        component={EditCategoryScreen}
         options={{
           headerTitle: '카테고리 관리',
           headerLeft: ({ onPress }) => (
@@ -76,6 +82,7 @@ const RootNavigation = () => {
         }}
       />
       <Stack.Screen name='PostDetails' component={LoginScreen} />
+      <Stack.Screen name='EnterCrew' component={EnterCrewScreen} />
       <Stack.Screen
         name='Search'
         component={SearchScreen}

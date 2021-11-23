@@ -12,6 +12,7 @@ export type RootRouterParamList = {
   EditCategory: undefined;
   PostDetails: undefined;
   Search: undefined;
+  EnterCrew: undefined;
 };
 
 export type InvitationParamList = {

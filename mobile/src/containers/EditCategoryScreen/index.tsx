@@ -54,7 +54,7 @@ const NewItem = ({ addMode, categoryList, setCategoryList, setAddMode }) => {
   );
 };
 
-const EditCategory = () => {
+const EditCategoryScreen = () => {
   const [addMode, setAddMode] = useState<'none' | 'notice' | 'community'>('none');
   const [categoryList, setCategoryList] = useState<typeof mock>(mock);
 
@@ -136,4 +136,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditCategory;
+export default EditCategoryScreen;

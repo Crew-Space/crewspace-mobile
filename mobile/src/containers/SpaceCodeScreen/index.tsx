@@ -33,9 +33,7 @@ const SpaceCodeScreen = () => {
   }, [navigation]);
 
   DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, () =>
-    navigation.replace('Main', {
-      screen: 'Home',
-    }),
+    navigation.replace('EnterCrew'),
   );
 
   DeviceEventEmitter.addListener(CustomEvent.welcomeSubButton.name, () =>
