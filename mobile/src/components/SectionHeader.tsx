@@ -3,20 +3,27 @@ import { StyleSheet, View } from 'react-native';
 
 import Text from 'components/Text';
 import { GRAY2, LINE, WHITE } from 'theme/Colors';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface Props {
   text: string;
-  subText: string;
-  onSubTextPress: () => void;
+  LeftButton: string | React.FunctionComponent;
+  onLeftButtonPress: () => void;
 }
 
-const SectionHeader = ({ text, subText, onSubTextPress }: Props) => {
+const SectionHeader = ({ text, LeftButton, onLeftButtonPress }: Props) => {
   return (
     <View style={styles.container}>
       <Text fontType={'BOLD_18'}>{text}</Text>
-      <Text fontType={'REGULAR_14'} color={GRAY2} onPress={onSubTextPress}>
-        {subText}
-      </Text>
+      <TouchableOpacity onPress={onLeftButtonPress}>
+        {typeof LeftButton === 'string' ? (
+          <Text fontType={'REGULAR_14'} color={GRAY2}>
+            {LeftButton}
+          </Text>
+        ) : (
+          <LeftButton />
+        )}
+      </TouchableOpacity>
     </View>
   );
 };

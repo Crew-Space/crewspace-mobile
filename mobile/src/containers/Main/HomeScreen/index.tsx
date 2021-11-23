@@ -54,8 +54,8 @@ const HomeScreen = () => {
         />
         <SectionHeader
           text={'최근 공지'}
-          subText={'더 보기'}
-          onSubTextPress={() =>
+          LeftButton={'더 보기'}
+          onLeftButtonPress={() =>
             navigation.navigate('Main', {
               screen: 'Notice',
             })
