@@ -20,7 +20,8 @@ const WelcomeScreen = () => {
 
   useEffect(() => {
     return () => {
-      DeviceEventEmitter.removeAllListeners(CustomEvent.mainbutton.name);
+      DeviceEventEmitter.removeAllListeners(CustomEvent.welcomeMainButton.name);
+      DeviceEventEmitter.removeAllListeners(CustomEvent.welcomeSubButton.name);
     };
   }, []);
 
@@ -40,18 +41,24 @@ const WelcomeScreen = () => {
               <Text fontType={'BOLD_18'} style={styles(darkTheme).name}>
                 {data.profile.name}
               </Text>
-              <Text paragraph fontType={'REGULAR_14'} style={styles(darkTheme).description}>
-                {data.profile.description}
-              </Text>
+              <View style={{ paddingHorizontal: 20 }}>
+                <Text paragraph fontType={'REGULAR_14'} style={styles(darkTheme).description}>
+                  {data.profile.description}
+                </Text>
+              </View>
             </>
           )}
         </View>
         <View style={styles(darkTheme).bottomView}>
           {data.spaceInvitationCode && <InvitationCode code={data.spaceInvitationCode} />}
-          <Button onPress={() => DeviceEventEmitter.emit(CustomEvent.mainbutton.name)}>
+          <Button onPress={() => DeviceEventEmitter.emit(CustomEvent.welcomeMainButton.name)}>
             {data.mainButtonName}
           </Button>
-          <LinkButton style={{ marginTop: 30 }}>{data.linkButtonName}</LinkButton>
+          <LinkButton
+            style={{ marginTop: 30 }}
+            onPress={() => DeviceEventEmitter.emit(CustomEvent.welcomeSubButton.name)}>
+            {data.linkButtonName}
+          </LinkButton>
         </View>
       </SafeAreaView>
     </>

@@ -32,10 +32,14 @@ const SpaceCodeScreen = () => {
     navigation.navigate('Invitation', { screen: 'CreateSpace' });
   }, [navigation]);
 
-  DeviceEventEmitter.addListener(CustomEvent.mainbutton.name, () =>
+  DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, () =>
     navigation.replace('Main', {
       screen: 'Home',
     }),
+  );
+
+  DeviceEventEmitter.addListener(CustomEvent.welcomeSubButton.name, () =>
+    navigation.replace('Invitation'),
   );
 
   return (
@@ -67,13 +71,15 @@ const SpaceCodeScreen = () => {
               navigation.replace('Invitation', {
                 screen: 'Welcome',
                 params: {
+                  darkTheme: true,
                   data: {
                     ...welcomeParams.enterSpace,
                     profile: {
                       name: '해커톤 동아리',
                       imageUrl:
                         'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
-                      description: '초대코드를 복사하여\n동아리 팀원들을 초대해보세요!',
+                      description:
+                        '안녕하세요, 해커톤 동아리입니다. 우리 동아리는 다양한 대외 활동과 사이드 프로젝트를 통해 많은 실무 경험을 쌓아갈 수 있는 연합 동아리입니다.',
                     },
                   },
                 },

@@ -1,4 +1,4 @@
-type EventName = 'mainbutton';
+type EventName = 'welcomeMainButton' | 'welcomeSubButton';
 
 type CustomEventType = {
   name: string;
@@ -6,8 +6,11 @@ type CustomEventType = {
 };
 
 const CustomEvent: { [key in EventName]: CustomEventType } = {
-  mainbutton: {
+  welcomeMainButton: {
     name: 'event.welcome.mainbutton',
+  },
+  welcomeSubButton: {
+    name: 'event.welcome.subbutton',
   },
 };
 
