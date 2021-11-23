@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { RootRouterParamList } from 'types/Route';
 import { InvitationNavigation, MainNavigation } from 'navigation';
-import { LoginScreen, PostScreen, SearchScreen } from 'containers';
+import { EditCategory, LoginScreen, PostScreen, SearchScreen } from 'containers';
 import { SvgXml } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { close } from 'assets/svg/icons';
@@ -16,7 +16,7 @@ const Stack = createStackNavigator<RootRouterParamList>();
 
 const RootNavigation = () => {
   return (
-    <Stack.Navigator initialRouteName='Main'>
+    <Stack.Navigator initialRouteName='Auth'>
       <Stack.Screen
         name='Auth'
         component={LoginScreen}
@@ -56,7 +56,25 @@ const RootNavigation = () => {
           headerRightContainerStyle: { paddingRight: 20 },
         }}
       />
-      <Stack.Screen name='EditCategory' component={LoginScreen} />
+      <Stack.Screen
+        name='EditCategory'
+        component={EditCategory}
+        options={{
+          headerTitle: '카테고리 관리',
+          headerLeft: ({ onPress }) => (
+            <TouchableOpacity onPress={onPress}>
+              <SvgXml xml={close} width={24} fill={BLACK} />
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <TouchableOpacity onPress={() => console.log('완료')}>
+              <Text color={PRIMARY}>완료</Text>
+            </TouchableOpacity>
+          ),
+          headerLeftContainerStyle: { paddingLeft: 20, paddingVertical: 18 },
+          headerRightContainerStyle: { paddingRight: 20 },
+        }}
+      />
       <Stack.Screen name='PostDetails' component={LoginScreen} />
       <Stack.Screen
         name='Search'

@@ -3,6 +3,7 @@ export { default as SpaceCodeScreen } from './SpaceCodeScreen';
 export { default as SearchScreen } from './SearchScreen';
 export { default as WelcomeScreen } from './WelcomeScreen';
 export { default as PostScreen } from './PostScreen';
+export { default as EditCategory } from './EditCategory';
 
 export { default as CommunityScreen } from './Main/CommunityScreen';
 export { default as HomeScreen } from './Main/HomeScreen';
