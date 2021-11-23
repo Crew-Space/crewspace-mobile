@@ -1,29 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text as RNText, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
-import { FONT, Typo, TypoType, scaleFont } from 'theme/Typography';
+import { TypoProps, textStyles } from 'theme/Typography';
 import { BLACK } from 'theme/Colors';
 
-interface TextProps extends TouchableOpacityProps {
-  fontType?: TypoType;
-  paragraph?: boolean;
-  color?: string;
-}
+type Props = TypoProps & TouchableOpacityProps;
 
-const textStyles = (typo: TypoType = 'REGULAR_16', paragraph = false) => ({
-  fontFamily: FONT[Typo[typo].weight],
-  fontSize: scaleFont(Typo[typo].size),
-  ...(paragraph && { lineHeight: scaleFont(Typo[typo].size) * 1.5 }),
-});
-
-const TouchableText = ({
-  children,
-  style,
-  color,
-  fontType,
-  paragraph,
-  ...restProps
-}: TextProps) => {
+const TouchableText = ({ children, style, color, fontType, paragraph, ...restProps }: Props) => {
   return (
     <TouchableOpacity {...restProps}>
       <RNText

@@ -9,6 +9,12 @@ export type FONT_SIZE = 10 | 11 | 12 | 14 | 16 | 18 | 20 | 24 | 28 | 32 | 36 | 4
 export type LINE_HEIGHT = 17 | 18 | 21 | 24;
 export type FONT_WEIGHT = keyof typeof FONT;
 
+export interface TypoProps {
+  fontType?: TypoType;
+  paragraph?: boolean;
+  color?: string;
+}
+
 export const scaleFont = (size: number) => SCREEN_WIDTH * (size / GUIDELINE_BASE_WIDTH);
 
 export type TypoType =
@@ -140,3 +146,9 @@ export const Typo: {
     weight: 'R',
   },
 };
+
+export const textStyles = (typo: TypoType = 'REGULAR_16', paragraph = false) => ({
+  fontFamily: FONT[Typo[typo].weight],
+  fontSize: scaleFont(Typo[typo].size),
+  ...(paragraph && { lineHeight: scaleFont(Typo[typo].size) * 1.5 }),
+});
