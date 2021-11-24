@@ -33,7 +33,7 @@ const HeaderSelector = ({ data: spaces, leftButton }: SelectorProps) => {
           />
         )}
         <Text fontType={'BOLD_18'}>{spaces[0].name}</Text>
-        <SvgIcon disabled xml={expendMore} fill={BLACK} width={normalize(20)} />
+        <SvgIcon disabled xml={expendMore.down} fill={BLACK} width={normalize(20)} />
       </View>
       {leftButton && <SvgIcon xml={leftButton.xml} fill={BLACK} onPress={leftButton.onPress} />}
     </View>
