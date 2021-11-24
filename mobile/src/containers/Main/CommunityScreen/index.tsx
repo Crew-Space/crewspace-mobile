@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { GRAY2, LINE, WHITE } from 'theme/Colors';
+import { BACKGROUND, GRAY2, LINE, WHITE } from 'theme/Colors';
 import Text from 'components/Text';
 import PostPreview from 'components/PostPreview';
 import BottomTabSafeAreaView from 'components/BottomTabSafeAreaView';
@@ -37,6 +37,7 @@ const CommunityScreen = () => {
         <TopFilterBar items={['모든 글', '저장한 글']} onIndexChange={setSelectedItem}>
           <PostButton postingType={'community'} />
         </TopFilterBar>
+        <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
         {Array.from('-'.repeat(10)).map((_, index) => (
           <PostPreview
             key={index}

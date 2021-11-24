@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
 
-import Text from 'components/Text';
-import { WHITE, BLACK, GRAY2, LINE, BACKGROUND } from 'theme/Colors';
+import { WHITE, BLACK, GRAY2, LINE } from 'theme/Colors';
+import TouchableText from 'components/TouchableText';
 
 interface Props extends ViewProps {
   items: string[];
@@ -18,7 +18,7 @@ const TopFilterBar = ({ children, items, defaultIndex = 0, onIndexChange }: Prop
       <View style={[styles.topTabBar, { ...(!children && { paddingVertical: 18 }) }]}>
         <View style={styles.topTabBarFilter}>
           {items.map((item, index) => (
-            <Text
+            <TouchableText
               key={index}
               fontType={'BOLD_14'}
               style={{ marginRight: 20 }}
@@ -28,12 +28,11 @@ const TopFilterBar = ({ children, items, defaultIndex = 0, onIndexChange }: Prop
                 setSelectedIndex(index);
               }}>
               {item}
-            </Text>
+            </TouchableText>
           ))}
         </View>
         {children}
       </View>
-      <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
     </>
   );
 };

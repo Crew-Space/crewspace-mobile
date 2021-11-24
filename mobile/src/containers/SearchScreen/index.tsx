@@ -34,6 +34,7 @@ const SearchScreen = () => {
         </Text>
       </View>
       <TopFilterBar items={['전체', '공지', '커뮤니티']} onIndexChange={() => console.log()} />
+      <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
       <View style={styles.searchResult}>
         {!recentSearchKeywords.length ? (
           <Text fontType={'REGULAR_14'} color={GRAY2} style={styles.noSearchKeyword}>

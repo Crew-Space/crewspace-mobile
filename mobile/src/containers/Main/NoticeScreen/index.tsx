@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { LINE, WHITE } from 'theme/Colors';
+import { BACKGROUND, LINE, WHITE } from 'theme/Colors';
 import PostPreview from 'components/PostPreview';
 import BottomTabSafeAreaView from 'components/BottomTabSafeAreaView';
 import PostButton from 'components/PostButton';
@@ -21,6 +21,7 @@ const NoticeScreen = () => {
           onIndexChange={setSelectedItem}>
           <PostButton postingType={'notice'} />
         </TopFilterBar>
+        <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
         {Array.from('-'.repeat(10)).map((_, index) => (
           <PostPreview
             key={index}
