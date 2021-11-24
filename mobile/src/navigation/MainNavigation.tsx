@@ -7,7 +7,8 @@ import { GRAY2, PRIMARY } from 'theme/Colors';
 import { MainRouterParamList } from 'types/Route';
 import Text from 'components/Text';
 import { SettingsNavigation } from 'navigation';
-import { LoginScreen, HomeScreen, NoticeScreen, CommunityScreen } from 'containers';
+import { HomeScreen, NoticeScreen, CommunityScreen } from 'containers';
+import MemberListScreen from 'containers/MemberListScreen';
 
 const Tab = createBottomTabNavigator<MainRouterParamList>();
 
@@ -59,7 +60,7 @@ const MainNavigation = () => {
       />
       <Tab.Screen
         name='MemberList'
-        component={LoginScreen}
+        component={MemberListScreen}
         options={{
           headerShown: false,
           tabBarLabel: ({ focused }) => <TarBarLabel focused={focused} text={'회원'} />,

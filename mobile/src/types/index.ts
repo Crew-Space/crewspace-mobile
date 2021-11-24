@@ -53,4 +53,4 @@ export type SpaceMemberInfoOptions = {
 
 export type MemberProfile = MemberBaseInfo & SpaceMemberInfoOptions;
 
-export type MemberProfilePreview = Omit<MemberBaseInfo, 'description'> & { memberId: string };
+export type MemberProfilePreviewType = Omit<MemberBaseInfo, 'description'> & { memberId: string };
