@@ -15,7 +15,9 @@ export type RootRouterParamList = {
     searchType: 'post' | 'member';
   };
   EnterCrew: undefined;
-  MemberProfileDetails: undefined;
+  MemberProfileDetails: {
+    memberId: string;
+  };
 };
 
 export type InvitationParamList = {

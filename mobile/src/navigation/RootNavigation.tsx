@@ -11,6 +11,7 @@ import {
   LoginScreen,
   PostScreen,
   SearchScreen,
+  MemberProfileDetailsScreen,
 } from 'containers';
 import { SvgXml } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -96,6 +97,18 @@ const RootNavigation = () => {
           headerShown: false,
           cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
         }}
+      />
+      <Stack.Screen
+        name='MemberProfileDetails'
+        component={MemberProfileDetailsScreen}
+        options={({ navigation }) => ({
+          title: '',
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <SvgXml xml={close} width={24} fill={BLACK} />
+            </TouchableOpacity>
+          ),
+        })}
       />
     </Stack.Navigator>
   );

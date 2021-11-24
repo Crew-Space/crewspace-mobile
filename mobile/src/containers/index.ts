@@ -5,6 +5,7 @@ export { default as WelcomeScreen } from './WelcomeScreen';
 export { default as PostScreen } from './PostScreen';
 export { default as EditCategoryScreen } from './EditCategoryScreen';
 export { default as EnterCrewScreen } from './EnterCrewScreen';
+export { default as MemberProfileDetailsScreen } from './MemberProfileDetailsScreen';
 
 export { default as CommunityScreen } from './Main/CommunityScreen';
 export { default as HomeScreen } from './Main/HomeScreen';
