@@ -22,7 +22,7 @@ const Stack = createStackNavigator<RootRouterParamList>();
 
 const RootNavigation = () => {
   return (
-    <Stack.Navigator initialRouteName='EnterCrew'>
+    <Stack.Navigator initialRouteName='Main'>
       <Stack.Screen
         name='Auth'
         component={LoginScreen}

@@ -28,3 +28,8 @@ export interface PostPreviewProps {
 export interface PinnedNoticeProps {
   header: PinnedNoticeHeaderProps;
 }
+
+export type SpaceType = {
+  name: string;
+  id: number;
+};

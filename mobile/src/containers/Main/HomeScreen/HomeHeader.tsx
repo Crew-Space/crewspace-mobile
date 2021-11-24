@@ -1,18 +1,54 @@
-import HeaderSelector from 'components/HeaderSelector';
 import React from 'react';
-import { Animated, Platform, StyleSheet } from 'react-native';
+import { Animated, Platform, StyleSheet, View } from 'react-native';
 
-import { WHITE } from 'theme/Colors';
+import { search } from 'assets/svg/icons';
+import { BLACK, WHITE } from 'theme/Colors';
+import { SpaceType } from 'types';
 import {
   HEADER_MAX_HEIGHT,
   HEADER_SCROLL_DISTANCE,
   STICKY_EXPANDABLE_HEADER_HEIGHT,
 } from './constant';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from 'theme/Metrics';
+import ProfileImage from 'components/ProfileImage';
+import Text from 'components/Text';
+import HeaderSelector from 'components/HeaderSelector';
+
+const spaces = [
+  { name: '해커리어', id: 1 },
+  { name: 'SOPT', id: 2 },
+  { name: '디프만', id: 3 },
+  { name: 'SPACER', id: 4 },
+];
 
 interface Props {
   scrollYState: Animated.Value;
   headerImageUrl: string;
 }
+
+interface HeaderItemProps {
+  space: SpaceType;
+}
+
+const HeaderItem = ({ space }: HeaderItemProps) => {
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: WHITE,
+        paddingVertical: 18,
+        paddingHorizontal: 20,
+      }}>
+      <ProfileImage
+        uri={'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg'}
+        width={24}
+        style={{ marginRight: 8 }}
+      />
+      <Text fontType={'BOLD_18'}>{space.name}</Text>
+    </View>
+  );
+};
 
 const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
   const scrollY = Animated.add(
@@ -34,6 +70,7 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
 
   return (
     <>
+      {/* <View style={[styles.background]} /> */}
       <Animated.View style={[styles.header, { transform: [{ translateY: headerTranslate }] }]}>
         <Animated.Image
           style={[
@@ -49,8 +86,20 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
       </Animated.View>
       <Animated.View
         style={[styles.stickyHeader, { transform: [{ translateY: headerTranslate }] }]}>
-        <HeaderSelector />
+        <HeaderSelector
+          spaces={spaces}
+          leftButton={{ xml: search, onPress: () => console.log('leftButton pressed') }}
+        />
       </Animated.View>
+      {/* <Animated.View
+        style={[
+          styles.headerList,
+          { height: STICKY_EXPANDABLE_HEADER_HEIGHT * (spaces.length - 1) },
+        ]}>
+        {spaces.map((space) => (
+          <HeaderItem key={space.id} space={space} />
+        ))}
+      </Animated.View> */}
     </>
   );
 };
@@ -81,6 +130,25 @@ const styles = StyleSheet.create({
     right: 0,
     overflow: 'hidden',
     height: STICKY_EXPANDABLE_HEADER_HEIGHT,
+    zIndex: 10,
+  },
+  headerList: {
+    position: 'absolute',
+    top: HEADER_MAX_HEIGHT + STICKY_EXPANDABLE_HEADER_HEIGHT - 2,
+    left: 0,
+    right: 0,
+    overflow: 'hidden',
+    height: STICKY_EXPANDABLE_HEADER_HEIGHT,
+  },
+  background: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: SCREEN_HEIGHT,
+    width: SCREEN_WIDTH,
+    backgroundColor: BLACK,
+    opacity: 0.6,
   },
 });
 
