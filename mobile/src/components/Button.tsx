@@ -5,9 +5,12 @@ import { TouchableOpacity } from 'react-native';
 import Text from 'components/Text';
 import { WHITE, PRIMARY } from 'theme/Colors';
 
-const Button = ({ children, ...restProps }: TouchableOpacityProps) => {
+const Button = ({ children, style, ...restProps }: TouchableOpacityProps) => {
   return (
-    <TouchableOpacity style={[buttonStyles.mainButton.button]} {...restProps} activeOpacity={0.7}>
+    <TouchableOpacity
+      style={[buttonStyles.mainButton.button, style]}
+      {...restProps}
+      activeOpacity={0.7}>
       <Text fontType={'BOLD_16'} style={[buttonStyles.mainButton.text]}>
         {children}
       </Text>
