@@ -13,6 +13,8 @@ import { SCREEN_HEIGHT, SCREEN_WIDTH } from 'theme/Metrics';
 import ProfileImage from 'components/ProfileImage';
 import Text from 'components/Text';
 import HeaderSelector from 'components/HeaderSelector';
+import { useNavigation } from '@react-navigation/core';
+import { RootRouterParams } from 'types/Route';
 
 const spaces = [
   { name: '해커리어', id: 1 },
@@ -51,6 +53,8 @@ const HeaderItem = ({ space }: HeaderItemProps) => {
 };
 
 const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
+  const navigation = useNavigation<RootRouterParams>();
+
   const scrollY = Animated.add(
     scrollYState,
     Platform.OS === 'ios' ? HEADER_MAX_HEIGHT + STICKY_EXPANDABLE_HEADER_HEIGHT : 0,
@@ -88,7 +92,7 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
         style={[styles.stickyHeader, { transform: [{ translateY: headerTranslate }] }]}>
         <HeaderSelector
           data={spaces}
-          leftButton={{ xml: search, onPress: () => console.log('leftButton pressed') }}
+          leftButton={{ xml: search, onPress: () => navigation.navigate('Search') }}
         />
       </Animated.View>
       {/* <Animated.View
