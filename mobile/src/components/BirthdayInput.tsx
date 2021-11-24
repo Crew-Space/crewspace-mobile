@@ -1,11 +1,15 @@
 import React from 'react';
-import { StyleSheet, TextInputProps, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import Text from 'components/Text';
-import { GRAY1, GRAY3 } from 'theme/Colors';
+import { GRAY3 } from 'theme/Colors';
 import TextInput from './TextInput';
 
-const BirthdayInput = ({ children, style, defaultValue, ...restProps }: TextInputProps) => {
+interface Props {
+  defaultValue: string;
+}
+
+const BirthdayInput = ({ defaultValue }: Props) => {
   const [year, month, day] = defaultValue?.split('.');
 
   return (
