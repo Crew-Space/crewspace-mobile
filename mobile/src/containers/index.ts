@@ -10,3 +10,4 @@ export { default as MemberProfileDetailsScreen } from './MemberProfileDetailsScr
 export { default as CommunityScreen } from './Main/CommunityScreen';
 export { default as HomeScreen } from './Main/HomeScreen';
 export { default as NoticeScreen } from './Main/NoticeScreen';
+export { default as MemberListScreen } from './Main/MemberListScreen';

@@ -7,8 +7,7 @@ import { GRAY2, PRIMARY } from 'theme/Colors';
 import { MainRouterParamList } from 'types/Route';
 import Text from 'components/Text';
 import { SettingsNavigation } from 'navigation';
-import { HomeScreen, NoticeScreen, CommunityScreen } from 'containers';
-import MemberListScreen from 'containers/MemberListScreen';
+import { HomeScreen, NoticeScreen, CommunityScreen, MemberListScreen } from 'containers';
 
 const Tab = createBottomTabNavigator<MainRouterParamList>();
 
