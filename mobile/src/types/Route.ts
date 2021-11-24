@@ -17,6 +17,7 @@ export type RootRouterParamList = {
   EnterCrew: undefined;
   MemberProfileDetails: {
     memberId: string;
+    isMe?: boolean;
   };
 };
 
@@ -72,3 +73,9 @@ export type WelcomeScreenProps = WelcomeScreenBaseProps & EnterScreenBaseProps;
 
 /*** PostScreen ***/
 export type PostScreenPropsType = RouteProp<RootRouterParamList, 'Post'>;
+
+/*** MemberProfileDetailsScreen ***/
+export type MemberProfileDetailsScreenPropsType = RouteProp<
+  RootRouterParamList,
+  'MemberProfileDetails'
+>;

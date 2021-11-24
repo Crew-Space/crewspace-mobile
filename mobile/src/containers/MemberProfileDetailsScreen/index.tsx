@@ -4,11 +4,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { WHITE } from 'theme/Colors';
 import Text from 'components/Text';
+import { useRoute } from '@react-navigation/core';
+import { MemberProfileDetailsScreenPropsType } from 'types/Route';
 
 const MemberProfileDetailsScreen = () => {
+  const { params } = useRoute<MemberProfileDetailsScreenPropsType>();
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text fontType={'REGULAR_16'}>MemberProfileDetailsScreen</Text>
+      <Text fontType={'REGULAR_16'}>{params.memberId}</Text>
     </SafeAreaView>
   );
 };

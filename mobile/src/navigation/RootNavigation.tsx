@@ -108,6 +108,7 @@ const RootNavigation = () => {
               <SvgXml xml={close} width={24} fill={BLACK} />
             </TouchableOpacity>
           ),
+          headerLeftContainerStyle: { paddingLeft: 20, paddingVertical: 18 },
         })}
       />
     </Stack.Navigator>
