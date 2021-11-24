@@ -3,7 +3,7 @@ import { Animated, Platform, StyleSheet, View } from 'react-native';
 
 import { search } from 'assets/svg/icons';
 import { BLACK, WHITE } from 'theme/Colors';
-import { SpaceType } from 'types';
+import { HeaderListItemType } from 'types';
 import {
   HEADER_MAX_HEIGHT,
   HEADER_SCROLL_DISTANCE,
@@ -27,7 +27,7 @@ interface Props {
 }
 
 interface HeaderItemProps {
-  space: SpaceType;
+  space: HeaderListItemType;
 }
 
 const HeaderItem = ({ space }: HeaderItemProps) => {
@@ -87,7 +87,7 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
       <Animated.View
         style={[styles.stickyHeader, { transform: [{ translateY: headerTranslate }] }]}>
         <HeaderSelector
-          spaces={spaces}
+          data={spaces}
           leftButton={{ xml: search, onPress: () => console.log('leftButton pressed') }}
         />
       </Animated.View>

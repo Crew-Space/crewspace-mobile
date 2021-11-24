@@ -29,7 +29,8 @@ export interface PinnedNoticeProps {
   header: PinnedNoticeHeaderProps;
 }
 
-export type SpaceType = {
+export type HeaderListItemType = {
   name: string;
+  imageUrl?: string;
   id: number;
 };
