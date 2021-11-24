@@ -12,12 +12,14 @@ import {
   PostScreen,
   SearchScreen,
   MemberProfileDetailsScreen,
+  PostDetailsScreen,
 } from 'containers';
 import { SvgXml } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { close } from 'assets/svg/icons';
 import { BLACK, PRIMARY } from 'theme/Colors';
 import Text from 'components/Text';
+import { PostHeader } from 'components/Header';
 
 const Stack = createStackNavigator<RootRouterParamList>();
 
@@ -49,18 +51,7 @@ const RootNavigation = () => {
         name='Post'
         component={PostScreen}
         options={{
-          headerLeft: ({ onPress }) => (
-            <TouchableOpacity onPress={onPress}>
-              <SvgXml xml={close} width={24} fill={BLACK} />
-            </TouchableOpacity>
-          ),
-          headerRight: () => (
-            <TouchableOpacity onPress={() => console.log('완료')}>
-              <Text color={PRIMARY}>완료</Text>
-            </TouchableOpacity>
-          ),
-          headerLeftContainerStyle: { paddingLeft: 20, paddingVertical: 18 },
-          headerRightContainerStyle: { paddingRight: 20 },
+          header: PostHeader,
         }}
       />
       <Stack.Screen
@@ -82,7 +73,7 @@ const RootNavigation = () => {
           headerRightContainerStyle: { paddingRight: 20 },
         }}
       />
-      <Stack.Screen name='PostDetails' component={LoginScreen} />
+      <Stack.Screen name='PostDetails' component={PostDetailsScreen} />
       <Stack.Screen
         name='EnterCrew'
         component={EnterCrewScreen}
