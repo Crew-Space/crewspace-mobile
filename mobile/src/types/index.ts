@@ -34,3 +34,23 @@ export type HeaderListItemType = {
   imageUrl?: string;
   id: number;
 };
+
+/** Member **/
+export type MemberBaseInfo = {
+  name: string;
+  profileImage: string;
+  memberCategory: string;
+  description: string;
+};
+
+export type SpaceMemberInfoOptions = {
+  birthday?: string;
+  email?: string;
+  contact?: string;
+  sns?: string;
+  etc?: string;
+};
+
+export type MemberProfile = MemberBaseInfo & SpaceMemberInfoOptions;
+
+export type MemberProfilePreview = Omit<MemberBaseInfo, 'description'> & { memberId: string };

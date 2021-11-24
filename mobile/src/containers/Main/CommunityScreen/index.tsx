@@ -10,18 +10,15 @@ import PostButton from 'components/PostButton';
 import ProfileImage from 'components/ProfileImage';
 import TopFilterBar from 'components/TopFilterBar';
 import HeaderSelector from 'components/HeaderSelector';
+import { MemberProfilePreview } from 'types';
 
-const CommunityPostWriter = () => (
+const CommunityPostWriter = (profile: MemberProfilePreview) => (
   <View style={{ flexDirection: 'row', marginTop: 5 }}>
-    <ProfileImage
-      uri={'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg'}
-      width={36}
-      style={{ marginRight: 10 }}
-    />
+    <ProfileImage uri={profile.profileImage} width={36} style={{ marginRight: 10 }} />
     <View>
-      <Text fontType={'BOLD_14'}>김수한</Text>
+      <Text fontType={'BOLD_14'}>{profile.name}</Text>
       <Text fontType={'REGULAR_11'} color={GRAY2}>
-        디자이너팀
+        {profile.memberCategory}
       </Text>
     </View>
   </View>
@@ -43,7 +40,14 @@ const CommunityScreen = () => {
             key={index}
             header={{
               subText: { left: '과제 공지', right: '10분 전' },
-              Title: CommunityPostWriter,
+              Title: () =>
+                CommunityPostWriter({
+                  memberId: '1',
+                  name: '김수한',
+                  profileImage:
+                    'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
+                  memberCategory: '디자인팀',
+                }),
             }}
             description={
               '안녕하세요 :) 1차 과제 마감 관련하여 공지드립니다. 사전에 고지드린대로 인당 3개씩 아이디어 조사하여, 간단히 PPT 자료 제작해오시면 될 것 같습니다. 궁금한 점 언제든 문의...'
