@@ -44,11 +44,11 @@ export type MemberBaseInfo = {
 };
 
 export type SpaceMemberInfoOptions = {
-  birthday?: string;
-  email?: string;
-  contact?: string;
-  sns?: string;
-  etc?: string;
+  birthday: string;
+  email: string;
+  contact: string;
+  sns: string;
+  etc: string;
 };
 
 export type MemberProfile = MemberBaseInfo & SpaceMemberInfoOptions;
