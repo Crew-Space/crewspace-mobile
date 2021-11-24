@@ -57,7 +57,15 @@ const MemberListScreen = () => {
             {members.length}명
           </Text>
         </View>
-        <SvgIcon xml={search} width={normalize(24)} onPress={() => navigation.navigate('Search')} />
+        <SvgIcon
+          xml={search}
+          width={normalize(24)}
+          onPress={() =>
+            navigation.navigate('Search', {
+              searchType: 'member',
+            })
+          }
+        />
       </View>
       <TopFilterBar
         items={['전체', '운영진', '기획팀', '디자인팀', '개발팀']}

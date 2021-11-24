@@ -11,8 +11,11 @@ export type RootRouterParamList = {
   Post: { postingType: PostingType };
   EditCategory: undefined;
   PostDetails: undefined;
-  Search: undefined;
+  Search: {
+    searchType: 'post' | 'member';
+  };
   EnterCrew: undefined;
+  MemberProfileDetails: undefined;
 };
 
 export type InvitationParamList = {
@@ -37,15 +40,9 @@ export type SettingsParamList = {
   Settings: undefined;
 };
 
-export type SearchParamList = {
-  Search: undefined;
-  MemberDetails: undefined;
-};
-
 export type RootRouterParams = StackNavigationProp<RootRouterParamList>;
 export type InvitationParams = StackNavigationProp<InvitationParamList>;
 export type MainRouterParams = BottomTabNavigationProp<MainRouterParamList>;
-export type SearchParams = StackNavigationProp<SearchParamList>;
 export type SettingsParams = StackNavigationProp<SettingsParamList>;
 
 /*** WelcomScreen ***/

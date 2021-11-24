@@ -92,7 +92,13 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
         style={[styles.stickyHeader, { transform: [{ translateY: headerTranslate }] }]}>
         <HeaderSelector
           data={spaces}
-          leftButton={{ xml: search, onPress: () => navigation.navigate('Search') }}
+          leftButton={{
+            xml: search,
+            onPress: () =>
+              navigation.navigate('Search', {
+                searchType: 'post',
+              }),
+          }}
         />
       </Animated.View>
       {/* <Animated.View
