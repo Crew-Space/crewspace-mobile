@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
 import { BLACK } from 'theme/Colors';
@@ -10,12 +10,16 @@ interface Props extends TouchableOpacityProps {
   fill?: string;
 }
 
-const SvgIcon = ({ width = 24, xml, fill = BLACK, ...restProps }: Props) => {
+const SvgIcon = ({ width = 24, xml, fill = BLACK, style, ...restProps }: Props) => {
   return (
-    <TouchableOpacity {...restProps}>
+    <TouchableOpacity {...restProps} style={[styles.container, style]}>
       <SvgXml xml={xml} width={width} fill={fill} />
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {},
+});
 
 export default SvgIcon;
