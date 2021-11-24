@@ -21,7 +21,8 @@ const WelcomeScreen = () => {
   useEffect(() => {
     return () => {
       DeviceEventEmitter.removeAllListeners(CustomEvent.welcomeMainButton.name);
-      DeviceEventEmitter.removeAllListeners(CustomEvent.welcomeSubButton.name);
+      data.linkButtonName &&
+        DeviceEventEmitter.removeAllListeners(CustomEvent.welcomeSubButton.name);
     };
   }, []);
 
@@ -54,11 +55,13 @@ const WelcomeScreen = () => {
           <Button onPress={() => DeviceEventEmitter.emit(CustomEvent.welcomeMainButton.name)}>
             {data.mainButtonName}
           </Button>
-          <LinkButton
-            style={{ marginTop: 30 }}
-            onPress={() => DeviceEventEmitter.emit(CustomEvent.welcomeSubButton.name)}>
-            {data.linkButtonName}
-          </LinkButton>
+          {data.linkButtonName && (
+            <LinkButton
+              style={{ marginTop: 30 }}
+              onPress={() => DeviceEventEmitter.emit(CustomEvent.welcomeSubButton.name)}>
+              {data.linkButtonName}
+            </LinkButton>
+          )}
         </View>
       </SafeAreaView>
     </>
@@ -67,11 +70,11 @@ const WelcomeScreen = () => {
 
 const styles = (darkTheme = false) =>
   StyleSheet.create({
-    flexCenter: { display: 'flex', alignItems: 'center' },
+    flexCenter: { alignItems: 'center' },
     container: {
       display: 'flex',
       flex: 1,
-      padding: 20,
+      paddingHorizontal: 20,
       alignItems: 'center',
       justifyContent: 'space-between',
       backgroundColor: darkTheme ? BLACK : WHITE,
