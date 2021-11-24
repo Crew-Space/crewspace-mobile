@@ -65,6 +65,14 @@ export const plus = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
 <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
 </svg>
 `;
+export const arrowLeft = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20L13.41 18.59L7.83 13L20 13L20 11L7.83 11L13.41 5.41L12 4L4 12L12 20Z" />
+</svg>
+`;
+export const expendMore = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 15.4099L18 9.40991L16.59 7.99991L12 12.5799L7.41 7.99991L6 9.40991L12 15.4099Z" />
+</svg>
+`;
 
 /* action */
 export const check = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
