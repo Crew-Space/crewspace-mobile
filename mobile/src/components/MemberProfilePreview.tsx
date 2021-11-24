@@ -1,32 +1,41 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableHighlight, TouchableHighlightProps, View } from 'react-native';
 
-import Text from 'components/Text';
-import { GRAY2, WHITE } from 'theme/Colors';
-import ProfileImage from './ProfileImage';
 import { MemberProfilePreviewType } from 'types';
-import SvgIcon from './SvgIcon';
+import { GRAY2, GRAY4, WHITE } from 'theme/Colors';
 import { expendMore, pen } from 'assets/svg/icons';
+import Text from 'components/Text';
+import ProfileImage from 'components/ProfileImage';
+import SvgIcon from 'components/SvgIcon';
 
-type Props = Omit<MemberProfilePreviewType, 'memberId'> & { me?: boolean };
+type Props = Omit<MemberProfilePreviewType, 'memberId'> & {
+  me?: boolean;
+} & TouchableHighlightProps;
 
-const MemberProfilePreview = ({ profileImage, memberCategory, name, me }: Props) => {
+const MemberProfilePreview = ({ profileImage, memberCategory, name, me, ...restProps }: Props) => {
   return (
-    <View style={[styles.flexRowCenter, styles.container]}>
-      <View style={styles.flexRowCenter}>
-        <ProfileImage uri={profileImage} width={50} />
-        <View style={{ marginLeft: 14 }}>
-          <View style={{ flexDirection: 'row' }}>
-            <Text fontType={'BOLD_16'}>{name}</Text>
-            {me && <SvgIcon disabled xml={pen} fill={GRAY2} width={16} style={{ marginLeft: 4 }} />}
+    <TouchableHighlight
+      underlayColor={GRAY4}
+      {...restProps}
+      style={[styles.flexRowCenter, styles.container]}>
+      <>
+        <View style={styles.flexRowCenter}>
+          <ProfileImage uri={profileImage} width={50} />
+          <View style={{ marginLeft: 14 }}>
+            <View style={{ flexDirection: 'row' }}>
+              <Text fontType={'BOLD_16'}>{name}</Text>
+              {me && (
+                <SvgIcon disabled xml={pen} fill={GRAY2} width={16} style={{ marginLeft: 4 }} />
+              )}
+            </View>
+            <Text fontType={'REGULAR_14'} color={GRAY2}>
+              {memberCategory}
+            </Text>
           </View>
-          <Text fontType={'REGULAR_14'} color={GRAY2}>
-            {memberCategory}
-          </Text>
         </View>
-      </View>
-      <SvgIcon disabled xml={expendMore.right} width={20} fill={GRAY2} />
-    </View>
+        <SvgIcon disabled xml={expendMore.right} width={20} fill={GRAY2} />
+      </>
+    </TouchableHighlight>
   );
 };
 

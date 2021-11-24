@@ -46,6 +46,11 @@ const MemberListScreen = () => {
   const [selectedItem, setSelectedItem] = useState<number>(0);
   const myProfile = members.find((member) => member.memberId == myMemberId);
 
+  const onProfilePress = (member) =>
+    navigation.navigate('MemberProfileDetails', {
+      memberId: member.memberId,
+    });
+
   return (
     <BottomTabSafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -72,12 +77,12 @@ const MemberListScreen = () => {
         onIndexChange={setSelectedItem}
       />
       <ScrollView>
-        {myProfile && <MemberProfilePreview me {...myProfile} />}
+        {myProfile && <MemberProfilePreview me {...myProfile} onPress={onProfilePress} />}
         <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
         {members
           .filter((member) => member.memberId != myMemberId)
           .map((member) => (
-            <MemberProfilePreview {...member} />
+            <MemberProfilePreview {...member} onPress={onProfilePress} />
           ))}
       </ScrollView>
     </BottomTabSafeAreaView>
