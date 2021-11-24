@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { expendMore } from 'assets/svg/icons';
+import { expandMore } from 'assets/svg/icons';
 import { HeaderListItemType } from 'types';
 import { BLACK, WHITE } from 'theme/Colors';
 import { normalize } from 'utils';
@@ -33,7 +33,7 @@ const HeaderSelector = ({ data: spaces, leftButton }: SelectorProps) => {
           />
         )}
         <Text fontType={'BOLD_18'}>{spaces[0].name}</Text>
-        <SvgIcon disabled xml={expendMore.down} fill={BLACK} width={normalize(20)} />
+        <SvgIcon disabled xml={expandMore.down} fill={BLACK} width={normalize(20)} />
       </View>
       {leftButton && <SvgIcon xml={leftButton.xml} fill={BLACK} onPress={leftButton.onPress} />}
     </View>

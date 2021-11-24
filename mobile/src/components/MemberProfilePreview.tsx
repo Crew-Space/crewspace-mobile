@@ -3,7 +3,7 @@ import { StyleSheet, TouchableHighlight, TouchableHighlightProps, View } from 'r
 
 import { MemberProfilePreviewType } from 'types';
 import { GRAY2, GRAY4, WHITE } from 'theme/Colors';
-import { expendMore, pen } from 'assets/svg/icons';
+import { expandMore, pen } from 'assets/svg/icons';
 import Text from 'components/Text';
 import ProfileImage from 'components/ProfileImage';
 import SvgIcon from 'components/SvgIcon';
@@ -33,7 +33,7 @@ const MemberProfilePreview = ({ profileImage, memberCategory, name, me, ...restP
             </Text>
           </View>
         </View>
-        <SvgIcon disabled xml={expendMore.right} width={20} fill={GRAY2} />
+        <SvgIcon disabled xml={expandMore.right} width={20} fill={GRAY2} />
       </>
     </TouchableHighlight>
   );

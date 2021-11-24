@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
 import { MemberProfile } from 'types';
-import { expendMore } from 'assets/svg/icons';
+import { expandMore } from 'assets/svg/icons';
 import { GRAY2 } from 'theme/Colors';
 import BirthdayInput from 'components/BirthdayInput';
 import Text from 'components/Text';
@@ -22,7 +22,7 @@ const ProfileDetails = ({ data }: Props) => {
         <TouchableOpacity
           style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
           <Text>{data.memberCategory}</Text>
-          <SvgIcon xml={expendMore.right} fill={GRAY2} width={20} />
+          <SvgIcon xml={expandMore.right} fill={GRAY2} width={20} />
         </TouchableOpacity>
       </TitleDescribe>
       <TitleDescribe name={'email'} contents={data.email} />
