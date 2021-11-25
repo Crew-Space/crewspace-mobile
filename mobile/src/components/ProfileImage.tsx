@@ -11,9 +11,13 @@ const ProfileImage = ({ uri, width, style }: ProfileImageProps) => {
     <View style={[styles.container, { ...(width && { width, height: width }) }, style]}>
       <Image
         style={[styles.image, { ...(width && { width, height: width }) }]}
-        source={{
-          uri,
-        }}
+        source={
+          uri
+            ? {
+                uri,
+              }
+            : require('assets/images/profile_1.png')
+        }
       />
     </View>
   );
