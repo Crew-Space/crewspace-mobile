@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
-// import users from 'store/slices/user';
+import user from 'store/slices/user';
 
 const reducer = combineReducers({
-  //   users,
+  user,
 });
 
 export type ReducerType = ReturnType<typeof reducer>;

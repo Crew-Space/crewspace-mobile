@@ -1,8 +1,10 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DeviceEventEmitter, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/core';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
 
 import { INITIAL_INVITATION_CODE, NUM_OF_INVITATION_CODE } from 'constant';
 import { scaleFont } from 'theme/Typography';
@@ -12,6 +14,8 @@ import LinkButton from 'components/LinkButton';
 import Text from 'components/Text';
 import { welcomeParams } from 'constant/welcome';
 import CustomEvent from 'constant/customEvent';
+import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
+import { setSpaceId } from 'store/slices/user';
 
 const CodeText = ({ char }: { char: string }) => {
   return (
@@ -25,6 +29,7 @@ const CodeText = ({ char }: { char: string }) => {
 
 const SpaceCodeScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
+  const dispatch = useDispatch();
   const inputRef = useRef<TextInput>(null);
   const [inputCode, setInputCode] = useState<string[]>(INITIAL_INVITATION_CODE);
 
@@ -32,13 +37,51 @@ const SpaceCodeScreen = () => {
     navigation.navigate('Invitation', { screen: 'CreateSpace' });
   }, [navigation]);
 
-  DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, () =>
-    navigation.replace('EnterCrew'),
-  );
+  const onSubmitEditing = async () => {
+    if (inputCode.filter((str) => str !== '-').length === 6) {
+      //api ~/v1/space/:space-code
+      const data = {
+        succcess: true,
+        msg: '올바른 초대 코드입니다.',
+        timestamp: '2021-11-20T04:46:08.292482',
+        data: {
+          spaceId: 23,
+          spaceName: '크루스페이스',
+          spaceImage:
+            'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
+          spaceDescription: '크루스페이스에 오신 것을 환영합니다 !',
+        },
+      };
 
-  DeviceEventEmitter.addListener(CustomEvent.welcomeSubButton.name, () =>
-    navigation.replace('Invitation'),
-  );
+      await AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, data.data.spaceId.toString());
+      dispatch(setSpaceId(data.data.spaceId));
+
+      navigation.replace('Invitation', {
+        screen: 'Welcome',
+        params: {
+          darkTheme: true,
+          data: {
+            ...welcomeParams.enterSpace,
+            profile: {
+              name: data.data.spaceName,
+              imageUrl: data.data.spaceImage,
+              description: data.data.spaceDescription,
+            },
+          },
+        },
+      });
+    }
+  };
+
+  useEffect(() => {
+    DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, () =>
+      navigation.replace('EnterCrew'),
+    );
+
+    DeviceEventEmitter.addListener(CustomEvent.welcomeSubButton.name, () =>
+      navigation.replace('Invitation'),
+    );
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -64,26 +107,7 @@ const SpaceCodeScreen = () => {
               ...INITIAL_INVITATION_CODE.slice(0, NUM_OF_INVITATION_CODE - text.length),
             ]);
           }}
-          onSubmitEditing={() => {
-            if (inputCode.filter((str) => str !== '-').length === 6) {
-              navigation.replace('Invitation', {
-                screen: 'Welcome',
-                params: {
-                  darkTheme: true,
-                  data: {
-                    ...welcomeParams.enterSpace,
-                    profile: {
-                      name: '해커톤 동아리',
-                      imageUrl:
-                        'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
-                      description:
-                        '안녕하세요, 해커톤 동아리입니다. 우리 동아리는 다양한 대외 활동과 사이드 프로젝트를 통해 많은 실무 경험을 쌓아갈 수 있는 연합 동아리입니다.',
-                    },
-                  },
-                },
-              });
-            }
-          }}
+          onSubmitEditing={onSubmitEditing}
         />
       </View>
       <View style={{ marginBottom: '12%', alignItems: 'center' }}>
