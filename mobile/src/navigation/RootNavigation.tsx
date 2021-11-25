@@ -19,7 +19,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { close } from 'assets/svg/icons';
 import { BLACK, PRIMARY } from 'theme/Colors';
 import Text from 'components/Text';
-import { PostHeader } from 'components/Header';
+import { PostScreenHeader } from 'components/Header';
 
 const Stack = createStackNavigator<RootRouterParamList>();
 
@@ -51,7 +51,7 @@ const RootNavigation = () => {
         name='Post'
         component={PostScreen}
         options={{
-          header: PostHeader,
+          header: PostScreenHeader,
         }}
       />
       <Stack.Screen

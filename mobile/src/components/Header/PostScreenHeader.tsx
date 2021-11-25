@@ -14,7 +14,7 @@ import { SCREEN_HEIGHT } from 'theme/Metrics';
 const mock = ['일상 공유', '일반 글', '인사이트'];
 const HEADER_HEIGHT = normalize(60);
 
-const PostHeader = () => {
+const PostScreenHeader = () => {
   const [extanded, setExtanded] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<number>(0);
   const navigation = useNavigation<RootRouterParams>();
@@ -130,4 +130,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostHeader;
+export default PostScreenHeader;

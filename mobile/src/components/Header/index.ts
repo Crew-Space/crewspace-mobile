@@ -1,1 +1,1 @@
-export { default as PostHeader } from './PostHeader';
+export { default as PostScreenHeader } from './PostScreenHeader';
