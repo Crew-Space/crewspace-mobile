@@ -44,7 +44,7 @@ const members = [
 const MemberListScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
   const [selectedItem, setSelectedItem] = useState<number>(0);
-  const myProfile = members.find((member) => member.memberId == myMemberId);
+  const myProfile = members.find((member) => member.memberId === myMemberId);
 
   const onProfilePress = (member) =>
     navigation.navigate('MemberProfileDetails', {
