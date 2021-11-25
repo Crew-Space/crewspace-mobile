@@ -9,14 +9,27 @@ import {
 import { TypoProps, textStyles } from 'theme/Typography';
 import { BLACK } from 'theme/Colors';
 
-type Props = TypoProps & RNTextInputProps;
+export type TextInputProps = TypoProps &
+  Omit<RNTextInputProps, 'onChangeText'> & {
+    name: string;
+    onChangeText?: (text: string, name: string) => void;
+  };
 
-const TextInput = ({ style, color, fontType, paragraph, ...restProps }: Props) => {
+const TextInput = ({
+  style,
+  color,
+  fontType,
+  paragraph,
+  name,
+  onChangeText,
+  ...restProps
+}: TextInputProps) => {
   return (
     <View>
       <RNTextInput
-        style={[textStyles(fontType, paragraph), styles.base, style, { ...(color && { color }) }]}
         {...restProps}
+        style={[textStyles(fontType, paragraph), styles.base, style, { ...(color && { color }) }]}
+        onChangeText={(text) => onChangeText && onChangeText(text, name)}
       />
     </View>
   );

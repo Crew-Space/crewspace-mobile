@@ -1,31 +1,21 @@
 import React, { useState } from 'react';
-import {
-  StyleSheet,
-  TextInput as RNTextInput,
-  TextInputProps as RNTextInputProps,
-  View,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { textStyles, TypoProps } from 'theme/Typography';
-import { BLACK, GRAY2, LINE } from 'theme/Colors';
+import { BLACK, GRAY1, GRAY2, LINE } from 'theme/Colors';
 import Text from 'components/Text';
+import { MemberProfile } from 'types';
+import { PROFILE_TEXT } from 'constant';
+import BirthdayInput from './BirthdayInput';
+import TextInput, { TextInputProps } from './TextInput';
 
 type OwnProps = {
-  title?: string;
+  title?: keyof MemberProfile;
   name?: string;
   limit?: number;
 };
-type Props = TypoProps & RNTextInputProps & OwnProps;
+type Props = TextInputProps & OwnProps;
 
-const LineTextInput = ({
-  style,
-  color,
-  fontType,
-  paragraph,
-  limit,
-  title,
-  ...restProps
-}: Props) => {
+const LineTextInput = ({ style, limit, title, name, onChangeText, ...restProps }: Props) => {
   const [inputText, setInputText] = useState<string>();
 
   return (
@@ -33,16 +23,27 @@ const LineTextInput = ({
       {title && (
         <View style={styles.title}>
           <Text fontType={'REGULAR_12'} color={GRAY2}>
-            {title}
+            {PROFILE_TEXT[title]}
           </Text>
         </View>
       )}
-      <View style={styles.input}>
-        <RNTextInput
-          {...restProps}
-          style={[textStyles(fontType, paragraph), styles.base, style, { ...(color && { color }) }]}
-          onChangeText={setInputText}
-        />
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        {title === 'sns' && <Text color={GRAY1}>@ </Text>}
+        <View style={styles.input}>
+          {title === 'birthday' ? (
+            <BirthdayInput {...restProps} name={name} onChangeText={onChangeText} />
+          ) : (
+            <TextInput
+              {...restProps}
+              style={[style]}
+              name={name}
+              onChangeText={(text) => {
+                onChangeText && onChangeText(text, name);
+                setInputText(text);
+              }}
+            />
+          )}
+        </View>
       </View>
       {limit && (
         <View style={styles.count}>
