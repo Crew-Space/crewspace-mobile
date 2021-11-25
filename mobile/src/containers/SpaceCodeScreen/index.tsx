@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 
 import { INITIAL_INVITATION_CODE, NUM_OF_INVITATION_CODE } from 'constant';
 import { scaleFont } from 'theme/Typography';
-import { BLACK, GRAY1, GRAY2, GRAY4, WHITE } from 'theme/Colors';
+import { BLACK, GRAY1, GRAY2, GRAY4, RED, WHITE } from 'theme/Colors';
 import { RootRouterParams } from 'types/Route';
 import LinkButton from 'components/LinkButton';
 import Text from 'components/Text';
@@ -16,6 +16,7 @@ import { welcomeParams } from 'constant/welcome';
 import CustomEvent from 'constant/customEvent';
 import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
 import { setSpaceId } from 'store/slices/user';
+import { useEnterSpaceQuery } from 'store/services/space';
 
 const CodeText = ({ char }: { char: string }) => {
   return (
@@ -32,30 +33,16 @@ const SpaceCodeScreen = () => {
   const dispatch = useDispatch();
   const inputRef = useRef<TextInput>(null);
   const [inputCode, setInputCode] = useState<string[]>(INITIAL_INVITATION_CODE);
+  const { data, isError } = useEnterSpaceQuery(inputCode.join(''), {
+    skip: inputCode.filter((str) => str !== '-').length !== 6,
+  });
 
   const onMakeSpacePress = useCallback(() => {
     navigation.navigate('Invitation', { screen: 'CreateSpace' });
   }, [navigation]);
 
   const onSubmitEditing = async () => {
-    if (inputCode.filter((str) => str !== '-').length === 6) {
-      //api ~/v1/space/:space-code
-      const data = {
-        succcess: true,
-        msg: '올바른 초대 코드입니다.',
-        timestamp: '2021-11-20T04:46:08.292482',
-        data: {
-          spaceId: 23,
-          spaceName: '크루스페이스',
-          spaceImage:
-            'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
-          spaceDescription: '크루스페이스에 오신 것을 환영합니다 !',
-        },
-      };
-
-      await AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, data.data.spaceId.toString());
-      dispatch(setSpaceId(data.data.spaceId));
-
+    if (inputCode.filter((str) => str !== '-').length === 6 && data) {
       navigation.replace('Invitation', {
         screen: 'Welcome',
         params: {
@@ -63,25 +50,27 @@ const SpaceCodeScreen = () => {
           data: {
             ...welcomeParams.enterSpace,
             profile: {
-              name: data.data.spaceName,
-              imageUrl: data.data.spaceImage,
-              description: data.data.spaceDescription,
+              name: data.spaceName,
+              imageUrl: data.spaceImage,
+              description: data.spaceDescription,
             },
+            spaceId: data.spaceId,
           },
         },
       });
     }
   };
 
-  useEffect(() => {
-    DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, () =>
-      navigation.replace('EnterCrew'),
-    );
+  DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, async ({ spaceId }) => {
+    await AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, spaceId.toString());
+    dispatch(setSpaceId(spaceId));
 
-    DeviceEventEmitter.addListener(CustomEvent.welcomeSubButton.name, () =>
-      navigation.replace('Invitation'),
-    );
-  }, []);
+    navigation.replace('EnterCrew');
+  });
+
+  DeviceEventEmitter.addListener(CustomEvent.welcomeSubButton.name, () =>
+    navigation.replace('Invitation'),
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -91,10 +80,17 @@ const SpaceCodeScreen = () => {
         </Text>
         <KeyboardAvoidingView
           onTouchEnd={() => inputRef.current?.focus()}
-          style={styles.codeNumber}>
-          {inputCode.map((char, index) => (
-            <CodeText key={index} char={char} />
-          ))}
+          style={{ width: '100%', alignItems: 'center' }}>
+          <View style={[styles.codeNumber, { borderBottomColor: isError ? RED : GRAY4 }]}>
+            {inputCode.map((char, index) => (
+              <CodeText key={index} char={char} />
+            ))}
+          </View>
+          {isError && (
+            <Text fontType={'REGULAR_14'} color={RED} style={{ marginTop: 18 }}>
+              입력한 정보를 다시 확인해 주세요
+            </Text>
+          )}
         </KeyboardAvoidingView>
         <TextInput
           ref={inputRef}
@@ -135,7 +131,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 6,
     width: '100%',
-    borderBottomColor: GRAY4,
     borderBottomWidth: 1,
     marginTop: 60,
   },

@@ -17,7 +17,7 @@ const PostPreview = ({ header, description, isSaved, viewed }: PostPreviewProps)
     }}>
     <PostHeader {...header} isSaved={isSaved} />
     <Text paragraph fontType={'REGULAR_14'} color={GRAY1} style={{ marginTop: 10 }}>
-      {description}
+      {`${description.slice(0, 100)}...`}
     </Text>
     {viewed !== undefined && (
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>

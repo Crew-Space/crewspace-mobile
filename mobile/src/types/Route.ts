@@ -67,6 +67,7 @@ export type WelcomeScreenBaseProps = {
 
 export type EnterScreenBaseProps = {
   spaceInvitationCode?: string;
+  spaceId?: number;
 };
 
 export type WelcomeScreenProps = WelcomeScreenBaseProps & EnterScreenBaseProps;

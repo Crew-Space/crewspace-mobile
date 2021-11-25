@@ -52,7 +52,10 @@ const WelcomeScreen = () => {
         </View>
         <View style={styles(darkTheme).bottomView}>
           {data.spaceInvitationCode && <InvitationCode code={data.spaceInvitationCode} />}
-          <Button onPress={() => DeviceEventEmitter.emit(CustomEvent.welcomeMainButton.name)}>
+          <Button
+            onPress={() =>
+              DeviceEventEmitter.emit(CustomEvent.welcomeMainButton.name, { spaceId: data.spaceId })
+            }>
             {data.mainButtonName}
           </Button>
           {data.linkButtonName && (
