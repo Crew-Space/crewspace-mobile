@@ -1,7 +1,7 @@
 import React from 'react';
 
 import LineTextInput from 'components/LineTextInput';
-import { MemberProfile } from 'types';
+import { ReqSpaceEnter } from 'types/Request';
 import { StyleSheet, View } from 'react-native';
 
 interface Props {
@@ -10,8 +10,8 @@ interface Props {
   hasBirthdate: boolean;
   hasContact: boolean;
   hasEtc: boolean;
-  setUserInfo: React.Dispatch<React.SetStateAction<MemberProfile>>;
-  userInfo: MemberProfile;
+  setUserInfo: React.Dispatch<React.SetStateAction<ReqSpaceEnter>>;
+  userInfo: ReqSpaceEnter;
 }
 
 const Step2 = ({

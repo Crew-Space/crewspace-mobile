@@ -92,6 +92,12 @@ export type ResMySpaces = {
   spaces: Space[];
 };
 
+export type ResSpaceEnter = {
+  profileImage: string;
+  name: string;
+  categoryName: string;
+};
+
 /** posts */
 export type ResPostCategory = {
   noticeCategories: Category[];

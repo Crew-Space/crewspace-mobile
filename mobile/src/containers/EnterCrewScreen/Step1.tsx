@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { GRAY1, GRAY2, GRAY3, GRAY4 } from 'theme/Colors';
+import { GRAY1, GRAY2, GRAY3, GRAY4, PRIMARY } from 'theme/Colors';
 import Text from 'components/Text';
 import SvgIcon from 'components/SvgIcon';
 import { image } from 'assets/svg/icons';
 import LineTextInput from 'components/LineTextInput';
-import { MemberProfile } from 'types';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ReqSpaceEnter } from 'types/Request';
 
 type MemberCategory = {
   categoryId: number;
@@ -15,8 +16,8 @@ type MemberCategory = {
 
 interface Props {
   memberCategories: MemberCategory[];
-  setUserInfo: React.Dispatch<React.SetStateAction<MemberProfile>>;
-  userInfo: MemberProfile;
+  setUserInfo: React.Dispatch<React.SetStateAction<ReqSpaceEnter>>;
+  userInfo: ReqSpaceEnter;
 }
 
 const Step1 = ({ memberCategories, setUserInfo, userInfo }: Props) => {
@@ -29,11 +30,11 @@ const Step1 = ({ memberCategories, setUserInfo, userInfo }: Props) => {
 
   return (
     <>
-      <View style={{ paddingTop: 20, alignItems: 'center' }}>
+      <TouchableOpacity activeOpacity={0.6} style={{ paddingTop: 20, alignItems: 'center' }}>
         <View style={styles.circle}>
-          <SvgIcon xml={image} fill={GRAY3} width={24} />
+          <SvgIcon xml={image} fill={GRAY3} width={24} disabled />
         </View>
-      </View>
+      </TouchableOpacity>
       <View style={styles.paddingWidth}>
         <LineTextInput
           style={{ textAlign: 'center' }}
@@ -43,6 +44,7 @@ const Step1 = ({ memberCategories, setUserInfo, userInfo }: Props) => {
           maxLength={20}
           name={'name'}
           onChangeText={onChangeText}
+          defaultValue={userInfo.name}
         />
       </View>
       <View style={styles.paddingWidth}>
@@ -54,6 +56,8 @@ const Step1 = ({ memberCategories, setUserInfo, userInfo }: Props) => {
           title={'description'}
           name={'description'}
           onChangeText={onChangeText}
+          blurOnSubmit
+          defaultValue={userInfo.description}
         />
       </View>
       <View style={styles.paddingWidth}>
@@ -62,8 +66,25 @@ const Step1 = ({ memberCategories, setUserInfo, userInfo }: Props) => {
         </Text>
         <View style={styles.categoryList}>
           {memberCategories.map((category) => (
-            <View key={category.categoryId} style={styles.categoryItem}>
-              <Text fontType={'REGULAR_14'} color={GRAY1}>
+            <View
+              key={category.categoryId}
+              style={[
+                styles.categoryItem,
+                {
+                  ...(userInfo.memberCategoryId === category.categoryId && {
+                    borderColor: PRIMARY,
+                  }),
+                },
+              ]}
+              onTouchEnd={() =>
+                setUserInfo({
+                  ...userInfo,
+                  memberCategoryId: category.categoryId,
+                })
+              }>
+              <Text
+                fontType={'REGULAR_14'}
+                color={userInfo.memberCategoryId === category.categoryId ? PRIMARY : GRAY1}>
                 {category.categoryName}
               </Text>
             </View>

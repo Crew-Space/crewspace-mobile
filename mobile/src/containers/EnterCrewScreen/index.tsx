@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BLACK, GRAY4, WHITE } from 'theme/Colors';
-import { MemberProfile } from 'types';
 import Text from 'components/Text';
 import SvgIcon from 'components/SvgIcon';
 import { arrowLeft } from 'assets/svg/icons';
@@ -15,6 +14,8 @@ import { welcomeParams } from 'constant/welcome';
 import CustomEvent from 'constant/customEvent';
 import Step1 from './Step1';
 import Step2 from './Step2';
+import { useEnterSpaceMutation, useGetRegisterInfoQuery } from 'store/services/space';
+import { ReqSpaceEnter } from 'types/Request';
 
 type StepType = 1 | 2;
 
@@ -25,34 +26,25 @@ type StepsType = {
   };
 };
 
+const initialUserInput = {
+  image: '',
+  name: '',
+  description: '',
+  birthday: '',
+  email: '',
+  contact: '',
+  sns: '',
+  etc: '',
+  memberCategoryId: 0,
+};
+
 const EnterCrewScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
   const [stepLevel, setStepLevel] = useState<StepType>(1);
-  const [userInfo, setUserInfo] = useState<MemberProfile>({} as MemberProfile);
+  const [userInput, setUserInput] = useState<ReqSpaceEnter>(initialUserInput);
 
-  //api ~/v1/space/register-info
-  const data = {
-    succcess: true,
-    msg: '동아리 회원 가입 정보를 로드했습니다.',
-    timestamp: '2021-11-25T06:51:19.145932',
-    data: {
-      hasBirthdate: true,
-      hasEmail: true,
-      hasContact: true,
-      hasSns: true,
-      hasEtc: true,
-      memberCategories: [
-        {
-          categoryId: 6,
-          categoryName: '운영진',
-        },
-        {
-          categoryId: 7,
-          categoryName: '개발팀',
-        },
-      ],
-    },
-  };
+  const { data: spaceInfo } = useGetRegisterInfoQuery();
+  const [enterSpace, { data: userInfo, isError: isUserInfoError }] = useEnterSpaceMutation();
 
   const steps: StepsType = {
     1: {
@@ -62,41 +54,37 @@ const EnterCrewScreen = () => {
     2: {
       descInfo: '추가 프로필을\n입력해 주세요✏️',
       onPress: () => {
-        //api ~/v1/space/enter
-        const data = {
-          succcess: true,
-          msg: '동아리 가입을 성공했습니다.',
-          timestamp: '2021-11-21T18:14:57.105583',
-          data: {
-            profileImage:
-              'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
-            name: '오야옹',
-            categoryName: '운영팀',
-          },
-        };
+        if (!userInput) return;
 
-        navigation.replace('Invitation', {
-          screen: 'Welcome',
-          params: {
-            data: {
-              ...welcomeParams.beMember,
-              profile: {
-                name: data.data.name,
-                imageUrl: data.data.profileImage,
-                description: data.data.categoryName,
+        enterSpace(userInput);
+
+        if (isUserInfoError) {
+          // TODO modal로 예외처리
+        }
+
+        userInfo &&
+          navigation.replace('Invitation', {
+            screen: 'Welcome',
+            params: {
+              data: {
+                ...welcomeParams.beMember,
+                profile: {
+                  name: userInfo.name,
+                  imageUrl: userInfo.profileImage,
+                  description: userInfo.categoryName,
+                },
               },
             },
-          },
-        });
+          });
       },
     },
   };
 
-  useEffect(() => {
-    DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, () =>
-      navigation.replace('Main'),
-    );
-  }, []);
+  DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, () =>
+    navigation.replace('Main'),
+  );
+
+  if (!spaceInfo) return <></>;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -110,12 +98,12 @@ const EnterCrewScreen = () => {
         contentContainerStyle={{ paddingBottom: 30 }}>
         {stepLevel === 1 ? (
           <Step1
-            memberCategories={data.data.memberCategories}
-            setUserInfo={setUserInfo}
-            userInfo={userInfo}
+            memberCategories={spaceInfo.memberCategories}
+            setUserInfo={setUserInput}
+            userInfo={userInput}
           />
         ) : (
-          <Step2 {...data.data} setUserInfo={setUserInfo} userInfo={userInfo} />
+          <Step2 {...spaceInfo} setUserInfo={setUserInput} userInfo={userInput} />
         )}
       </KeyboardAwareScrollView>
       <View style={styles.butttonView}>
@@ -127,7 +115,19 @@ const EnterCrewScreen = () => {
             <View style={{ width: 10 }} />
           </>
         )}
-        <Button onPress={steps[stepLevel].onPress} style={{ flex: 1 }}>
+        <Button
+          onPress={steps[stepLevel].onPress}
+          style={{ flex: 1 }}
+          disabled={
+            (stepLevel === 1 &&
+              (!userInput.name || !userInput.description || !userInput.memberCategoryId)) ||
+            (stepLevel === 2 &&
+              ((spaceInfo.hasEmail && !userInput.email) ||
+                (spaceInfo.hasSns && !userInput.sns) ||
+                (spaceInfo.hasContact && !userInput.contact) ||
+                (spaceInfo.hasEtc && !userInput.etc) ||
+                (spaceInfo.hasBirthdate && !userInput.birthday)))
+          }>
           {stepLevel === 1 ? '다음' : '완료'}
         </Button>
       </View>

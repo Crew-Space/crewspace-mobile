@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import ENV from 'environments';
 import { RootState } from 'store';
-import { ResMySpaces, ResSpace } from 'types/Response';
+import { ReqSpaceEnter } from 'types/Request';
+import { ResMySpaces, ResRegisterInfo, ResSpace, ResSpaceEnter } from 'types/Response';
 
 export const spaceApi = createApi({
   reducerPath: 'spaceApi',
@@ -22,12 +23,17 @@ export const spaceApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    enterSpace: builder.query<ResSpace, string>({
+    checkInvitation: builder.query<ResSpace, string>({
       query: (spaceCode) => `space/${spaceCode}`,
       transformResponse: (response: { data: ResSpace }) => response.data,
     }),
-    getRegisterInfo: builder.query<string, string>({
+    getRegisterInfo: builder.query<ResRegisterInfo, void>({
       query: () => 'space/register-info',
+      transformResponse: (response: { data: ResRegisterInfo }) => response.data,
+    }),
+    enterSpace: builder.mutation<ResSpaceEnter, ReqSpaceEnter>({
+      query: (userInfo) => ({ url: 'space/enter', method: 'POST', body: userInfo }),
+      transformResponse: (response: { data: ResSpaceEnter }) => response.data,
     }),
     getMySpaces: builder.query<ResMySpaces, void>({
       query: () => 'spaces',
@@ -36,4 +42,9 @@ export const spaceApi = createApi({
   }),
 });
 
-export const { useEnterSpaceQuery, useGetRegisterInfoQuery, useGetMySpacesQuery } = spaceApi;
+export const {
+  useCheckInvitationQuery,
+  useGetRegisterInfoQuery,
+  useGetMySpacesQuery,
+  useEnterSpaceMutation,
+} = spaceApi;
