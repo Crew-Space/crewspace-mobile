@@ -5,9 +5,9 @@ interface User {
   userId: string;
 }
 
-export const users = createSlice({
+export const user = createSlice({
   name: 'user',
-  initialState: {},
+  initialState: { spaceId: -1, userId: '' },
   reducers: {
     setUser: (_state, action: PayloadAction<User>) => action.payload,
     setSpaceId: (state, action: PayloadAction<number>) => {
@@ -19,5 +19,5 @@ export const users = createSlice({
   },
 });
 
-export const { setUser, setSpaceId, setUserId } = users.actions;
-export default users.reducer;
+export const { setUser, setSpaceId, setUserId } = user.actions;
+export default user.reducer;

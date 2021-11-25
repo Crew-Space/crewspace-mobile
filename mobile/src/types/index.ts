@@ -44,7 +44,7 @@ export type MemberBaseInfo = {
   description: string;
 };
 
-export type SpaceMemberInfoOptions = {
+export type SpaceOptionsInfo = {
   birthday: string;
   email: string;
   contact: string;
@@ -52,6 +52,23 @@ export type SpaceMemberInfoOptions = {
   etc: string;
 };
 
-export type MemberProfile = MemberBaseInfo & SpaceMemberInfoOptions;
+export type MemberProfile = MemberBaseInfo & SpaceOptionsInfo;
+export type MemberProfilePreviewType = Omit<MemberBaseInfo, 'description'> & { memberId: number };
 
-export type MemberProfilePreviewType = Omit<MemberBaseInfo, 'description'> & { memberId: string };
+/** Space **/
+export type SpaceBaseInfo = {
+  spaceName: string;
+  spaceImage: string;
+  bannerImage: string;
+};
+
+export type NoticeType = 'ALL' | 'SAVED' | 'NREAD';
+export type CommunityType = 'ALL' | 'SAVED';
+
+///////
+
+export type BaseProfile = {
+  image: string;
+  name: string;
+  description: string;
+};
