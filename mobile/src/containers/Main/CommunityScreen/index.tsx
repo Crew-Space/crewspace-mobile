@@ -10,9 +10,9 @@ import PostButton from 'components/PostButton';
 import ProfileImage from 'components/ProfileImage';
 import TopFilterBar from 'components/TopFilterBar';
 import HeaderSelector from 'components/HeaderSelector';
-import { MemberProfilePreview } from 'types';
+import { MemberProfilePreviewType } from 'types';
 
-const CommunityPostWriter = (profile: MemberProfilePreview) => (
+const CommunityPostWriter = (profile: MemberProfilePreviewType) => (
   <View style={{ flexDirection: 'row', marginTop: 5 }}>
     <ProfileImage uri={profile.profileImage} width={36} style={{ marginRight: 10 }} />
     <View>
@@ -47,6 +47,7 @@ const CommunityScreen = () => {
                   profileImage:
                     'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
                   memberCategory: '디자인팀',
+                  memberCategoryId: 1,
                 }),
             }}
             description={

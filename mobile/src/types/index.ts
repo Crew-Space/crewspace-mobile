@@ -40,6 +40,7 @@ export type MemberBaseInfo = {
   name: string;
   profileImage: string;
   memberCategory: string;
+  memberCategoryId: number;
   description: string;
 };
 

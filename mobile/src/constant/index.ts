@@ -11,6 +11,7 @@ export const PROFILE_TEXT: {
   name: '이름',
   profileImage: '프로필 사진',
   memberCategory: '소속',
+  memberCategoryId: '',
   description: '소개',
   birthday: '생년월일',
   email: '이메일',
