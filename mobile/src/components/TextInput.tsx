@@ -10,9 +10,10 @@ import { TypoProps, textStyles } from 'theme/Typography';
 import { BLACK } from 'theme/Colors';
 
 export type TextInputProps = TypoProps &
-  Omit<RNTextInputProps, 'onChangeText'> & {
+  Omit<RNTextInputProps, 'onChangeText' | 'onBlur'> & {
     name: string;
     onChangeText?: (text: string, name: string) => void;
+    onBlur?: (name: string) => void;
   };
 
 const TextInput = ({
@@ -22,6 +23,7 @@ const TextInput = ({
   paragraph,
   name,
   onChangeText,
+  onBlur,
   ...restProps
 }: TextInputProps) => {
   return (
@@ -30,6 +32,7 @@ const TextInput = ({
         {...restProps}
         style={[textStyles(fontType, paragraph), styles.base, style, { ...(color && { color }) }]}
         onChangeText={(text) => onChangeText && onChangeText(text, name)}
+        onBlur={() => onBlur && onBlur(name)}
       />
     </View>
   );
