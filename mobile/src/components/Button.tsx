@@ -3,12 +3,16 @@ import { StyleSheet, TouchableOpacityProps } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 
 import Text from 'components/Text';
-import { WHITE, PRIMARY } from 'theme/Colors';
+import { WHITE, PRIMARY, GRAY3 } from 'theme/Colors';
 
-const Button = ({ children, style, ...restProps }: TouchableOpacityProps) => {
+const Button = ({ children, style, disabled, ...restProps }: TouchableOpacityProps) => {
   return (
     <TouchableOpacity
-      style={[buttonStyles.mainButton.button, style]}
+      style={[
+        buttonStyles.mainButton.button,
+        style,
+        { ...(disabled && { backgroundColor: GRAY3 }) },
+      ]}
       {...restProps}
       activeOpacity={0.7}>
       <Text fontType={'BOLD_16'} style={[buttonStyles.mainButton.text]}>
