@@ -16,6 +16,8 @@ import HeaderCurrent from 'components/HeaderCurrent';
 import { useNavigation } from '@react-navigation/core';
 import { RootRouterParams } from 'types/Route';
 import { useGetMySpacesQuery } from 'store/services/space';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSpaceId } from 'store/slices/space';
 
 interface Props {
   scrollYState: Animated.Value;
@@ -48,7 +50,14 @@ const HeaderItem = ({ space }: HeaderItemProps) => {
 
 const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
   const navigation = useNavigation<RootRouterParams>();
+  const dispatch = useDispatch();
+  const spaceId = useSelector((state) => state.space.spaceId);
   const { data } = useGetMySpacesQuery();
+  const currentSpace = data?.spaces.find((space) => space.spaceId === spaceId);
+
+  if (!currentSpace && data) {
+    dispatch(setSpaceId(data.spaces[0].spaceId));
+  }
 
   const scrollY = Animated.add(
     scrollYState,
@@ -88,9 +97,9 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
         style={[styles.stickyHeader, { transform: [{ translateY: headerTranslate }] }]}>
         <HeaderCurrent
           data={{
-            name: data.spaces[0].spaceName,
-            id: data.spaces[0].spaceId,
-            imageUrl: data.spaces[0].spaceImage,
+            name: currentSpace?.spaceName || '',
+            id: currentSpace?.spaceId || -1,
+            imageUrl: currentSpace?.spaceImage || '',
           }}
           leftButton={{
             xml: search,
