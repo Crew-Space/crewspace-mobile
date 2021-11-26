@@ -5,36 +5,33 @@ import { useRoute } from '@react-navigation/core';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { MemberProfileDetailsScreenPropsType } from 'types/Route';
-import { MemberProfile } from 'types';
 import { WHITE } from 'theme/Colors';
 import ProfileImage from 'components/ProfileImage';
 import TextInput from 'components/TextInput';
 import ProfileDetails from './ProfileDetails';
+import { useGetMemberQuery } from 'store/services/member';
 
 const MemberProfileDetailsScreen = () => {
   const { params } = useRoute<MemberProfileDetailsScreenPropsType>();
-  const data: MemberProfile = {
-    name: '김수한',
-    profileImage: 'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
-    memberCategory: '디자인팀',
-    description: '안녕하세요, 함께 좋은 경험 쌓고 싶어요. 잘 부탁드려요!😇',
-    birthdate: '1999.08.31',
-    email: 'jini_0831@naver.com',
-    contact: '',
-    sns: 'df234fdsf',
-    etc: '',
-  };
+  const { data } = useGetMemberQuery(params.memberId);
+  console.log(!!params.isMe);
+
+  if (!data) return <></>;
 
   return (
     <SafeAreaView edges={['right', 'left', 'bottom']} style={styles.outer}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <ProfileImage uri={data.profileImage} style={{ marginBottom: 18 }} />
-          <TextInput fontType={'BOLD_18'} style={{ marginBottom: 20 }}>
-            {data.name}
-          </TextInput>
+          <TextInput
+            fontType={'BOLD_18'}
+            style={{ marginBottom: 20 }}
+            name={'name'}
+            defaultValue={data.name}
+            editable={!!params.isMe}
+          />
           <KeyboardAwareScrollView style={{ width: '100%' }}>
-            <ProfileDetails data={data} />
+            <ProfileDetails data={data} isMe={!!params.isMe} />
           </KeyboardAwareScrollView>
         </View>
       </TouchableWithoutFeedback>

@@ -52,7 +52,7 @@ export type SpaceOptionsInfo = {
   etc: string;
 };
 
-export type MemberProfile = MemberBaseInfo & SpaceOptionsInfo;
+// export type MemberProfile = MemberBaseInfo & SpaceOptionsInfo;
 
 /** Space **/
 export type SpaceBaseInfo = {

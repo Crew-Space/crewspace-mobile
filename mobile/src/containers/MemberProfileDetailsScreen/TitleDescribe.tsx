@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
 
-import { MemberProfile } from 'types';
+import { ResMember } from 'types/Response';
 import { PROFILE_TEXT } from 'constant';
 import { GRAY1, GRAY2, LINE } from 'theme/Colors';
 import { normalize } from 'utils';
@@ -9,22 +9,30 @@ import Text from 'components/Text';
 import TextInput from 'components/TextInput';
 
 interface Props extends ViewProps {
-  name: keyof MemberProfile;
+  name: keyof ResMember;
   contents?: string;
+  editable?: boolean;
 }
 
-const TitleDescribe = ({ children, name, contents }: Props) => (
+const TitleDescribe = ({ children, name, contents, editable }: Props) => (
   <View style={styles.container}>
     <View style={{ width: normalize(70) }}>
-      <TextInput fontType={'REGULAR_14'} color={GRAY2}>
+      <Text fontType={'REGULAR_14'} color={GRAY2}>
         {PROFILE_TEXT[name]}
-      </TextInput>
+      </Text>
     </View>
     <View style={{ flex: 1, flexDirection: 'row' }}>
       {children ?? (
         <>
           {name === 'sns' && <Text color={GRAY1}>@ </Text>}
-          <TextInput defaultValue={contents} multiline blurOnSubmit style={{ paddingTop: 0 }} />
+          <TextInput
+            defaultValue={contents}
+            multiline
+            blurOnSubmit
+            style={{ paddingTop: 0 }}
+            name={name}
+            editable={editable}
+          />
         </>
       )}
     </View>

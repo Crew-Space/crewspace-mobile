@@ -9,7 +9,7 @@ type Props = TextInputProps & {
   defaultValue?: string;
 };
 
-const BirthdayInput = ({ defaultValue, onChangeText }: Props) => {
+const BirthdayInput = ({ defaultValue, onChangeText, ...restProps }: Props) => {
   const birthday = defaultValue?.split('.');
   const [year, month, day] = [useRef(''), useRef(''), useRef('')];
 
@@ -27,6 +27,7 @@ const BirthdayInput = ({ defaultValue, onChangeText }: Props) => {
   return (
     <View style={styles.container}>
       <TextInput
+        {...restProps}
         defaultValue={birthday && birthday[0]}
         keyboardType={'number-pad'}
         placeholder={'----'}
@@ -36,6 +37,7 @@ const BirthdayInput = ({ defaultValue, onChangeText }: Props) => {
       />
       <Text color={GRAY3}> . </Text>
       <TextInput
+        {...restProps}
         defaultValue={birthday && birthday[1]}
         keyboardType={'number-pad'}
         placeholder={'--'}
@@ -45,6 +47,7 @@ const BirthdayInput = ({ defaultValue, onChangeText }: Props) => {
       />
       <Text color={GRAY3}> . </Text>
       <TextInput
+        {...restProps}
         defaultValue={birthday && birthday[2]}
         keyboardType={'number-pad'}
         placeholder={'--'}

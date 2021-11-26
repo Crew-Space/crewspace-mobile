@@ -26,17 +26,17 @@ const MemberListScreen = () => {
         : -1,
     }),
   });
+  if (!membersData || !categoriesData) return <></>;
 
-  const myProfile = membersData?.members.find(
+  const myProfile = membersData.members.find(
     (member) => member.memberId === categoriesData?.myMemberId,
   );
 
   const onProfilePress = (member: MemberProfilePreviewType) =>
     navigation.navigate('MemberProfileDetails', {
       memberId: member.memberId,
+      isMe: member.memberId === myProfile?.memberId,
     });
-
-  if (!membersData || !categoriesData) return <></>;
 
   return (
     <BottomTabSafeAreaView style={styles.container}>

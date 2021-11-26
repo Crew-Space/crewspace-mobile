@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
-import { MemberProfile } from 'types';
+import { ResMember } from 'types/Response';
 import { expandMore } from 'assets/svg/icons';
 import { GRAY2 } from 'theme/Colors';
 import BirthdayInput from 'components/BirthdayInput';
@@ -10,25 +10,25 @@ import SvgIcon from 'components/SvgIcon';
 import TitleDescribe from './TitleDescribe';
 
 interface Props {
-  data: MemberProfile;
+  data: ResMember;
   isMe?: boolean;
 }
 
-const ProfileDetails = ({ data }: Props) => {
+const ProfileDetails = ({ data, isMe }: Props) => {
   return (
     <>
-      <TitleDescribe name={'description'} contents={data.description} />
-      <TitleDescribe name={'memberCategory'}>
+      <TitleDescribe name={'description'} contents={data.description} editable={isMe} />
+      <TitleDescribe name={'memberCategory'} editable={false}>
         <TouchableOpacity
           style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
           <Text>{data.memberCategory}</Text>
           <SvgIcon xml={expandMore.right} fill={GRAY2} width={20} />
         </TouchableOpacity>
       </TitleDescribe>
-      <TitleDescribe name={'email'} contents={data.email} />
-      <TitleDescribe name={'sns'} contents={data.sns} />
+      <TitleDescribe name={'email'} contents={data.email} editable={isMe} />
+      <TitleDescribe name={'sns'} contents={data.sns} editable={isMe} />
       <TitleDescribe name={'birthdate'}>
-        <BirthdayInput defaultValue={data.birthdate} />
+        <BirthdayInput defaultValue={data.birthdate} name={'birthdate'} editable={isMe} />
       </TitleDescribe>
     </>
   );
