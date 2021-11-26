@@ -32,7 +32,16 @@ export const spaceApi = createApi({
       transformResponse: (response: { data: ResRegisterInfo }) => response.data,
     }),
     enterSpace: builder.mutation<ResSpaceEnter, ReqSpaceEnter>({
-      query: (userInfo) => ({ url: 'space/enter', method: 'POST', body: userInfo }),
+      query: (userInfo) => {
+        const formdata = new FormData();
+        Object.entries(userInfo).forEach((value) => formdata.append(value[0], value[1]));
+
+        return {
+          url: 'space/enter',
+          method: 'POST',
+          body: formdata,
+        };
+      },
       transformResponse: (response: { data: ResSpaceEnter }) => response.data,
     }),
     getMySpaces: builder.query<ResMySpaces, void>({

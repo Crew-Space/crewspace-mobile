@@ -84,9 +84,6 @@ const EnterCrewScreen = () => {
     navigation.replace('Main'),
   );
 
-  useEffect(() => {
-    console.log(userInput);
-  }, [userInput]);
   if (!spaceInfo) return <></>;
 
   return (
