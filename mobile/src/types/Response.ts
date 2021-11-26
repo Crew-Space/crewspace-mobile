@@ -55,7 +55,7 @@ export type CommunityPostPreview = PostBaseInfo &
     image: string;
   };
 
-export type MemberProfilePreview = {
+export type MemberProfilePreviewType = {
   memberId: number;
   name: string;
   profileImage: string;
@@ -137,7 +137,7 @@ export type ResMemberCategories = {
 };
 
 export type ResMembers = {
-  members: MemberProfilePreview[];
+  members: MemberProfilePreviewType[];
 };
 
 export type ResMember = SpaceOptionsInfo &

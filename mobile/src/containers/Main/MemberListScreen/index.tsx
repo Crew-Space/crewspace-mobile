@@ -11,45 +11,28 @@ import Text from 'components/Text';
 import TopFilterBar from 'components/TopFilterBar';
 import SvgIcon from 'components/SvgIcon';
 import MemberProfilePreview from 'components/MemberProfilePreview';
-
-const myMemberId = '1';
-
-const members = [
-  {
-    name: '곽은아',
-    memberId: '1',
-    profileImage: 'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
-    memberCategory: '운영진',
-  },
-  {
-    name: '김은경',
-    memberId: '2',
-    profileImage: 'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
-    memberCategory: '기획팀',
-  },
-  {
-    name: '나은혜',
-    memberId: '3',
-    profileImage: 'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
-    memberCategory: '개발팀',
-  },
-  {
-    name: '박지은',
-    memberId: '4',
-    profileImage: 'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
-    memberCategory: '디자인팀',
-  },
-];
+import { useGetMemberCategoriesQuery, useGetMembersQuery } from 'store/services/member';
+import { MemberProfilePreviewType } from 'types/Response';
 
 const MemberListScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
-  const [selectedItem, setSelectedItem] = useState<number>(0);
-  const myProfile = members.find((member) => member.memberId === myMemberId);
+  const [selectedCategory, setSelectedCategory] = useState<number>(-1);
 
-  const onProfilePress = (member) =>
+  const { data: categoriesData } = useGetMemberCategoriesQuery();
+  const { data: membersData } = useGetMembersQuery({
+    memberCategoryId: categoriesData?.memberCategories[selectedCategory].categoryId || -1,
+  });
+
+  const myProfile = membersData?.members.find(
+    (member) => member.memberId === categoriesData?.myMemberId,
+  );
+
+  const onProfilePress = (member: MemberProfilePreviewType) =>
     navigation.navigate('MemberProfileDetails', {
       memberId: member.memberId,
     });
+
+  if (!membersData || !categoriesData) return <></>;
 
   return (
     <BottomTabSafeAreaView style={styles.container}>
@@ -59,7 +42,7 @@ const MemberListScreen = () => {
             회원
           </Text>
           <Text fontType={'REGULAR_14'} color={PRIMARY}>
-            {members.length}명
+            {categoriesData.numOfMember}명
           </Text>
         </View>
         <SvgIcon
@@ -72,17 +55,16 @@ const MemberListScreen = () => {
           }
         />
       </View>
-      <TopFilterBar
-        items={['전체', '운영진', '기획팀', '디자인팀', '개발팀']}
-        onIndexChange={setSelectedItem}
-      />
+      <TopFilterBar items={categoriesData.memberCategories} onIndexChange={setSelectedCategory} />
       <ScrollView>
-        {myProfile && <MemberProfilePreview me {...myProfile} onPress={onProfilePress} />}
+        {myProfile && (
+          <MemberProfilePreview me {...myProfile} onPress={() => onProfilePress(myProfile)} />
+        )}
         <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
-        {members
-          .filter((member) => member.memberId != myMemberId)
+        {membersData.members
+          .filter((member) => member.memberId !== categoriesData.myMemberId)
           .map((member) => (
-            <MemberProfilePreview {...member} onPress={onProfilePress} />
+            <MemberProfilePreview {...member} onPress={() => onProfilePress(member)} />
           ))}
       </ScrollView>
     </BottomTabSafeAreaView>

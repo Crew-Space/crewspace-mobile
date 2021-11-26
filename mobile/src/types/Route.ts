@@ -17,7 +17,7 @@ export type RootRouterParamList = {
   };
   EnterCrew: undefined;
   MemberProfileDetails: {
-    memberId: string;
+    memberId: number;
     isMe?: boolean;
   };
 };

@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import ENV from 'environments';
 import { header } from 'store/services';
-import { ResMemberCategories } from 'types/Response';
+import { ResMemberCategories, ResMembers } from 'types/Response';
 
 export const memberApi = createApi({
   reducerPath: 'memberApi',
@@ -10,11 +10,15 @@ export const memberApi = createApi({
     prepareHeaders: header,
   }),
   endpoints: (builder) => ({
-    getPostCategories: builder.query<ResMemberCategories, void>({
+    getMemberCategories: builder.query<ResMemberCategories, void>({
       query: () => '/members/categories',
       transformResponse: (response: { data: ResMemberCategories }) => response.data,
+    }),
+    getMembers: builder.query<ResMembers, { memberCategoryId: number }>({
+      query: (params) => ({ url: '/members', params }),
+      transformResponse: (response: { data: ResMembers }) => response.data,
     }),
   }),
 });
 
-export const { useGetPostCategoriesQuery } = memberApi;
+export const { useGetMemberCategoriesQuery, useGetMembersQuery } = memberApi;

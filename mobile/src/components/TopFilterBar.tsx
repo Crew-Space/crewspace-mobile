@@ -3,9 +3,10 @@ import { StyleSheet, View, ViewProps } from 'react-native';
 
 import { WHITE, BLACK, GRAY2, LINE } from 'theme/Colors';
 import TouchableText from 'components/TouchableText';
+import { Category } from 'types/Response';
 
 interface Props extends ViewProps {
-  items: string[];
+  items: Category[];
   onIndexChange: (index: number) => void;
   defaultIndex?: number;
 }
@@ -27,7 +28,7 @@ const TopFilterBar = ({ children, items, defaultIndex = 0, onIndexChange }: Prop
                 onIndexChange(index);
                 setSelectedIndex(index);
               }}>
-              {item}
+              {item.categoryName}
             </TouchableText>
           ))}
         </View>

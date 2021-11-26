@@ -53,7 +53,6 @@ export type SpaceOptionsInfo = {
 };
 
 export type MemberProfile = MemberBaseInfo & SpaceOptionsInfo;
-export type MemberProfilePreviewType = Omit<MemberBaseInfo, 'description'> & { memberId: number };
 
 /** Space **/
 export type SpaceBaseInfo = {

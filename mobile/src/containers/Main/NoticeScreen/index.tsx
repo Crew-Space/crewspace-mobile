@@ -47,9 +47,7 @@ const NoticeScreen = () => {
             id: selectedCategory,
           }}
         />
-        <TopFilterBar
-          items={noticeFilter.map((filter) => filter.name)}
-          onIndexChange={setSelectedFilter}>
+        <TopFilterBar items={categoriesData.noticeCategories} onIndexChange={setSelectedFilter}>
           <PostButton postingType={'notice'} />
         </TopFilterBar>
         <View style={{ backgroundColor: BACKGROUND, height: 10 }} />

@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, TouchableHighlight, TouchableHighlightProps, View } from 'react-native';
 
-import { MemberProfilePreviewType } from 'types';
 import { GRAY2, GRAY4, WHITE } from 'theme/Colors';
 import { expandMore, pen } from 'assets/svg/icons';
 import Text from 'components/Text';
 import ProfileImage from 'components/ProfileImage';
 import SvgIcon from 'components/SvgIcon';
+import { MemberProfilePreviewType } from 'types/Response';
 
 type Props = Omit<MemberProfilePreviewType, 'memberId'> & {
   me?: boolean;
