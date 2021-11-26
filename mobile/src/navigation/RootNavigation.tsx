@@ -3,7 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
-import { RootRouterParamList, RootRouterParams } from 'types/Route';
+import { RootRouterParamList } from 'types/Route';
 import { InvitationNavigation, MainNavigation } from 'navigation';
 import {
   EditCategoryScreen,
@@ -23,9 +23,9 @@ import { PostScreenHeader } from 'components/Header';
 
 const Stack = createStackNavigator<RootRouterParamList>();
 
-const RootNavigation = ({ initialRouteName }: { initialRouteName: keyof RootRouterParamList }) => {
+const RootNavigation = () => {
   return (
-    <Stack.Navigator initialRouteName={initialRouteName}>
+    <Stack.Navigator initialRouteName={'Auth'}>
       <Stack.Screen
         name='Auth'
         component={LoginScreen}
@@ -106,11 +106,11 @@ const RootNavigation = ({ initialRouteName }: { initialRouteName: keyof RootRout
   );
 };
 
-export default ({ initialRouteName }: { initialRouteName: keyof RootRouterParamList }) => {
+export default () => {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <RootNavigation initialRouteName={initialRouteName} />
+        <RootNavigation />
       </NavigationContainer>
     </SafeAreaProvider>
   );

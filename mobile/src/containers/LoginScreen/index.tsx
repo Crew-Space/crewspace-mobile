@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { SvgXml } from 'react-native-svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SplashScreen from 'react-native-splash-screen';
 
 import { logo } from 'assets/svg';
 import kakaoLogin from 'assets/svg/kakaoLogin';
@@ -15,20 +16,32 @@ import { crewOnEarth } from 'assets/svg/spacers';
 import ENV from 'environments';
 import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
 import { setToken } from 'store/slices/auth';
-import { useGetMySpacesQuery } from 'store/services/space';
+import { setSpaceId } from 'store/slices/space';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
   const dispatch = useDispatch();
-  const { data, isSuccess, isError } = useGetMySpacesQuery();
+
+  const setSpace = async () => {
+    const id = await AsyncStorage.getItem(ASYNC_STORAGE_KEY.SPACE_ID);
+    if (!id) return;
+
+    dispatch(setSpaceId(+id));
+    navigation.replace('Main');
+  };
 
   const onPress = async () => {
-    const token = ENV.token;
+    const token = ENV.token; // TODO oauth 연결
     await AsyncStorage.setItem(ASYNC_STORAGE_KEY.ACCESS_TOKEN, token);
     dispatch(setToken({ token }));
 
     navigation.replace('Invitation'); //data?.spaces.length ? 'Main' : 'Invitation');
   };
+
+  useEffect(() => {
+    setSpace();
+    SplashScreen.hide();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
