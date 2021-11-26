@@ -8,6 +8,8 @@ import { MainRouterParamList } from 'types/Route';
 import Text from 'components/Text';
 import { SettingsNavigation } from 'navigation';
 import { HomeScreen, NoticeScreen, CommunityScreen, MemberListScreen } from 'containers';
+import { useDispatch } from 'react-redux';
+import { setTabName } from 'store/slices/screen';
 
 const Tab = createBottomTabNavigator<MainRouterParamList>();
 
@@ -22,6 +24,8 @@ const TabBarIcon = ({ focused, xml }: { focused: boolean; xml: string }) => (
 );
 
 const MainNavigation = () => {
+  const dispatch = useDispatch();
+
   return (
     <Tab.Navigator
       initialRouteName='Home'
@@ -36,6 +40,9 @@ const MainNavigation = () => {
           tabBarLabel: ({ focused }) => <TarBarLabel focused={focused} text={'홈'} />,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} xml={home} />,
         })}
+        listeners={{
+          tabPress: () => dispatch(setTabName('Home')),
+        }}
       />
       <Tab.Screen
         name='Notice'
@@ -44,6 +51,9 @@ const MainNavigation = () => {
           headerShown: false,
           tabBarLabel: ({ focused }) => <TarBarLabel focused={focused} text={'공지'} />,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} xml={notice} />,
+        }}
+        listeners={{
+          tabPress: () => dispatch(setTabName('Notice')),
         }}
       />
       <Tab.Screen
@@ -56,6 +66,9 @@ const MainNavigation = () => {
             <TabBarIcon focused={focused} xml={focused ? community.on : community.off} />
           ),
         }}
+        listeners={{
+          tabPress: () => dispatch(setTabName('Community')),
+        }}
       />
       <Tab.Screen
         name='MemberList'
@@ -67,6 +80,9 @@ const MainNavigation = () => {
             <TabBarIcon focused={focused} xml={focused ? member.on : member.off} />
           ),
         }}
+        listeners={{
+          tabPress: () => dispatch(setTabName('MemberList')),
+        }}
       />
       <Tab.Screen
         name='Settings'
@@ -77,6 +93,9 @@ const MainNavigation = () => {
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} xml={focused ? settings.on : settings.off} />
           ),
+        }}
+        listeners={{
+          tabPress: () => dispatch(setTabName('Settings')),
         }}
       />
     </Tab.Navigator>

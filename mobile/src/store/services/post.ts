@@ -20,7 +20,16 @@ export const postApi = createApi({
   endpoints: (builder) => ({
     getPostCategories: builder.query<ResPostCategory, void>({
       query: () => '/posts/categories',
-      transformResponse: (response: { data: ResPostCategory }) => response.data,
+      transformResponse: (response: { data: ResPostCategory }) => ({
+        noticeCategories: [
+          { categoryName: '공지 전체', categoryId: -1 },
+          ...response.data.noticeCategories,
+        ],
+        communityCategories: [
+          { categoryName: '커뮤니티 전체', categoryId: -1 },
+          ...response.data.communityCategories,
+        ],
+      }),
     }),
 
     getNoticePosts: builder.query<ResNoticePosts, ReqPosts>({

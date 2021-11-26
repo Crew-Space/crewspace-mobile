@@ -1,25 +1,45 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/core';
+import { useDispatch, useSelector } from 'react-redux';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
-import { RootRouterParams } from 'types/Route';
 import SvgIcon from 'components/SvgIcon';
-import { close, expandMore } from 'assets/svg/icons';
+import { expandMore } from 'assets/svg/icons';
 import Text from 'components/Text';
-import { BLACK, LINE, PRIMARY, WHITE } from 'theme/Colors';
+import { BLACK, LINE, WHITE } from 'theme/Colors';
 import { normalize } from 'utils';
 import { SCREEN_HEIGHT } from 'theme/Metrics';
+import { Category } from 'types/Response';
+import { setCategory } from 'store/slices/screen';
+import { useGetPostCategoriesQuery } from 'store/services/post';
 
-const mock = ['일상 공유', '일반 글', '인사이트'];
 const HEADER_HEIGHT = normalize(60);
 
-const PostScreenHeader = () => {
+const CategorySelectorHeader = () => {
+  const dispatch = useDispatch();
+  const tabName = useSelector((state) => state.screen.tabName);
+  const currentCategory = useSelector((state) => state.screen.category);
+  const { data, isSuccess } = useGetPostCategoriesQuery();
+  const [categories, setCategories] = useState<Category[]>([]);
+
   const [extanded, setExtanded] = useState<boolean>(false);
-  const [selectedItem, setSelectedItem] = useState<number>(0);
-  const navigation = useNavigation<RootRouterParams>();
   const translateAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      switch (tabName) {
+        case 'Notice':
+          setCategories(data.noticeCategories);
+          dispatch(setCategory(data.noticeCategories[0]));
+          break;
+        case 'Community':
+          setCategories(data.communityCategories);
+          dispatch(setCategory(data.communityCategories[0]));
+          break;
+      }
+    }
+  }, [data, isSuccess, tabName]);
 
   useEffect(() => {
     if (!extanded) {
@@ -43,13 +63,15 @@ const PostScreenHeader = () => {
           useNativeDriver: true,
         }),
         Animated.timing(translateAnim, {
-          toValue: HEADER_HEIGHT * (mock.length + 1),
+          toValue: HEADER_HEIGHT * (categories.length + 1),
           duration: 300,
           useNativeDriver: true,
         }),
       ]).start();
     }
   }, [extanded]);
+
+  if (!(tabName === 'Notice' || tabName === 'Community')) return <></>;
 
   return (
     <>
@@ -62,25 +84,30 @@ const PostScreenHeader = () => {
       <View style={{ height: getStatusBarHeight(), backgroundColor: WHITE, zIndex: 1 }} />
       <View>
         <View style={[styles.itemContainer, styles.container]}>
-          <SvgIcon xml={close} width={24} onPress={() => navigation.goBack()} />
           <View style={styles.title} onTouchEnd={() => setExtanded(!extanded)}>
-            <Text fontType={'BOLD_18'}>{mock[selectedItem]}</Text>
-            <SvgIcon xml={!extanded ? expandMore.down : expandMore.up} width={20} />
+            <Text fontType={'BOLD_18'}>{currentCategory.categoryName}</Text>
+            <SvgIcon xml={!extanded ? expandMore.down : expandMore.up} width={20} disabled />
           </View>
-          <Text color={PRIMARY}>등록</Text>
         </View>
-        <Animated.View style={[styles.expandList, { transform: [{ translateY: translateAnim }] }]}>
-          {mock
-            .filter((name) => name !== mock[selectedItem])
-            .map((name, index) => (
+        <Animated.View
+          style={[
+            styles.expandList,
+            {
+              transform: [{ translateY: translateAnim }],
+              top: -(HEADER_HEIGHT * categories.length),
+            },
+          ]}>
+          {categories
+            .filter((category) => category.categoryId !== currentCategory.categoryId)
+            .map((category) => (
               <View
-                key={index}
+                key={category.categoryId}
                 style={styles.itemContainer}
                 onTouchEnd={() => {
-                  setSelectedItem(index);
+                  dispatch(setCategory(category));
                   setExtanded(!extanded);
                 }}>
-                <Text fontType={'BOLD_18'}>{name}</Text>
+                <Text fontType={'BOLD_18'}>{category.categoryName}</Text>
               </View>
             ))}
         </Animated.View>
@@ -98,7 +125,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     backgroundColor: WHITE,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     paddingVertical: 18,
     paddingHorizontal: 20,
     borderBottomWidth: 1,
@@ -112,7 +139,6 @@ const styles = StyleSheet.create({
   expandList: {
     zIndex: 0,
     position: 'absolute',
-    top: -(HEADER_HEIGHT * mock.length),
     left: 0,
     right: 0,
     overflow: 'hidden',
@@ -129,4 +155,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostScreenHeader;
+export default CategorySelectorHeader;

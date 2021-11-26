@@ -19,7 +19,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { close } from 'assets/svg/icons';
 import { BLACK, PRIMARY } from 'theme/Colors';
 import Text from 'components/Text';
-import { PostScreenHeader } from 'components/Header';
+import { PostScreenHeader, CategorySelectorHeader } from 'components/Header';
 
 const Stack = createStackNavigator<RootRouterParamList>();
 
@@ -44,7 +44,7 @@ const RootNavigation = () => {
         name='Main'
         component={MainNavigation}
         options={{
-          headerShown: false,
+          header: CategorySelectorHeader,
         }}
       />
       <Stack.Screen

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { SvgXml } from 'react-native-svg';
@@ -22,11 +22,11 @@ import { useGetMySpacesQuery } from 'store/services/space';
 const LoginScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
   const dispatch = useDispatch();
-  const { data } = useGetMySpacesQuery();
+  const { data, isLoading } = useGetMySpacesQuery();
   const token = useRef<string>();
 
   const setUser = async () => {
-    const accessToken = await AsyncStorage.getItem(ASYNC_STORAGE_KEY.ACCESS_TOKEN);
+    const accessToken = (await AsyncStorage.getItem(ASYNC_STORAGE_KEY.ACCESS_TOKEN)) || null;
     if (!accessToken) return;
 
     token.current = accessToken;
@@ -62,12 +62,15 @@ const LoginScreen = () => {
   };
 
   useEffect(() => {
-    if (!data) return;
-    setUser();
-    if (token.current) setSpace();
+    if (!data || token.current === undefined) return;
 
+    if (token.current) setSpace();
     SplashScreen.hide();
-  }, [data]);
+  }, [data, token.current]);
+
+  useLayoutEffect(() => {
+    setUser();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

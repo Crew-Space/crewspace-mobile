@@ -5,14 +5,15 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { BACKGROUND, GRAY2, LINE, WHITE } from 'theme/Colors';
 import Text from 'components/Text';
 import PostPreview from 'components/PostPreview';
-import BottomTabSafeAreaView from 'components/BottomTabSafeAreaView';
 import PostButton from 'components/PostButton';
 import ProfileImage from 'components/ProfileImage';
 import TopFilterBar from 'components/TopFilterBar';
-import HeaderCurrent from 'components/HeaderCurrent';
 import { CommunityType } from 'types';
 import { MemberProfilePreviewType } from 'types/Response';
-import { useGetCommunityPostsQuery, useGetPostCategoriesQuery } from 'store/services/post';
+import { useGetCommunityPostsQuery } from 'store/services/post';
+import { useSelector } from 'react-redux';
+import SvgIcon from 'components/SvgIcon';
+import { crewOnSpace } from 'assets/svg/spacers';
 
 const communityFilter: { name: string; filterType: CommunityType }[] = [
   {
@@ -39,37 +40,34 @@ const CommunityPostWriter = (profile: Omit<MemberProfilePreviewType, 'memberCate
 
 const CommunityScreen = () => {
   const [selectedFilter, setSelectedFilter] = useState<number>(0);
-  const [selectedCategory, setSelectedCategory] = useState<number>(0);
+  const currentCategory = useSelector((state) => state.screen.category);
 
-  const { data: categoriesData } = useGetPostCategoriesQuery();
-  const { data: postsData } = useGetCommunityPostsQuery({
-    ...(selectedCategory !== 0 && {
-      postCategoryId: categoriesData?.communityCategories[selectedCategory - 1].categoryId,
+  const { data, isError, isLoading } = useGetCommunityPostsQuery({
+    ...(currentCategory.categoryId !== -1 && {
+      postCategoryId: currentCategory.categoryId,
     }),
     type: communityFilter[selectedFilter].filterType,
   });
 
-  if (!postsData || !categoriesData) return <></>;
+  if (isLoading) return <></>;
+
+  if (isError || !data)
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <SvgIcon xml={crewOnSpace} width={160} disabled />
+      </View>
+    );
 
   return (
-    <BottomTabSafeAreaView style={styles.container}>
-      <ScrollView stickyHeaderIndices={[0]}>
-        <HeaderCurrent
-          data={{
-            name:
-              selectedCategory === 0
-                ? '커뮤니티 전체'
-                : categoriesData.communityCategories[selectedCategory - 1].categoryName || '',
-            id: selectedCategory,
-          }}
-        />
+    <View style={styles.container}>
+      <ScrollView>
         <TopFilterBar
           items={communityFilter.map((filter) => filter.name)}
           onIndexChange={setSelectedFilter}>
           <PostButton postingType={'community'} />
         </TopFilterBar>
         <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
-        {postsData.posts.map((post) => (
+        {data.posts.map((post) => (
           <PostPreview
             key={post.postId}
             header={{
@@ -87,7 +85,7 @@ const CommunityScreen = () => {
           />
         ))}
       </ScrollView>
-    </BottomTabSafeAreaView>
+    </View>
   );
 };
 

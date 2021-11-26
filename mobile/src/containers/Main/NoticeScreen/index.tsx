@@ -4,12 +4,13 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import { BACKGROUND, LINE, WHITE } from 'theme/Colors';
 import PostPreview from 'components/PostPreview';
-import BottomTabSafeAreaView from 'components/BottomTabSafeAreaView';
 import PostButton from 'components/PostButton';
 import TopFilterBar from 'components/TopFilterBar';
-import HeaderCurrent from 'components/HeaderCurrent';
-import { useGetNoticePostsQuery, useGetPostCategoriesQuery } from 'store/services/post';
+import { useGetNoticePostsQuery } from 'store/services/post';
 import { NoticeType } from 'types';
+import { useSelector } from 'react-redux';
+import SvgIcon from 'components/SvgIcon';
+import { crewOnSpace } from 'assets/svg/spacers';
 
 const noticeFilter: { name: string; filterType: NoticeType }[] = [
   {
@@ -28,36 +29,34 @@ const noticeFilter: { name: string; filterType: NoticeType }[] = [
 
 const NoticeScreen = () => {
   const [selectedFilter, setSelectedFilter] = useState<number>(0);
-  const [selectedCategory, setSelectedCategory] = useState<number>(0);
+  const currentCategory = useSelector((state) => state.screen.category);
 
-  const { data: categoriesData } = useGetPostCategoriesQuery();
-  const { data: postsData } = useGetNoticePostsQuery({
-    ...(selectedCategory !== 0 && {
-      postCategoryId: categoriesData?.noticeCategories[selectedCategory - 1].categoryId,
+  const { data, isError, isLoading } = useGetNoticePostsQuery({
+    ...(currentCategory.categoryId !== -1 && {
+      postCategoryId: currentCategory.categoryId,
     }),
     type: noticeFilter[selectedFilter].filterType,
   });
-  if (!postsData || !categoriesData) return <></>;
+
+  if (isLoading) return <></>;
+
+  if (isError || !data)
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <SvgIcon xml={crewOnSpace} width={160} disabled />
+      </View>
+    );
 
   return (
-    <BottomTabSafeAreaView style={styles.container}>
-      <ScrollView stickyHeaderIndices={[0]}>
-        <HeaderCurrent
-          data={{
-            name:
-              selectedCategory === 0
-                ? '공지 전체'
-                : categoriesData.noticeCategories[selectedCategory - 1].categoryName,
-            id: selectedCategory,
-          }}
-        />
+    <View style={styles.container}>
+      <ScrollView>
         <TopFilterBar
           items={noticeFilter.map((filter) => filter.name)}
           onIndexChange={setSelectedFilter}>
           <PostButton postingType={'notice'} />
         </TopFilterBar>
         <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
-        {postsData.posts.map((post) => (
+        {data.posts.map((post) => (
           <PostPreview
             key={post.postId}
             header={{
@@ -70,7 +69,7 @@ const NoticeScreen = () => {
           />
         ))}
       </ScrollView>
-    </BottomTabSafeAreaView>
+    </View>
   );
 };
 
