@@ -45,7 +45,7 @@ export type MemberBaseInfo = {
 };
 
 export type SpaceOptionsInfo = {
-  birthday: string;
+  birthdate: string;
   email: string;
   contact: string;
   sns: string;

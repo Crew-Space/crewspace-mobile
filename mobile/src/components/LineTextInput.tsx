@@ -30,7 +30,7 @@ const LineTextInput = ({ style, limit, title, name, onChangeText, ...restProps }
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         {title === 'sns' && <Text color={GRAY1}>@ </Text>}
         <View style={styles.input}>
-          {title === 'birthday' ? (
+          {title === 'birthdate' ? (
             <BirthdayInput {...restProps} name={name} onChangeText={onChangeText} />
           ) : (
             <TextInput

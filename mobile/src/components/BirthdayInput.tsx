@@ -21,7 +21,7 @@ const BirthdayInput = ({ defaultValue, onChangeText }: Props) => {
     } else if (name === 'birthday.day') {
       day.current = text;
     }
-    onChangeText && onChangeText(`${year.current}.${month.current}.${day.current}`, 'birthday');
+    onChangeText && onChangeText(`${year.current}.${month.current}.${day.current}`, 'birthdate');
   };
 
   return (

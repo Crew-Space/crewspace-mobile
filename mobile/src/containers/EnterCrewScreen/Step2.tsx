@@ -53,7 +53,7 @@ const Step2 = ({
       )}
       {hasBirthdate && (
         <View style={styles.paddingWidth}>
-          <LineTextInput title={'birthday'} name={'birthday'} onChangeText={onChangeText} />
+          <LineTextInput title={'birthdate'} name={'birthdate'} onChangeText={onChangeText} />
         </View>
       )}
       {hasContact && (

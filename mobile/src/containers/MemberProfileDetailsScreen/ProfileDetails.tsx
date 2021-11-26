@@ -27,8 +27,8 @@ const ProfileDetails = ({ data }: Props) => {
       </TitleDescribe>
       <TitleDescribe name={'email'} contents={data.email} />
       <TitleDescribe name={'sns'} contents={data.sns} />
-      <TitleDescribe name={'birthday'}>
-        <BirthdayInput defaultValue={data.birthday} />
+      <TitleDescribe name={'birthdate'}>
+        <BirthdayInput defaultValue={data.birthdate} />
       </TitleDescribe>
     </>
   );

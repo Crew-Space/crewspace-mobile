@@ -5,7 +5,7 @@ import { useRoute } from '@react-navigation/core';
 import { SvgXml } from 'react-native-svg';
 
 import confetti from 'assets/svg/confetti';
-import { BLACK, GRAY1, WHITE } from 'theme/Colors';
+import { BLACK, GRAY3, WHITE } from 'theme/Colors';
 import { WelcomeScreenPropsType } from 'types/Route';
 import CustomEvent from 'constant/customEvent';
 import Text from 'components/Text';
@@ -92,7 +92,7 @@ const styles = (darkTheme = false) =>
     confetti: { position: 'relative', left: -12, top: 40 },
     description: {
       textAlign: 'center',
-      color: GRAY1,
+      color: GRAY3,
     },
     bottomView: { width: '100%', alignItems: 'center', marginBottom: 30 },
   });

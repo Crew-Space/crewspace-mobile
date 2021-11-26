@@ -13,7 +13,7 @@ export const PROFILE_TEXT: {
   memberCategory: '소속',
   memberCategoryId: '',
   description: '소개',
-  birthday: '생년월일',
+  birthdate: '생년월일',
   email: '이메일',
   contact: '휴대전화',
   sns: 'SNS',

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -26,11 +26,11 @@ type StepsType = {
   };
 };
 
-const initialUserInput = {
+const initialUserInput: ReqSpaceEnter = {
   image: '',
   name: '',
   description: '',
-  birthday: '',
+  birthdate: '',
   email: '',
   contact: '',
   sns: '',
@@ -84,6 +84,9 @@ const EnterCrewScreen = () => {
     navigation.replace('Main'),
   );
 
+  useEffect(() => {
+    console.log(userInput);
+  }, [userInput]);
   if (!spaceInfo) return <></>;
 
   return (
@@ -126,7 +129,7 @@ const EnterCrewScreen = () => {
                 (spaceInfo.hasSns && !userInput.sns) ||
                 (spaceInfo.hasContact && !userInput.contact) ||
                 (spaceInfo.hasEtc && !userInput.etc) ||
-                (spaceInfo.hasBirthdate && !userInput.birthday)))
+                (spaceInfo.hasBirthdate && !userInput.birthdate)))
           }>
           {stepLevel === 1 ? '다음' : '완료'}
         </Button>

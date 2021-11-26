@@ -18,7 +18,7 @@ const MemberProfileDetailsScreen = () => {
     profileImage: 'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
     memberCategory: '디자인팀',
     description: '안녕하세요, 함께 좋은 경험 쌓고 싶어요. 잘 부탁드려요!😇',
-    birthday: '1999.08.31',
+    birthdate: '1999.08.31',
     email: 'jini_0831@naver.com',
     contact: '',
     sns: 'df234fdsf',
