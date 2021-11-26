@@ -16,11 +16,15 @@ import { MemberProfilePreviewType } from 'types/Response';
 
 const MemberListScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
-  const [selectedCategory, setSelectedCategory] = useState<number>(-1);
+  const [selectedCategory, setSelectedCategory] = useState<number>(0);
 
   const { data: categoriesData } = useGetMemberCategoriesQuery();
   const { data: membersData } = useGetMembersQuery({
-    memberCategoryId: categoriesData?.memberCategories[selectedCategory].categoryId || -1,
+    ...(selectedCategory !== 0 && {
+      memberCategoryId: categoriesData
+        ? categoriesData.memberCategories[selectedCategory - 1].categoryId
+        : -1,
+    }),
   });
 
   const myProfile = membersData?.members.find(
@@ -55,7 +59,10 @@ const MemberListScreen = () => {
           }
         />
       </View>
-      <TopFilterBar items={categoriesData.memberCategories} onIndexChange={setSelectedCategory} />
+      <TopFilterBar
+        items={[{ categoryName: '전체', categoryId: -1 }, ...categoriesData.memberCategories]}
+        onIndexChange={setSelectedCategory}
+      />
       <ScrollView>
         {myProfile && (
           <MemberProfilePreview me {...myProfile} onPress={() => onProfilePress(myProfile)} />
