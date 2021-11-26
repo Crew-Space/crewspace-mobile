@@ -11,8 +11,9 @@ export const space = createSlice({
   },
   reducers: {
     setSpace: (_state, action: PayloadAction<Space>) => action.payload,
+    setSpaceId: (state, action: PayloadAction<number>) => ({ ...state, spaceId: action.payload }),
   },
 });
 
-export const { setSpace } = space.actions;
+export const { setSpace, setSpaceId } = space.actions;
 export default space.reducer;
