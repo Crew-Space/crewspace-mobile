@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { SvgXml } from 'react-native-svg';
@@ -17,31 +17,57 @@ import ENV from 'environments';
 import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
 import { setToken } from 'store/slices/auth';
 import { setSpaceId } from 'store/slices/space';
+import { useGetMySpacesQuery } from 'store/services/space';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
   const dispatch = useDispatch();
+  const { data } = useGetMySpacesQuery();
+  const token = useRef<string>();
+
+  const setUser = async () => {
+    const accessToken = await AsyncStorage.getItem(ASYNC_STORAGE_KEY.ACCESS_TOKEN);
+    if (!accessToken) return;
+
+    token.current = accessToken;
+    dispatch(setToken({ token: accessToken }));
+  };
 
   const setSpace = async () => {
     const id = await AsyncStorage.getItem(ASYNC_STORAGE_KEY.SPACE_ID);
     if (!id) return;
 
-    dispatch(setSpaceId(+id));
-    navigation.replace('Main');
+    if (!data?.spaces.length) {
+      await AsyncStorage.removeItem(ASYNC_STORAGE_KEY.SPACE_ID);
+      navigation.replace('Invitation');
+      return;
+    }
+
+    const currentSpaceId = data?.spaces.find((space) => space.spaceId === +id);
+
+    if (!currentSpaceId) {
+      await AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, data.spaces[0].spaceId.toString());
+      dispatch(setSpaceId(data.spaces[0].spaceId));
+    } else {
+      dispatch(setSpaceId(+id));
+    }
+    navigation.navigate('Main');
   };
 
   const onPress = async () => {
-    const token = ENV.token; // TODO oauth 연결
-    await AsyncStorage.setItem(ASYNC_STORAGE_KEY.ACCESS_TOKEN, token);
-    dispatch(setToken({ token }));
+    await AsyncStorage.setItem(ASYNC_STORAGE_KEY.ACCESS_TOKEN, ENV.token);
+    dispatch(setToken({ token: ENV.token }));
 
-    navigation.replace('Invitation'); //data?.spaces.length ? 'Main' : 'Invitation');
+    navigation.replace('Invitation');
   };
 
   useEffect(() => {
-    setSpace();
+    if (!data) return;
+    setUser();
+    if (token.current) setSpace();
+
     SplashScreen.hide();
-  }, []);
+  }, [data]);
 
   return (
     <SafeAreaView style={styles.container}>
