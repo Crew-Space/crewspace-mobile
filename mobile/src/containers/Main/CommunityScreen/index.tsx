@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -9,10 +9,22 @@ import BottomTabSafeAreaView from 'components/BottomTabSafeAreaView';
 import PostButton from 'components/PostButton';
 import ProfileImage from 'components/ProfileImage';
 import TopFilterBar from 'components/TopFilterBar';
-import HeaderSelector from 'components/HeaderSelector';
-import { MemberProfilePreviewType } from 'types';
+import HeaderCurrent from 'components/HeaderCurrent';
+import { CommunityType, MemberProfilePreviewType } from 'types';
+import { useGetCommunityPostsQuery, useGetPostCategoriesQuery } from 'store/services/post';
 
-const CommunityPostWriter = (profile: MemberProfilePreviewType) => (
+const communityFilter: { name: string; filterType: CommunityType }[] = [
+  {
+    name: '모든 글',
+    filterType: 'ALL',
+  },
+  {
+    name: '저장한 글',
+    filterType: 'SAVED',
+  },
+];
+
+const CommunityPostWriter = (profile: Omit<MemberProfilePreviewType, 'memberCategoryId'>) => (
   <View style={{ flexDirection: 'row', marginTop: 5 }}>
     <ProfileImage uri={profile.profileImage} width={36} style={{ marginRight: 10 }} />
     <View>
@@ -25,34 +37,44 @@ const CommunityPostWriter = (profile: MemberProfilePreviewType) => (
 );
 
 const CommunityScreen = () => {
-  const [selectedItem, setSelectedItem] = useState<number>(0);
+  const [selectedFilter, setSelectedFilter] = useState<number>(0);
+  const [selectedCategory, setSelectedCategory] = useState<number>(-1);
+
+  const { data: categoriesData } = useGetPostCategoriesQuery();
+  const { data: postsData } = useGetCommunityPostsQuery({
+    postCategoryId: categoriesData?.communityCategories[0].categoryId,
+    type: communityFilter[selectedFilter].filterType,
+  });
+
+  if (!postsData || !categoriesData) return <></>;
 
   return (
     <BottomTabSafeAreaView style={styles.container}>
       <ScrollView stickyHeaderIndices={[0]}>
-        <HeaderSelector data={[{ name: '커뮤니티 전체', id: 1 }]} />
-        <TopFilterBar items={['모든 글', '저장한 글']} onIndexChange={setSelectedItem}>
+        <HeaderCurrent
+          data={{
+            name: categoriesData.noticeCategories[0].categoryName || '',
+            id: selectedCategory,
+          }}
+        />
+        <TopFilterBar items={['모든 글', '저장한 글']} onIndexChange={setSelectedFilter}>
           <PostButton postingType={'community'} />
         </TopFilterBar>
         <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
-        {Array.from('-'.repeat(10)).map((_, index) => (
+        {postsData.posts.map((post) => (
           <PostPreview
-            key={index}
+            key={post.postId}
             header={{
-              subText: { left: '과제 공지', right: '10분 전' },
+              subText: { left: post.categoryName, right: post.writtenDate },
               Title: () =>
                 CommunityPostWriter({
-                  memberId: '1',
-                  name: '김수한',
-                  profileImage:
-                    'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg',
-                  memberCategory: '디자인팀',
-                  memberCategoryId: 1,
+                  memberId: post.authorId,
+                  name: post.authorName,
+                  profileImage: post.authorImage,
+                  memberCategory: post.authorCategoryName,
                 }),
             }}
-            description={
-              '안녕하세요 :) 1차 과제 마감 관련하여 공지드립니다. 사전에 고지드린대로 인당 3개씩 아이디어 조사하여, 간단히 PPT 자료 제작해오시면 될 것 같습니다. 궁금한 점 언제든 문의...'
-            }
+            description={post.description}
             isSaved={false}
           />
         ))}

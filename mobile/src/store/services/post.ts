@@ -8,6 +8,7 @@ import {
   ReqNewPost,
   ResCommunityPosts,
   ResNoticePosts,
+  ResPostCategory,
 } from 'types/Response';
 
 export const postApi = createApi({
@@ -17,6 +18,11 @@ export const postApi = createApi({
     prepareHeaders: header,
   }),
   endpoints: (builder) => ({
+    getPostCategories: builder.query<ResPostCategory, void>({
+      query: () => '/posts/categories',
+      transformResponse: (response: { data: ResPostCategory }) => response.data,
+    }),
+
     getNoticePosts: builder.query<ResNoticePosts, ReqPosts>({
       query: (params) => ({ url: '/posts/notice', params }),
       transformResponse: (response: { data: ResNoticePosts }) => response.data,
@@ -82,6 +88,7 @@ export const postApi = createApi({
 });
 
 export const {
+  useGetPostCategoriesQuery,
   useGetNoticePostsQuery,
   useGetNoticePostQuery,
   useGetCommunityPostsQuery,

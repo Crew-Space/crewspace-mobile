@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -7,33 +7,63 @@ import PostPreview from 'components/PostPreview';
 import BottomTabSafeAreaView from 'components/BottomTabSafeAreaView';
 import PostButton from 'components/PostButton';
 import TopFilterBar from 'components/TopFilterBar';
-import HeaderSelector from 'components/HeaderSelector';
+import HeaderCurrent from 'components/HeaderCurrent';
+import { useGetNoticePostsQuery, useGetPostCategoriesQuery } from 'store/services/post';
+import { NoticeType } from 'types';
+import { NoticePostPreview } from 'types/Response';
+
+const noticeFilter: { name: string; filterType: NoticeType }[] = [
+  {
+    name: '모든 글',
+    filterType: 'ALL',
+  },
+  {
+    name: '저장한 글',
+    filterType: 'SAVED',
+  },
+  {
+    name: '안 읽은 글',
+    filterType: 'NREAD',
+  },
+];
 
 const NoticeScreen = () => {
-  const [selectedItem, setSelectedItem] = useState<number>(0);
+  const [selectedFilter, setSelectedFilter] = useState<number>(0);
+  const [selectedCategory, setSelectedCategory] = useState<number>(-1);
+
+  const { data: categoriesData } = useGetPostCategoriesQuery();
+  const { data: postsData } = useGetNoticePostsQuery({
+    postCategoryId: categoriesData?.noticeCategories[0].categoryId,
+    type: noticeFilter[selectedFilter].filterType,
+  });
+
+  if (!postsData || !categoriesData) return <></>;
 
   return (
     <BottomTabSafeAreaView style={styles.container}>
       <ScrollView stickyHeaderIndices={[0]}>
-        <HeaderSelector data={[{ name: '공지 전체', id: 1 }]} />
+        <HeaderCurrent
+          data={{
+            name: categoriesData.noticeCategories[0].categoryName || '',
+            id: selectedCategory,
+          }}
+        />
         <TopFilterBar
-          items={['모든 글', '저장한 글', '안 읽은 글']}
-          onIndexChange={setSelectedItem}>
+          items={noticeFilter.map((filter) => filter.name)}
+          onIndexChange={setSelectedFilter}>
           <PostButton postingType={'notice'} />
         </TopFilterBar>
         <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
-        {Array.from('-'.repeat(10)).map((_, index) => (
+        {postsData.posts.map((post) => (
           <PostPreview
-            key={index}
+            key={post.postId}
             header={{
-              subText: { left: '과제 공지', right: '10분 전' },
-              Title: '1차 과제 마감 안내',
+              subText: { left: post.categoryName, right: post.writtenDate },
+              Title: post.title,
             }}
-            description={
-              '안녕하세요 :) 1차 과제 마감 관련하여 공지드립니다. 사전에 고지드린대로 인당 3개씩 아이디어 조사하여, 간단히 PPT 자료 제작해오시면 될 것 같습니다. 궁금한 점 언제든 문의...'
-            }
-            isSaved={false}
-            viewed={false}
+            description={post.description}
+            isSaved={post.isSaved}
+            viewed={post.isRead}
           />
         ))}
       </ScrollView>
