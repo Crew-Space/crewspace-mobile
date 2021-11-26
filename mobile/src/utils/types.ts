@@ -12,3 +12,5 @@ export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) ex
 ) => void
   ? I
   : never;
+
+export type Modify<T, R> = Omit<T, keyof R> & R;

@@ -27,7 +27,6 @@ type StepsType = {
 };
 
 const initialUserInput: ReqSpaceEnter = {
-  image: '',
   name: '',
   description: '',
   birthdate: '',
@@ -61,28 +60,31 @@ const EnterCrewScreen = () => {
         if (isUserInfoError) {
           // TODO modal로 예외처리
         }
-
-        userInfo &&
-          navigation.replace('Invitation', {
-            screen: 'Welcome',
-            params: {
-              data: {
-                ...welcomeParams.beMember,
-                profile: {
-                  name: userInfo.name,
-                  imageUrl: userInfo.profileImage,
-                  description: userInfo.categoryName,
-                },
-              },
-            },
-          });
       },
     },
   };
 
-  DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, () =>
-    navigation.replace('Main'),
-  );
+  DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, () => {
+    console.log('EnterCrew addListner');
+    navigation.replace('Main');
+  });
+
+  useEffect(() => {
+    userInfo &&
+      navigation.replace('Invitation', {
+        screen: 'Welcome',
+        params: {
+          data: {
+            ...welcomeParams.beMember,
+            profile: {
+              name: userInfo.name,
+              imageUrl: userInfo.profileImage,
+              description: userInfo.categoryName,
+            },
+          },
+        },
+      });
+  }, [userInfo]);
 
   if (!spaceInfo) return <></>;
 

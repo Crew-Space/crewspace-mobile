@@ -10,7 +10,7 @@ export const spaceApi = createApi({
     baseUrl: ENV.apiUrl,
     prepareHeaders: (headers, { getState }) => {
       const token = ENV.token;
-      const spaceId = (getState() as RootState).user.spaceId;
+      const spaceId = (getState() as RootState).space.spaceId;
 
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);

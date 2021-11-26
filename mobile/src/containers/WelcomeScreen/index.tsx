@@ -5,7 +5,7 @@ import { useRoute } from '@react-navigation/core';
 import { SvgXml } from 'react-native-svg';
 
 import confetti from 'assets/svg/confetti';
-import { BLACK, GRAY3, WHITE } from 'theme/Colors';
+import { BLACK, GRAY1, GRAY3, WHITE } from 'theme/Colors';
 import { WelcomeScreenPropsType } from 'types/Route';
 import CustomEvent from 'constant/customEvent';
 import Text from 'components/Text';
@@ -53,9 +53,7 @@ const WelcomeScreen = () => {
         <View style={styles(darkTheme).bottomView}>
           {data.spaceInvitationCode && <InvitationCode code={data.spaceInvitationCode} />}
           <Button
-            onPress={() =>
-              DeviceEventEmitter.emit(CustomEvent.welcomeMainButton.name, { spaceId: data.spaceId })
-            }>
+            onPress={() => DeviceEventEmitter.emit(CustomEvent.welcomeMainButton.name, data.space)}>
             {data.mainButtonName}
           </Button>
           {data.linkButtonName && (
@@ -92,7 +90,7 @@ const styles = (darkTheme = false) =>
     confetti: { position: 'relative', left: -12, top: 40 },
     description: {
       textAlign: 'center',
-      color: GRAY3,
+      color: darkTheme ? GRAY3 : GRAY1,
     },
     bottomView: { width: '100%', alignItems: 'center', marginBottom: 30 },
   });

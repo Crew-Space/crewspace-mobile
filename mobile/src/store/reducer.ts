@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
-import user from 'store/slices/user';
+import space from 'store/slices/space';
 import auth from 'store/slices/auth';
 import { spaceApi } from './services/space';
 
 const reducer = combineReducers({
-  user,
+  space,
   auth,
   [spaceApi.reducerPath]: spaceApi.reducer,
 });

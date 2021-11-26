@@ -15,7 +15,7 @@ import Text from 'components/Text';
 import { welcomeParams } from 'constant/welcome';
 import CustomEvent from 'constant/customEvent';
 import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
-import { setSpaceId } from 'store/slices/user';
+import { setSpace } from 'store/slices/space';
 import { useCheckInvitationQuery } from 'store/services/space';
 
 const CodeText = ({ char }: { char: string }) => {
@@ -54,17 +54,16 @@ const SpaceCodeScreen = () => {
               imageUrl: data.spaceImage,
               description: data.spaceDescription,
             },
-            spaceId: data.spaceId,
+            space: data,
           },
         },
       });
     }
   };
 
-  DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, async ({ spaceId }) => {
-    await AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, spaceId.toString());
-    dispatch(setSpaceId(spaceId));
-
+  DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, async (space) => {
+    await AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, space.spaceId.toString());
+    dispatch(setSpace(space));
     navigation.replace('EnterCrew');
   });
 

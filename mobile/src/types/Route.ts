@@ -2,6 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
 import { PostingType } from 'types';
+import { Space } from './Response';
 
 export type RootRouterParamList = {
   Auth: undefined;
@@ -67,7 +68,7 @@ export type WelcomeScreenBaseProps = {
 
 export type EnterScreenBaseProps = {
   spaceInvitationCode?: string;
-  spaceId?: number;
+  space?: Space;
 };
 
 export type WelcomeScreenProps = WelcomeScreenBaseProps & EnterScreenBaseProps;

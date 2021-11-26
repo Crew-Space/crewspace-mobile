@@ -1,9 +1,9 @@
 import { NoticeType, CommunityType, SpaceOptionsInfo, BaseProfile } from 'types';
-import { PickRenameMulti } from 'utils/types';
+import { Modify, PickRenameMulti } from 'utils/types';
 
 /** Space */
-export type ReqSpaceEnter = SpaceOptionsInfo &
-  BaseProfile & {
+export type ReqSpaceEnter = Modify<BaseProfile, { image?: string }> &
+  SpaceOptionsInfo & {
     memberCategoryId: number;
   };
 
