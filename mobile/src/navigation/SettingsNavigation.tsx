@@ -2,14 +2,14 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { SettingsParamList } from 'types/Route';
-import LoginScreen from 'containers/LoginScreen';
+import { SettingsScreen } from 'containers';
 
 const Stack = createStackNavigator<SettingsParamList>();
 
 const SettingsNavigation = () => {
   return (
     <Stack.Navigator initialRouteName='Settings'>
-      <Stack.Screen name='Settings' component={LoginScreen} />
+      <Stack.Screen name='Settings' component={SettingsScreen} />
     </Stack.Navigator>
   );
 };
