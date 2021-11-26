@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SPACE_INITAL_ID } from 'store/services';
 import { Space } from 'types/Response';
 
 export const space = createSlice({
   name: 'space',
   initialState: {
-    spaceId: -1,
+    spaceId: SPACE_INITAL_ID,
     spaceName: '',
     spaceImage: '',
   },

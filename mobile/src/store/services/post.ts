@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { header } from 'store/services';
 import ENV from 'environments';
+import { header } from 'store/services';
 import { ReqSpaceEnter } from 'types/Request';
 import {
   ResMySpaces,
@@ -10,8 +10,8 @@ import {
   ResSpaceHome,
 } from 'types/Response';
 
-export const spaceApi = createApi({
-  reducerPath: 'spaceApi',
+export const postApi = createApi({
+  reducerPath: 'postApi',
   baseQuery: fetchBaseQuery({
     baseUrl: ENV.apiUrl,
     prepareHeaders: header,
@@ -55,4 +55,4 @@ export const {
   useGetMySpacesQuery,
   useEnterSpaceMutation,
   useGetSpaceHomeQuery,
-} = spaceApi;
+} = postApi;
