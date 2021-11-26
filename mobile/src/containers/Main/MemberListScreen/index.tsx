@@ -71,7 +71,11 @@ const MemberListScreen = () => {
         {membersData.members
           .filter((member) => member.memberId !== categoriesData.myMemberId)
           .map((member) => (
-            <MemberProfilePreview {...member} onPress={() => onProfilePress(member)} />
+            <MemberProfilePreview
+              key={member.memberId}
+              {...member}
+              onPress={() => onProfilePress(member)}
+            />
           ))}
       </ScrollView>
     </BottomTabSafeAreaView>

@@ -39,11 +39,13 @@ const CommunityPostWriter = (profile: Omit<MemberProfilePreviewType, 'memberCate
 
 const CommunityScreen = () => {
   const [selectedFilter, setSelectedFilter] = useState<number>(0);
-  const [selectedCategory, setSelectedCategory] = useState<number>(-1);
+  const [selectedCategory, setSelectedCategory] = useState<number>(0);
 
   const { data: categoriesData } = useGetPostCategoriesQuery();
   const { data: postsData } = useGetCommunityPostsQuery({
-    postCategoryId: categoriesData?.communityCategories[0].categoryId,
+    ...(selectedCategory !== 0 && {
+      postCategoryId: categoriesData?.communityCategories[selectedCategory - 1].categoryId,
+    }),
     type: communityFilter[selectedFilter].filterType,
   });
 
@@ -54,11 +56,16 @@ const CommunityScreen = () => {
       <ScrollView stickyHeaderIndices={[0]}>
         <HeaderCurrent
           data={{
-            name: categoriesData.noticeCategories[0].categoryName || '',
+            name:
+              selectedCategory === 0
+                ? '커뮤니티 전체'
+                : categoriesData.communityCategories[selectedCategory - 1].categoryName || '',
             id: selectedCategory,
           }}
         />
-        <TopFilterBar items={categoriesData.communityCategories} onIndexChange={setSelectedFilter}>
+        <TopFilterBar
+          items={communityFilter.map((filter) => filter.name)}
+          onIndexChange={setSelectedFilter}>
           <PostButton postingType={'community'} />
         </TopFilterBar>
         <View style={{ backgroundColor: BACKGROUND, height: 10 }} />

@@ -28,14 +28,15 @@ const noticeFilter: { name: string; filterType: NoticeType }[] = [
 
 const NoticeScreen = () => {
   const [selectedFilter, setSelectedFilter] = useState<number>(0);
-  const [selectedCategory, setSelectedCategory] = useState<number>(-1);
+  const [selectedCategory, setSelectedCategory] = useState<number>(0);
 
   const { data: categoriesData } = useGetPostCategoriesQuery();
   const { data: postsData } = useGetNoticePostsQuery({
-    postCategoryId: categoriesData?.noticeCategories[0].categoryId,
+    ...(selectedCategory !== 0 && {
+      postCategoryId: categoriesData?.noticeCategories[selectedCategory - 1].categoryId,
+    }),
     type: noticeFilter[selectedFilter].filterType,
   });
-
   if (!postsData || !categoriesData) return <></>;
 
   return (
@@ -43,11 +44,16 @@ const NoticeScreen = () => {
       <ScrollView stickyHeaderIndices={[0]}>
         <HeaderCurrent
           data={{
-            name: categoriesData.noticeCategories[0].categoryName || '',
+            name:
+              selectedCategory === 0
+                ? '공지 전체'
+                : categoriesData.noticeCategories[selectedCategory - 1].categoryName,
             id: selectedCategory,
           }}
         />
-        <TopFilterBar items={categoriesData.noticeCategories} onIndexChange={setSelectedFilter}>
+        <TopFilterBar
+          items={noticeFilter.map((filter) => filter.name)}
+          onIndexChange={setSelectedFilter}>
           <PostButton postingType={'notice'} />
         </TopFilterBar>
         <View style={{ backgroundColor: BACKGROUND, height: 10 }} />

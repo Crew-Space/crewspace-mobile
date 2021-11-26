@@ -14,7 +14,7 @@ export const memberApi = createApi({
       query: () => '/members/categories',
       transformResponse: (response: { data: ResMemberCategories }) => response.data,
     }),
-    getMembers: builder.query<ResMembers, { memberCategoryId: number } | {}>({
+    getMembers: builder.query<ResMembers, { memberCategoryId?: number }>({
       query: (params) => ({ url: '/members', params }),
       transformResponse: (response: { data: ResMembers }) => response.data,
     }),

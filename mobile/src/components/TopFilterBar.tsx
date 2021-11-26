@@ -6,7 +6,7 @@ import TouchableText from 'components/TouchableText';
 import { Category } from 'types/Response';
 
 interface Props extends ViewProps {
-  items: Category[];
+  items: Category[] | string[];
   onIndexChange: (index: number) => void;
   defaultIndex?: number;
 }
@@ -28,7 +28,7 @@ const TopFilterBar = ({ children, items, defaultIndex = 0, onIndexChange }: Prop
                 onIndexChange(index);
                 setSelectedIndex(index);
               }}>
-              {item.categoryName}
+              {typeof item === 'string' ? item : item.categoryName}
             </TouchableText>
           ))}
         </View>
