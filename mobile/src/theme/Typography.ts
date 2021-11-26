@@ -149,6 +149,6 @@ export const Typo: {
 
 export const textStyles = (typo: TypoType = 'REGULAR_16', paragraph = false) => ({
   fontFamily: FONT[Typo[typo].weight],
-  fontSize: scaleFont(Typo[typo].size),
+  fontSize: Typo[typo].size,
   ...(paragraph && { lineHeight: scaleFont(Typo[typo].size) * 1.5 }),
 });
