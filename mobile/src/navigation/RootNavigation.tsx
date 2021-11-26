@@ -16,7 +16,7 @@ import {
 } from 'containers';
 import { SvgXml } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { close } from 'assets/svg/icons';
+import { close, moreVertical } from 'assets/svg/icons';
 import { BLACK, PRIMARY } from 'theme/Colors';
 import Text from 'components/Text';
 import { PostScreenHeader, CategorySelectorHeader } from 'components/Header';
@@ -73,7 +73,25 @@ const RootNavigation = () => {
           headerRightContainerStyle: { paddingRight: 20 },
         }}
       />
-      <Stack.Screen name='PostDetails' component={PostDetailsScreen} />
+      <Stack.Screen
+        name='PostDetails'
+        component={PostDetailsScreen}
+        options={({ navigation, route }) => ({
+          headerTitle: '상세 보기',
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <SvgXml xml={close} width={24} fill={BLACK} />
+            </TouchableOpacity>
+          ),
+          // headerRight: () => (
+          //   <TouchableOpacity>
+          //     <SvgXml xml={moreVertical} width={24} fill={BLACK} />
+          //   </TouchableOpacity>
+          // ),
+          headerLeftContainerStyle: { paddingLeft: 20, paddingVertical: 18 },
+          headerRightContainerStyle: { paddingRight: 20 },
+        })}
+      />
       <Stack.Screen
         name='EnterCrew'
         component={EnterCrewScreen}

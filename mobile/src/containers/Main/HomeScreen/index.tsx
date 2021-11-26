@@ -80,6 +80,12 @@ const HomeScreen = () => {
             description={notice.description}
             isSaved={notice.isSaved}
             viewed={notice.isRead}
+            onPress={() =>
+              navigation.navigate('PostDetails', {
+                postType: 'notice',
+                postId: notice.postId,
+              })
+            }
           />
         ))}
       </Animated.ScrollView>

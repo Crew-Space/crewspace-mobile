@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 import { BACKGROUND, GRAY2, LINE, WHITE } from 'theme/Colors';
+import { RootRouterParams } from 'types/Route';
 import Text from 'components/Text';
 import PostPreview from 'components/PostPreview';
 import PostButton from 'components/PostButton';
@@ -39,6 +41,7 @@ const CommunityPostWriter = (profile: Omit<MemberProfilePreviewType, 'memberCate
 );
 
 const CommunityScreen = () => {
+  const navigation = useNavigation<RootRouterParams>();
   const [selectedFilter, setSelectedFilter] = useState<number>(0);
   const currentCategory = useSelector((state) => state.screen.category);
 
@@ -82,6 +85,12 @@ const CommunityScreen = () => {
             }}
             description={post.description}
             isSaved={false}
+            onPress={() =>
+              navigation.navigate('PostDetails', {
+                postType: 'community',
+                postId: post.postId,
+              })
+            }
           />
         ))}
       </ScrollView>

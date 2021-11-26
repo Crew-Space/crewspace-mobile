@@ -11,7 +11,10 @@ export type RootRouterParamList = {
   Main: NavigatorScreenParams<MainRouterParamList> | undefined;
   Post: { postingType: PostingType };
   EditCategory: undefined;
-  PostDetails: undefined;
+  PostDetails: {
+    postType: 'notice' | 'community';
+    postId: number;
+  };
   Search: {
     searchType: 'post' | 'member';
   };

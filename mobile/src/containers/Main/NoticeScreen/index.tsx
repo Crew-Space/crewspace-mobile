@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/core';
 
 import { BACKGROUND, LINE, WHITE } from 'theme/Colors';
 import PostPreview from 'components/PostPreview';
@@ -11,6 +12,7 @@ import { NoticeType } from 'types';
 import { useSelector } from 'react-redux';
 import SvgIcon from 'components/SvgIcon';
 import { crewOnSpace } from 'assets/svg/spacers';
+import { RootRouterParams } from 'types/Route';
 
 const noticeFilter: { name: string; filterType: NoticeType }[] = [
   {
@@ -28,6 +30,7 @@ const noticeFilter: { name: string; filterType: NoticeType }[] = [
 ];
 
 const NoticeScreen = () => {
+  const navigation = useNavigation<RootRouterParams>();
   const [selectedFilter, setSelectedFilter] = useState<number>(0);
   const currentCategory = useSelector((state) => state.screen.category);
 
@@ -66,6 +69,12 @@ const NoticeScreen = () => {
             description={post.description}
             isSaved={post.isSaved}
             viewed={post.isRead}
+            onPress={() =>
+              navigation.navigate('PostDetails', {
+                postType: 'notice',
+                postId: post.postId,
+              })
+            }
           />
         ))}
       </ScrollView>
