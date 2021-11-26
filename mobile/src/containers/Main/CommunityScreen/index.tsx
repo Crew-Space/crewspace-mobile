@@ -10,7 +10,8 @@ import PostButton from 'components/PostButton';
 import ProfileImage from 'components/ProfileImage';
 import TopFilterBar from 'components/TopFilterBar';
 import HeaderCurrent from 'components/HeaderCurrent';
-import { CommunityType, MemberProfilePreviewType } from 'types';
+import { CommunityType } from 'types';
+import { MemberProfilePreviewType } from 'types/Response';
 import { useGetCommunityPostsQuery, useGetPostCategoriesQuery } from 'store/services/post';
 
 const communityFilter: { name: string; filterType: CommunityType }[] = [
@@ -57,7 +58,7 @@ const CommunityScreen = () => {
             id: selectedCategory,
           }}
         />
-        <TopFilterBar items={['모든 글', '저장한 글']} onIndexChange={setSelectedFilter}>
+        <TopFilterBar items={categoriesData.communityCategories} onIndexChange={setSelectedFilter}>
           <PostButton postingType={'community'} />
         </TopFilterBar>
         <View style={{ backgroundColor: BACKGROUND, height: 10 }} />

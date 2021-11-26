@@ -32,11 +32,11 @@ export const postApi = createApi({
       transformResponse: (response: { data: NoticePost }) => response.data,
     }),
     getCommunityPosts: builder.query<ResCommunityPosts, ReqPosts>({
-      query: (params) => ({ url: '/posts', params }),
+      query: (params) => ({ url: '/posts/community', params }),
       transformResponse: (response: { data: ResCommunityPosts }) => response.data,
     }),
     getCommunityPost: builder.query<CommunityPost, number>({
-      query: (postId) => `/posts/${postId}`,
+      query: (postId) => `/posts/community/${postId}`,
       transformResponse: (response: { data: CommunityPost }) => response.data,
     }),
 
