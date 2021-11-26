@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -10,7 +10,6 @@ import TopFilterBar from 'components/TopFilterBar';
 import HeaderCurrent from 'components/HeaderCurrent';
 import { useGetNoticePostsQuery, useGetPostCategoriesQuery } from 'store/services/post';
 import { NoticeType } from 'types';
-import { NoticePostPreview } from 'types/Response';
 
 const noticeFilter: { name: string; filterType: NoticeType }[] = [
   {
