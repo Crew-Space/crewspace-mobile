@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { expandMore } from 'assets/svg/icons';
 import { HeaderListItemType } from 'types';
-import { BLACK, WHITE } from 'theme/Colors';
+import { BLACK, LINE, WHITE } from 'theme/Colors';
 import { normalize } from 'utils';
 import SvgIcon from 'components/SvgIcon';
 import ProfileImage from 'components/ProfileImage';
@@ -48,6 +48,8 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
     paddingVertical: 18,
     paddingHorizontal: 20,
+    borderBottomColor: LINE,
+    borderBottomWidth: 1,
   },
   fadingText: {
     fontSize: 28,
