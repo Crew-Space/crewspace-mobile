@@ -10,6 +10,7 @@ import SectionHeader from 'components/SectionHeader';
 import HomeHeader from './HomeHeader';
 import { HEADER_MAX_HEIGHT, STICKY_EXPANDABLE_HEADER_HEIGHT } from './constant';
 import Text from 'components/Text';
+import { useGetSpaceHomeQuery } from 'store/services/space';
 
 const HomeScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
@@ -39,20 +40,24 @@ const HomeScreen = () => {
     },
   };
 
+  const { data: homeData } = useGetSpaceHomeQuery();
+
+  if (!homeData) return <></>;
+
   return (
     <View style={styles.container}>
       <Animated.ScrollView {...ScrollViewProps}>
-        <PinnedNoticeList
-          data={[
-            {
+        {!!homeData.fixedNotices.length && (
+          <PinnedNoticeList
+            data={homeData.fixedNotices.map((notice) => ({
               subText: {
-                left: '일반 공지',
-                right: '2021.10.14(금)',
+                left: notice.categoryName,
+                right: notice.writtenDate,
               },
-              Title: '10월 3차 오프 모임 안내',
-            },
-          ]}
-        />
+              Title: notice.title,
+            }))}
+          />
+        )}
         <SectionHeader text={'최근 공지'}>
           <TouchableOpacity
             onPress={() =>
@@ -65,27 +70,21 @@ const HomeScreen = () => {
             </Text>
           </TouchableOpacity>
         </SectionHeader>
-        {Array.from('-'.repeat(10)).map(() => (
+        {homeData.newNotices.map((notice) => (
           <PostPreview
+            key={notice.postId}
             header={{
-              subText: { left: '과제 공지', right: '10분 전' },
-              Title: '1차 과제 마감 안내',
+              subText: { left: notice.categoryName, right: notice.writtenDate },
+              Title: notice.title,
             }}
-            description={
-              '안녕하세요 :) 1차 과제 마감 관련하여 공지드립니다. 사전에 고지드린대로 인당 3개씩 아이디어 조사하여, 간단히 PPT 자료 제작해오시면 될 것 같습니다. 궁금한 점 언제든 문의...'
-            }
-            isSaved={false}
-            viewed={false}
+            description={notice.description}
+            isSaved={notice.isSaved}
+            viewed={notice.isRead}
           />
         ))}
       </Animated.ScrollView>
 
-      <HomeHeader
-        scrollYState={scrollYState}
-        headerImageUrl={
-          'https://opgg-com-image.akamaized.net/attach/images/20210308225137.861310.jpg'
-        }
-      />
+      <HomeHeader scrollYState={scrollYState} headerImageUrl={homeData.bannerImage} />
     </View>
   );
 };

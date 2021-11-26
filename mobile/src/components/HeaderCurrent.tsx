@@ -10,14 +10,14 @@ import ProfileImage from 'components/ProfileImage';
 import Text from 'components/Text';
 
 interface SelectorProps {
-  data: HeaderListItemType[];
+  data: HeaderListItemType;
   leftButton?: {
     xml: string;
     onPress: () => void;
   };
 }
 
-const HeaderSelector = ({ data: spaces, leftButton }: SelectorProps) => {
+const HeaderCurrent = ({ data: spaces, leftButton }: SelectorProps) => {
   const [expended, setExpended] = useState<boolean>(false);
 
   return (
@@ -25,14 +25,14 @@ const HeaderSelector = ({ data: spaces, leftButton }: SelectorProps) => {
       style={[styles.spaceItem, { justifyContent: 'space-between' }]}
       onTouchEnd={() => setExpended(!expended)}>
       <View style={styles.flexRowCenter}>
-        {spaces[0].imageUrl && (
+        {spaces.imageUrl && (
           <ProfileImage
             uri={'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg'}
             width={24}
             style={{ marginRight: 8 }}
           />
         )}
-        <Text fontType={'BOLD_18'}>{spaces[0].name}</Text>
+        <Text fontType={'BOLD_18'}>{spaces.name}</Text>
         <SvgIcon disabled xml={expandMore.down} fill={BLACK} width={normalize(20)} />
       </View>
       {leftButton && <SvgIcon xml={leftButton.xml} fill={BLACK} onPress={leftButton.onPress} />}
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HeaderSelector;
+export default HeaderCurrent;

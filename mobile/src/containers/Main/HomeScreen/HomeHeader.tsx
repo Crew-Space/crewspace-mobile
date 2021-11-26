@@ -12,16 +12,10 @@ import {
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from 'theme/Metrics';
 import ProfileImage from 'components/ProfileImage';
 import Text from 'components/Text';
-import HeaderSelector from 'components/HeaderSelector';
+import HeaderCurrent from 'components/HeaderCurrent';
 import { useNavigation } from '@react-navigation/core';
 import { RootRouterParams } from 'types/Route';
-
-const spaces = [
-  { name: '해커리어', id: 1 },
-  { name: 'SOPT', id: 2 },
-  { name: '디프만', id: 3 },
-  { name: 'SPACER', id: 4 },
-];
+import { useGetMySpacesQuery } from 'store/services/space';
 
 interface Props {
   scrollYState: Animated.Value;
@@ -54,6 +48,7 @@ const HeaderItem = ({ space }: HeaderItemProps) => {
 
 const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
   const navigation = useNavigation<RootRouterParams>();
+  const { data } = useGetMySpacesQuery();
 
   const scrollY = Animated.add(
     scrollYState,
@@ -72,9 +67,10 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
     extrapolate: 'clamp',
   });
 
+  if (!data) return <></>;
+
   return (
     <>
-      {/* <View style={[styles.background]} /> */}
       <Animated.View style={[styles.header, { transform: [{ translateY: headerTranslate }] }]}>
         <Animated.Image
           style={[
@@ -90,8 +86,12 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
       </Animated.View>
       <Animated.View
         style={[styles.stickyHeader, { transform: [{ translateY: headerTranslate }] }]}>
-        <HeaderSelector
-          data={spaces}
+        <HeaderCurrent
+          data={{
+            name: data.spaces[0].spaceName,
+            id: data.spaces[0].spaceId,
+            imageUrl: data.spaces[0].spaceImage,
+          }}
           leftButton={{
             xml: search,
             onPress: () =>
@@ -101,15 +101,6 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
           }}
         />
       </Animated.View>
-      {/* <Animated.View
-        style={[
-          styles.headerList,
-          { height: STICKY_EXPANDABLE_HEADER_HEIGHT * (spaces.length - 1) },
-        ]}>
-        {spaces.map((space) => (
-          <HeaderItem key={space.id} space={space} />
-        ))}
-      </Animated.View> */}
     </>
   );
 };
