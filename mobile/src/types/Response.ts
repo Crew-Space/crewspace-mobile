@@ -1,4 +1,4 @@
-import { BaseProfile, CommunityType, NoticeType, SpaceOptionsInfo } from 'types';
+import { BaseProfile, CommunityType, File, NoticeType, SpaceOptionsInfo } from 'types';
 import { PickRenameMulti } from 'utils/types';
 
 export type Category = {
@@ -31,6 +31,17 @@ export type PostBaseInfo = {
   description: string;
   writtenDate: string;
   isSaved: boolean;
+};
+export type ReqNewPost = {
+  postCategoryId: number;
+  image?: File[];
+  description: string;
+};
+export type ReqNewNoticePost = ReqNewPost & {
+  title: string;
+  targets: number[];
+  isReserved: boolean;
+  reservedTime: string;
 };
 
 export type NoticePostPreview = PostBaseInfo & {

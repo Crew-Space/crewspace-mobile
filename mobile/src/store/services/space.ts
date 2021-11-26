@@ -18,20 +18,20 @@ export const spaceApi = createApi({
   }),
   endpoints: (builder) => ({
     checkInvitation: builder.query<ResSpace, string>({
-      query: (spaceCode) => `space/${spaceCode}`,
+      query: (spaceCode) => `/space/${spaceCode}`,
       transformResponse: (response: { data: ResSpace }) => response.data,
     }),
     getRegisterInfo: builder.query<ResRegisterInfo, void>({
-      query: () => 'space/register-info',
+      query: () => '/space/register-info',
       transformResponse: (response: { data: ResRegisterInfo }) => response.data,
     }),
     enterSpace: builder.mutation<ResSpaceEnter, ReqSpaceEnter>({
       query: (userInfo) => {
         const formdata = new FormData();
-        Object.entries(userInfo).forEach((value) => formdata.append(value[0], value[1]));
+        Object.entries(userInfo).forEach(([key, value]) => formdata.append(key, value));
 
         return {
-          url: 'space/enter',
+          url: '/space/enter',
           method: 'POST',
           body: formdata,
         };
@@ -39,11 +39,11 @@ export const spaceApi = createApi({
       transformResponse: (response: { data: ResSpaceEnter }) => response.data,
     }),
     getSpaceHome: builder.query<ResSpaceHome, void>({
-      query: () => 'space',
+      query: () => '/space',
       transformResponse: (response: { data: ResSpaceHome }) => response.data,
     }),
     getMySpaces: builder.query<ResMySpaces, void>({
-      query: () => 'spaces',
+      query: () => '/spaces',
       transformResponse: (response: { data: ResMySpaces }) => response.data,
     }),
   }),

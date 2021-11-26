@@ -64,10 +64,11 @@ const EnterCrewScreen = () => {
     },
   };
 
-  DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, () => {
-    console.log('EnterCrew addListner');
-    navigation.replace('Main');
-  });
+  useEffect(() => {
+    DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, () => {
+      navigation.replace('Main');
+    });
+  }, []);
 
   useEffect(() => {
     userInfo &&
