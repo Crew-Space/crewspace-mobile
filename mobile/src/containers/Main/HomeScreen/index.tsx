@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useRef, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Animated, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 
@@ -13,10 +13,15 @@ import { HEADER_MAX_HEIGHT, STICKY_EXPANDABLE_HEADER_HEIGHT } from './constant';
 import Text from 'components/Text';
 import { useGetSpaceHomeQuery } from 'store/services/space';
 import { setTabName } from 'store/slices/screen';
+import { setHomeNoticePosts } from 'store/slices/posts';
 
 const HomeScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
   const dispatch = useDispatch();
+
+  const homeNoticePosts = useSelector((state) => state.posts.homeNoticePosts);
+  const { data: homeData, isError, isLoading, isSuccess, isFetching } = useGetSpaceHomeQuery();
+
   const scrollYState = useRef(new Animated.Value(0)).current;
   const [refreshing, setRefreshing] = useState(false);
   const ScrollViewProps = {
@@ -43,7 +48,11 @@ const HomeScreen = () => {
     },
   };
 
-  const { data: homeData } = useGetSpaceHomeQuery();
+  useEffect(() => {
+    if (!isLoading && !isFetching && isSuccess && homeData) {
+      dispatch(setHomeNoticePosts(homeData.newNotices));
+    }
+  }, [isFetching, isSuccess, isLoading]);
 
   if (!homeData) return <></>;
 
@@ -74,7 +83,7 @@ const HomeScreen = () => {
             </Text>
           </TouchableOpacity>
         </SectionHeader>
-        {homeData.newNotices.map((notice) => (
+        {homeNoticePosts.map((notice) => (
           <PostPreview
             key={notice.postId}
             postId={notice.postId}
