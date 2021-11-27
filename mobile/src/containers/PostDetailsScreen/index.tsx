@@ -123,17 +123,9 @@ const PostDetailsScreen = () => {
         <Text paragraph>
           {postType === 'notice' ? noticeData?.description : communityData?.description}
         </Text>
-        {(postType === 'notice' ? noticeData : communityData)?.images.map((image, index) => {
-          console.log(image);
-          return (
-            <Image
-              style={styles.image}
-              key={index}
-              source={{ uri: image }}
-              resizeMode={'contain'}
-            />
-          );
-        })}
+        {(postType === 'notice' ? noticeData : communityData)?.images.map((image, index) => (
+          <Image style={styles.image} key={index} source={{ uri: image }} resizeMode={'contain'} />
+        ))}
       </ScrollView>
       <View style={styles.bottomTabBar}>
         {postType === 'notice' && (
