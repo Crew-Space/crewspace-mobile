@@ -64,6 +64,7 @@ export type SpaceBaseInfo = {
 
 export type NoticeType = 'ALL' | 'SAVED' | 'NREAD';
 export type CommunityType = 'ALL' | 'SAVED';
+export type PostType = 'notice' | 'community';
 
 ///////
 

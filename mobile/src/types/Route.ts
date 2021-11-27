@@ -1,7 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
-import { PostingType } from 'types';
+import { PostingType, PostType } from 'types';
 import { Space } from './Response';
 
 export type RootRouterParamList = {
@@ -12,7 +12,7 @@ export type RootRouterParamList = {
   Post: { postingType: PostingType };
   EditCategory: undefined;
   PostDetails: {
-    postType: 'notice' | 'community';
+    postType: PostType;
     postId: number;
   };
   Search: {
