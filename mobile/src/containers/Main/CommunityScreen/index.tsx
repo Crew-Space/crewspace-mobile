@@ -4,18 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FlatList } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
-import { crewOnSpace } from 'assets/svg/spacers';
 import { CommunityType } from 'types';
 import { RootRouterParams } from 'types/Route';
 import { BACKGROUND, LINE, WHITE } from 'theme/Colors';
-import { postApi, useGetCommunityPostsQuery } from 'store/services/post';
+import { useGetCommunityPostsQuery } from 'store/services/post';
 import PostPreview from 'components/PostPreview';
 import PostButton from 'components/PostButton';
 import TopFilterBar from 'components/TopFilterBar';
-import SvgIcon from 'components/SvgIcon';
 import CommunityPostAuthor from 'components/CommunityPostAuthor';
-import Text from 'components/Text';
 import { resetCommunityPosts, setCommunityPosts } from 'store/slices/posts';
+import CrewOnError from 'components/CrewOnError';
 
 const communityFilter: { name: string; filterType: CommunityType }[] = [
   {
@@ -61,13 +59,7 @@ const CommunityScreen = () => {
 
   if (isLoading) return <></>;
 
-  if (isError || !data)
-    return (
-      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-        <SvgIcon xml={crewOnSpace} width={160} disabled />
-        <Text>무언가 잘못되었어요...</Text>
-      </View>
-    );
+  if (isError || !data) return <CrewOnError />;
 
   return (
     <View style={styles.container}>

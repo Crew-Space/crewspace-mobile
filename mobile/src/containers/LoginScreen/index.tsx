@@ -22,7 +22,7 @@ import { useGetMySpacesQuery } from 'store/services/space';
 const LoginScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetMySpacesQuery();
+  const { data, isSuccess, isError } = useGetMySpacesQuery();
   const token = useRef<string>();
 
   const setUser = async () => {
@@ -62,11 +62,11 @@ const LoginScreen = () => {
   };
 
   useEffect(() => {
-    if (!data || token.current === undefined) return;
+    if ((isError && !data) || token.current === undefined) return;
 
-    if (token.current) setSpace();
+    if (isSuccess && token.current) setSpace();
     SplashScreen.hide();
-  }, [data, token.current]);
+  }, [data, token.current, isSuccess, isError]);
 
   useLayoutEffect(() => {
     setUser();
