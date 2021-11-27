@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import ENV from 'environments';
+import { Platform } from 'react-native';
 import { header } from 'store/services';
 import { ReqUpdateMyProfile } from 'types/Request';
 import { ResMember, ResMemberCategories, ResMembers } from 'types/Response';
@@ -27,7 +28,14 @@ export const memberApi = createApi({
     updateMyProfile: builder.mutation<void, ReqUpdateMyProfile>({
       query: (newProfile) => {
         const formdata = new FormData();
-        newProfile.profileImage && formdata.append('image', newProfile.profileImage);
+        newProfile.profileImage &&
+          formdata.append('image', {
+            ...newProfile.profileImage,
+            uri:
+              Platform.OS === 'ios'
+                ? newProfile.profileImage.uri!.replace('file://', '')
+                : newProfile.profileImage.uri,
+          });
         Object.entries(newProfile)
           .filter(([key, _]) => key !== 'image')
           .forEach(([key, value]) => formdata.append(key, value));

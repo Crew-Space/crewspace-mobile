@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React from 'react';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import { GRAY1, GRAY2, GRAY3, GRAY4, PRIMARY } from 'theme/Colors';
 import Text from 'components/Text';
@@ -8,6 +8,8 @@ import { image } from 'assets/svg/icons';
 import LineTextInput from 'components/LineTextInput';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ReqSpaceEnter } from 'types/Request';
+import { launchImageLibrary } from 'react-native-image-picker';
+import ProfileImage from 'components/ProfileImage';
 
 type MemberCategory = {
   categoryId: number;
@@ -28,12 +30,31 @@ const Step1 = ({ memberCategories, setUserInfo, userInfo }: Props) => {
     });
   };
 
+  const onChoosePhoto = () => {
+    launchImageLibrary({ mediaType: 'photo', selectionLimit: 1 }, (response) => {
+      if (response && response.assets) {
+        setUserInfo({
+          ...userInfo,
+          image: {
+            uri: response.assets[0].uri,
+            type: response.assets[0].type,
+            name: response.assets[0].fileName,
+          },
+        });
+      }
+    });
+  };
+
   return (
     <>
       <TouchableOpacity activeOpacity={0.6} style={{ paddingTop: 20, alignItems: 'center' }}>
-        <View style={styles.circle}>
-          <SvgIcon xml={image} fill={GRAY3} width={24} disabled />
-        </View>
+        <TouchableOpacity style={styles.circle} onPress={onChoosePhoto}>
+          {userInfo.image ? (
+            <ProfileImage uri={userInfo.image.uri} />
+          ) : (
+            <SvgIcon xml={image} fill={GRAY3} width={24} disabled />
+          )}
+        </TouchableOpacity>
       </TouchableOpacity>
       <View style={styles.paddingWidth}>
         <LineTextInput

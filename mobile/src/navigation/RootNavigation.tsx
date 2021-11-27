@@ -16,7 +16,7 @@ import {
 } from 'containers';
 import { SvgXml } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { close, moreVertical } from 'assets/svg/icons';
+import { close } from 'assets/svg/icons';
 import { BLACK, PRIMARY } from 'theme/Colors';
 import Text from 'components/Text';
 import { PostScreenHeader, CategorySelectorHeader } from 'components/Header';
@@ -25,7 +25,7 @@ const Stack = createStackNavigator<RootRouterParamList>();
 
 const RootNavigation = () => {
   return (
-    <Stack.Navigator initialRouteName={'Auth'}>
+    <Stack.Navigator initialRouteName={'Invitation'}>
       <Stack.Screen
         name='Auth'
         component={LoginScreen}

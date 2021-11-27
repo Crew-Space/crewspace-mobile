@@ -2,7 +2,7 @@ import { NoticeType, CommunityType, SpaceOptionsInfo, BaseProfile, File } from '
 import { Modify } from 'utils/types';
 
 /** Space */
-export type ReqSpaceEnter = Modify<BaseProfile, { image?: string }> &
+export type ReqSpaceEnter = Modify<BaseProfile, { image?: File }> &
   SpaceOptionsInfo & {
     memberCategoryId: number;
   };

@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { InvitationParamList } from 'types/Route';
-import { LoginScreen, SpaceCodeScreen, WelcomeScreen } from 'containers';
+import { SpaceCodeScreen, WelcomeScreen } from 'containers';
 
 const Stack = createStackNavigator<InvitationParamList>();
 
@@ -16,8 +16,6 @@ const InvitationNavigation = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen name='CreateSpace' component={LoginScreen} />
-      <Stack.Screen name='EnterSpace' component={LoginScreen} />
       <Stack.Screen
         name='Welcome'
         component={WelcomeScreen}
