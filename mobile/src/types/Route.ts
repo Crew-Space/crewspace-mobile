@@ -84,3 +84,6 @@ export type MemberProfileDetailsScreenPropsType = RouteProp<
   RootRouterParamList,
   'MemberProfileDetails'
 >;
+
+/*** PostDetails ***/
+export type PostDetailsScreenPropsType = RouteProp<RootRouterParamList, 'PostDetails'>;
