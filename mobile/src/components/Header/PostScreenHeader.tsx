@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
@@ -10,16 +11,34 @@ import Text from 'components/Text';
 import { BLACK, LINE, PRIMARY, WHITE } from 'theme/Colors';
 import { normalize } from 'utils';
 import { SCREEN_HEIGHT } from 'theme/Metrics';
+import { useGetPostCategoriesQuery, usePostCommunityMutation } from 'store/services/post';
+import { Category } from 'types/Response';
+import TouchableText from 'components/TouchableText';
 
-const mock = ['일상 공유', '일반 글', '인사이트'];
 const HEADER_HEIGHT = normalize(60);
 
 const PostScreenHeader = () => {
-  const [extanded, setExtanded] = useState<boolean>(false);
-  const [selectedItem, setSelectedItem] = useState<number>(0);
   const navigation = useNavigation<RootRouterParams>();
+  const [selectedCategory, setSelectedCategory] = useState<Category>({
+    categoryId: -1,
+    categoryName: '',
+  });
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  const { data, isSuccess, isLoading, isFetching } = useGetPostCategoriesQuery();
+  const [communityPost] = usePostCommunityMutation();
+  const newPost = useSelector((state) => state.newPost);
+
+  const [extanded, setExtanded] = useState<boolean>(false);
   const translateAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (!isLoading && isSuccess && !isFetching && data) {
+      setCategories(data.communityCategories.slice(1));
+      setSelectedCategory(data.communityCategories[1]);
+    }
+  }, [isLoading, isSuccess, isFetching]);
 
   useEffect(() => {
     if (!extanded) {
@@ -43,13 +62,15 @@ const PostScreenHeader = () => {
           useNativeDriver: true,
         }),
         Animated.timing(translateAnim, {
-          toValue: HEADER_HEIGHT * (mock.length + 1),
+          toValue: HEADER_HEIGHT * (categories.length + 1),
           duration: 300,
           useNativeDriver: true,
         }),
       ]).start();
     }
   }, [extanded]);
+
+  if (!data) return <></>;
 
   return (
     <>
@@ -64,23 +85,37 @@ const PostScreenHeader = () => {
         <View style={[styles.itemContainer, styles.container]}>
           <SvgIcon xml={close} width={24} onPress={() => navigation.goBack()} />
           <View style={styles.title} onTouchEnd={() => setExtanded(!extanded)}>
-            <Text fontType={'BOLD_18'}>{mock[selectedItem]}</Text>
+            <Text fontType={'BOLD_18'}>{selectedCategory.categoryName}</Text>
             <SvgIcon xml={!extanded ? expandMore.down : expandMore.up} width={20} />
           </View>
-          <Text color={PRIMARY}>등록</Text>
+          <TouchableText
+            color={PRIMARY}
+            onPress={() => {
+              communityPost({ postCategoryId: selectedCategory.categoryId, ...newPost });
+              navigation.goBack();
+            }}>
+            등록
+          </TouchableText>
         </View>
-        <Animated.View style={[styles.expandList, { transform: [{ translateY: translateAnim }] }]}>
-          {mock
-            .filter((name) => name !== mock[selectedItem])
-            .map((name, index) => (
+        <Animated.View
+          style={[
+            styles.expandList,
+            {
+              transform: [{ translateY: translateAnim }],
+              top: -(HEADER_HEIGHT * categories.length),
+            },
+          ]}>
+          {categories
+            .filter((category) => category.categoryId !== selectedCategory.categoryId)
+            .map((category) => (
               <View
-                key={index}
+                key={category.categoryId}
                 style={styles.itemContainer}
                 onTouchEnd={() => {
-                  setSelectedItem(index);
+                  setSelectedCategory(category);
                   setExtanded(!extanded);
                 }}>
-                <Text fontType={'BOLD_18'}>{name}</Text>
+                <Text fontType={'BOLD_18'}>{category.categoryName}</Text>
               </View>
             ))}
         </Animated.View>
@@ -112,7 +147,6 @@ const styles = StyleSheet.create({
   expandList: {
     zIndex: 0,
     position: 'absolute',
-    top: -(HEADER_HEIGHT * mock.length),
     left: 0,
     right: 0,
     overflow: 'hidden',

@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/core';
 
@@ -8,20 +9,33 @@ import { PostScreenPropsType } from 'types/Route';
 import TextInput from 'components/TextInput';
 import SvgIcon from 'components/SvgIcon';
 import { attachFile, image, settings } from 'assets/svg/icons';
+import { setDescription } from 'store/slices/newPost';
 
 const PostScreen = () => {
+  const dispatch = useDispatch();
   const { params } = useRoute<PostScreenPropsType>();
+
+  const onChangeText = (text: string, name: string) => {
+    if (name === 'description') {
+      dispatch(setDescription(text));
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
       <View style={styles.input}>
         {params.postingType === 'notice' && (
           <View style={styles.inputTitle}>
-            <TextInput fontType={'BOLD_20'} placeholder={'제목'} />
+            <TextInput fontType={'BOLD_20'} placeholder={'제목'} name={'title'} />
           </View>
         )}
         <View style={styles.inputContents}>
-          <TextInput placeholder={'터치하여 내용을 입력해 주세요'} multiline />
+          <TextInput
+            placeholder={'터치하여 내용을 입력해 주세요'}
+            multiline
+            name={'description'}
+            onChangeText={onChangeText}
+          />
         </View>
       </View>
       <View style={styles.bottomTab}>

@@ -17,6 +17,7 @@ export const postApi = createApi({
     baseUrl: ENV.apiUrl,
     prepareHeaders: header,
   }),
+  tagTypes: ['CommunityPost'],
   endpoints: (builder) => ({
     getPostCategories: builder.query<ResPostCategory, void>({
       query: () => '/posts/categories',
@@ -43,6 +44,7 @@ export const postApi = createApi({
     getCommunityPosts: builder.query<ResCommunityPosts, ReqPosts>({
       query: (params) => ({ url: '/posts/community', params }),
       transformResponse: (response: { data: ResCommunityPosts }) => response.data,
+      providesTags: ['CommunityPost'],
     }),
     getCommunityPost: builder.query<CommunityPost, number>({
       query: (postId) => `/posts/community/${postId}`,
@@ -83,15 +85,18 @@ export const postApi = createApi({
         const formdata = new FormData();
         newPost.image?.forEach((img) => formdata.append('image', img));
         Object.entries(newPost)
-          .filter(([key, _]) => key !== 'images')
+          .filter(([key, _]) => key !== 'image')
           .forEach(([key, value]) => formdata.append(key, value));
+        console.log(formdata);
 
         return {
           url: `/posts/community/${newPost.postCategoryId}/post`,
           method: 'POST',
+          body: formdata,
         };
       },
       transformResponse: (response: { data: void }) => response.data,
+      invalidatesTags: ['CommunityPost'],
     }),
   }),
 });
