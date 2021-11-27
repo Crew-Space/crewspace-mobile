@@ -19,6 +19,7 @@ export interface PinnedNoticeHeaderProps {
 }
 
 export interface PostPreviewProps {
+  postId: number;
   header: Omit<PostHeaderProps, 'isSaved'>;
   description: string;
   isSaved?: boolean;

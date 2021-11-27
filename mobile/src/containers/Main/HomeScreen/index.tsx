@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Animated, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 
@@ -11,9 +12,11 @@ import HomeHeader from './HomeHeader';
 import { HEADER_MAX_HEIGHT, STICKY_EXPANDABLE_HEADER_HEIGHT } from './constant';
 import Text from 'components/Text';
 import { useGetSpaceHomeQuery } from 'store/services/space';
+import { setTabName } from 'store/slices/screen';
 
 const HomeScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
+  const dispatch = useDispatch();
   const scrollYState = useRef(new Animated.Value(0)).current;
   const [refreshing, setRefreshing] = useState(false);
   const ScrollViewProps = {
@@ -60,11 +63,12 @@ const HomeScreen = () => {
         )}
         <SectionHeader text={'최근 공지'}>
           <TouchableOpacity
-            onPress={() =>
+            onPress={() => {
+              dispatch(setTabName('Notice'));
               navigation.navigate('Main', {
                 screen: 'Notice',
-              })
-            }>
+              });
+            }}>
             <Text fontType={'REGULAR_14'} color={GRAY2}>
               {'더보기'}
             </Text>
@@ -73,6 +77,7 @@ const HomeScreen = () => {
         {homeData.newNotices.map((notice) => (
           <PostPreview
             key={notice.postId}
+            postId={notice.postId}
             header={{
               subText: { left: notice.categoryName, right: notice.writtenDate },
               Title: notice.title,

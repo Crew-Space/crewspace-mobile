@@ -73,6 +73,7 @@ const CommunityScreen = () => {
         {data.posts.map((post) => (
           <PostPreview
             key={post.postId}
+            postId={post.postId}
             header={{
               subText: { left: post.categoryName, right: post.writtenDate },
               Title: () =>

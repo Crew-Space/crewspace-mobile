@@ -61,6 +61,7 @@ const NoticeScreen = () => {
         <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
         {data.posts.map((post) => (
           <PostPreview
+            postId={post.postId}
             key={post.postId}
             header={{
               subText: { left: post.categoryName, right: post.writtenDate },

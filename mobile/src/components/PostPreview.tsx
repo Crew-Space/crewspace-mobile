@@ -10,7 +10,7 @@ import PostHeader from 'components/PostHeader';
 
 type Props = PostPreviewProps & TouchableHighlightProps;
 
-const PostPreview = ({ header, description, isSaved, viewed, ...restProps }: Props) => (
+const PostPreview = ({ header, description, isSaved, viewed, postId, ...restProps }: Props) => (
   <TouchableHighlight
     {...restProps}
     underlayColor={GRAY4}
@@ -20,7 +20,7 @@ const PostPreview = ({ header, description, isSaved, viewed, ...restProps }: Pro
       backgroundColor: WHITE,
     }}>
     <>
-      <PostHeader {...header} isSaved={isSaved} />
+      <PostHeader {...header} isSaved={isSaved} postId={postId} />
       <Text paragraph fontType={'REGULAR_14'} color={GRAY1} style={{ marginTop: 10 }}>
         {`${description.slice(0, 100)}...`}
       </Text>
