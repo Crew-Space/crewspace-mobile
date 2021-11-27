@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Platform, StyleSheet, View } from 'react-native';
+import { Animated, Platform, StyleSheet } from 'react-native';
 
 import { search } from 'assets/svg/icons';
 import { BLACK, WHITE } from 'theme/Colors';
@@ -10,8 +10,6 @@ import {
   STICKY_EXPANDABLE_HEADER_HEIGHT,
 } from './constant';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from 'theme/Metrics';
-import ProfileImage from 'components/ProfileImage';
-import Text from 'components/Text';
 import HeaderCurrent from 'components/HeaderCurrent';
 import { useNavigation } from '@react-navigation/core';
 import { RootRouterParams } from 'types/Route';
@@ -27,26 +25,6 @@ interface Props {
 interface HeaderItemProps {
   space: HeaderListItemType;
 }
-
-const HeaderItem = ({ space }: HeaderItemProps) => {
-  return (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: WHITE,
-        paddingVertical: 18,
-        paddingHorizontal: 20,
-      }}>
-      <ProfileImage
-        uri={'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg'}
-        width={24}
-        style={{ marginRight: 8 }}
-      />
-      <Text fontType={'BOLD_18'}>{space.name}</Text>
-    </View>
-  );
-};
 
 const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
   const navigation = useNavigation<RootRouterParams>();

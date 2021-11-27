@@ -26,11 +26,7 @@ const HeaderCurrent = ({ data, leftButton }: SelectorProps) => {
       onTouchEnd={() => setExpended(!expended)}>
       <View style={styles.flexRowCenter}>
         {!!data.imageUrl && (
-          <ProfileImage
-            uri={'https://blog.kakaocdn.net/dn/IKDPO/btqU3oZ8nv9/3nkhB9jPjfUEwCMI6ywIk1/img.jpg'}
-            width={24}
-            style={{ marginRight: 8 }}
-          />
+          <ProfileImage uri={data.imageUrl} width={24} style={{ marginRight: 8 }} />
         )}
         <Text fontType={'BOLD_18'}>{data.name}</Text>
         <SvgIcon disabled xml={expandMore.down} fill={BLACK} width={normalize(20)} />
