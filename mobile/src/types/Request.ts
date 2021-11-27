@@ -1,5 +1,5 @@
-import { NoticeType, CommunityType, SpaceOptionsInfo, BaseProfile } from 'types';
-import { Modify, PickRenameMulti } from 'utils/types';
+import { NoticeType, CommunityType, SpaceOptionsInfo, BaseProfile, File } from 'types';
+import { Modify } from 'utils/types';
 
 /** Space */
 export type ReqSpaceEnter = Modify<BaseProfile, { image?: string }> &
@@ -16,6 +16,6 @@ export type ReqPosts = {
 
 /** members */
 export type ReqUpdateMyProfile = SpaceOptionsInfo &
-  PickRenameMulti<BaseProfile, { image: 'profileImage' }> & {
+  Omit<BaseProfile, 'image'> & { profileImage?: File } & {
     memberCategoryId: number;
   };

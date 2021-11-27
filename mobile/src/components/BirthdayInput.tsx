@@ -10,7 +10,7 @@ type Props = TextInputProps & {
 };
 
 const BirthdayInput = ({ defaultValue, onChangeText, ...restProps }: Props) => {
-  const birthday = defaultValue?.split('.');
+  const birthday = defaultValue?.split('/');
   const [year, month, day] = [useRef(''), useRef(''), useRef('')];
 
   const onChangeBirthdayText = (text: string, name: string) => {
@@ -21,7 +21,7 @@ const BirthdayInput = ({ defaultValue, onChangeText, ...restProps }: Props) => {
     } else if (name === 'birthday.day') {
       day.current = text;
     }
-    onChangeText && onChangeText(`${year.current}.${month.current}.${day.current}`, 'birthdate');
+    onChangeText && onChangeText(`${year.current}/${month.current}/${day.current}`, 'birthdate');
   };
 
   return (

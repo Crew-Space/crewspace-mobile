@@ -12,9 +12,10 @@ interface Props extends ViewProps {
   name: keyof ResMember;
   contents?: string;
   editable?: boolean;
+  onChangeText?: (text: string, name: string) => void;
 }
 
-const TitleDescribe = ({ children, name, contents, editable }: Props) => (
+const TitleDescribe = ({ children, name, contents, editable, onChangeText }: Props) => (
   <View style={styles.container}>
     <View style={{ width: normalize(70) }}>
       <Text fontType={'REGULAR_14'} color={GRAY2}>
@@ -32,6 +33,7 @@ const TitleDescribe = ({ children, name, contents, editable }: Props) => (
             style={{ paddingTop: 0 }}
             name={name}
             editable={editable}
+            onChangeText={onChangeText}
           />
         </>
       )}

@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import ENV from 'environments';
 import { header } from 'store/services';
+import { ReqUpdateMyProfile } from 'types/Request';
 import { ResMember, ResMemberCategories, ResMembers } from 'types/Response';
 
 export const memberApi = createApi({
@@ -22,7 +23,29 @@ export const memberApi = createApi({
       query: (memberId) => `/members/${memberId}`,
       transformResponse: (response: { data: ResMember }) => response.data,
     }),
+
+    updateMyProfile: builder.mutation<void, ReqUpdateMyProfile>({
+      query: (newProfile) => {
+        const formdata = new FormData();
+        newProfile.profileImage && formdata.append('image', newProfile.profileImage);
+        Object.entries(newProfile)
+          .filter(([key, _]) => key !== 'image')
+          .forEach(([key, value]) => formdata.append(key, value));
+
+        return {
+          url: '/members/me',
+          method: 'PUT',
+          body: formdata,
+        };
+      },
+      transformResponse: (response: { data: void }) => response.data,
+    }),
   }),
 });
 
-export const { useGetMemberCategoriesQuery, useGetMembersQuery, useGetMemberQuery } = memberApi;
+export const {
+  useGetMemberCategoriesQuery,
+  useGetMembersQuery,
+  useGetMemberQuery,
+  useUpdateMyProfileMutation,
+} = memberApi;
