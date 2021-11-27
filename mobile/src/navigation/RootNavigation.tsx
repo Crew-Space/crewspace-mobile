@@ -25,7 +25,7 @@ const Stack = createStackNavigator<RootRouterParamList>();
 
 const RootNavigation = () => {
   return (
-    <Stack.Navigator initialRouteName={'Invitation'}>
+    <Stack.Navigator initialRouteName={'Auth'}>
       <Stack.Screen
         name='Auth'
         component={LoginScreen}
