@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/core';
 
 import { BACKGROUND, LINE, WHITE } from 'theme/Colors';
 import PostPreview from 'components/PostPreview';
 import PostButton from 'components/PostButton';
 import TopFilterBar from 'components/TopFilterBar';
-import { useGetNoticePostsQuery } from 'store/services/post';
+import { postApi, useGetNoticePostsQuery } from 'store/services/post';
 import { NoticeType } from 'types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SvgIcon from 'components/SvgIcon';
 import { crewOnSpace } from 'assets/svg/spacers';
 import { RootRouterParams } from 'types/Route';
+import { resetNoticePosts, setNoticePosts } from 'store/slices/posts';
 
 const noticeFilter: { name: string; filterType: NoticeType }[] = [
   {
@@ -31,15 +32,34 @@ const noticeFilter: { name: string; filterType: NoticeType }[] = [
 
 const NoticeScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
-  const [selectedFilter, setSelectedFilter] = useState<number>(0);
-  const currentCategory = useSelector((state) => state.screen.category);
+  const dispatch = useDispatch();
 
-  const { data, isError, isLoading } = useGetNoticePostsQuery({
+  const currentCategory = useSelector((state) => state.screen.category);
+  const [selectedFilter, setSelectedFilter] = useState<number>(0);
+  const noticePosts = useSelector((state) => state.posts.noticePosts);
+  const offset = useRef(-1);
+
+  const { data, refetch, isError, isLoading, isSuccess, isFetching } = useGetNoticePostsQuery({
     ...(currentCategory.categoryId !== -1 && {
       postCategoryId: currentCategory.categoryId,
     }),
+    ...(offset.current !== -1 && {
+      offset: offset.current + 1,
+    }),
     type: noticeFilter[selectedFilter].filterType,
   });
+
+  useEffect(() => {
+    offset.current = -1;
+    dispatch(resetNoticePosts());
+    refetch();
+  }, [selectedFilter, currentCategory]);
+
+  useEffect(() => {
+    if (!isLoading && !isFetching && isSuccess && data) {
+      dispatch(setNoticePosts(data.posts));
+    }
+  }, [isFetching, isSuccess, isLoading]);
 
   if (isLoading) return <></>;
 
@@ -52,33 +72,40 @@ const NoticeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <TopFilterBar
-          items={noticeFilter.map((filter) => filter.name)}
-          onIndexChange={setSelectedFilter}>
-          <PostButton postingType={'notice'} />
-        </TopFilterBar>
-        <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
-        {data.posts.map((post) => (
+      <TopFilterBar
+        items={noticeFilter.map((filter) => filter.name)}
+        onIndexChange={setSelectedFilter}>
+        <PostButton postingType={'notice'} />
+      </TopFilterBar>
+      <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
+
+      <FlatList
+        data={noticePosts}
+        renderItem={({ item }) => (
           <PostPreview
-            postId={post.postId}
-            key={post.postId}
+            postId={item.postId}
+            key={item.postId}
             header={{
-              subText: { left: post.categoryName, right: post.writtenDate },
-              Title: post.title,
+              subText: { left: item.categoryName, right: item.writtenDate },
+              Title: item.title,
             }}
-            description={post.description}
-            isSaved={post.isSaved}
-            viewed={post.isRead}
+            description={item.description.replaceAll('\n', '')}
+            isSaved={item.isSaved}
+            viewed={item.isRead}
             onPress={() =>
               navigation.navigate('PostDetails', {
                 postType: 'notice',
-                postId: post.postId,
+                postId: item.postId,
               })
             }
           />
-        ))}
-      </ScrollView>
+        )}
+        onEndReached={() => {
+          offset.current = data.offset;
+          refetch();
+        }}
+        onEndReachedThreshold={1}
+      />
     </View>
   );
 };

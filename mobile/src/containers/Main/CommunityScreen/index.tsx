@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
-import { ScrollView } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
+import { FlatList } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
 import { crewOnSpace } from 'assets/svg/spacers';
 import { CommunityType } from 'types';
 import { RootRouterParams } from 'types/Route';
 import { BACKGROUND, LINE, WHITE } from 'theme/Colors';
-import { useGetCommunityPostsQuery } from 'store/services/post';
+import { postApi, useGetCommunityPostsQuery } from 'store/services/post';
 import PostPreview from 'components/PostPreview';
 import PostButton from 'components/PostButton';
 import TopFilterBar from 'components/TopFilterBar';
 import SvgIcon from 'components/SvgIcon';
 import CommunityPostAuthor from 'components/CommunityPostAuthor';
+import Text from 'components/Text';
+import { resetCommunityPosts, setCommunityPosts } from 'store/slices/posts';
 
 const communityFilter: { name: string; filterType: CommunityType }[] = [
   {
@@ -28,15 +30,34 @@ const communityFilter: { name: string; filterType: CommunityType }[] = [
 
 const CommunityScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
-  const [selectedFilter, setSelectedFilter] = useState<number>(0);
-  const currentCategory = useSelector((state) => state.screen.category);
+  const dispatch = useDispatch();
 
-  const { data, isError, isLoading } = useGetCommunityPostsQuery({
+  const currentCategory = useSelector((state) => state.screen.category);
+  const [selectedFilter, setSelectedFilter] = useState<number>(0);
+  const communityPosts = useSelector((state) => state.posts.communityPosts);
+  const offset = useRef(-1);
+
+  const { data, refetch, isError, isLoading, isSuccess, isFetching } = useGetCommunityPostsQuery({
     ...(currentCategory.categoryId !== -1 && {
       postCategoryId: currentCategory.categoryId,
     }),
+    ...(offset.current !== -1 && {
+      offset: offset.current + 1,
+    }),
     type: communityFilter[selectedFilter].filterType,
   });
+
+  useEffect(() => {
+    offset.current = -1;
+    dispatch(resetCommunityPosts());
+    refetch();
+  }, [selectedFilter, currentCategory]);
+
+  useEffect(() => {
+    if (!isLoading && !isFetching && isSuccess && data) {
+      dispatch(setCommunityPosts(data.posts));
+    }
+  }, [isFetching, isSuccess, isLoading]);
 
   if (isLoading) return <></>;
 
@@ -44,43 +65,52 @@ const CommunityScreen = () => {
     return (
       <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
         <SvgIcon xml={crewOnSpace} width={160} disabled />
+        <Text>무언가 잘못되었어요...</Text>
       </View>
     );
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <TopFilterBar
-          items={communityFilter.map((filter) => filter.name)}
-          onIndexChange={setSelectedFilter}>
-          <PostButton postingType={'community'} />
-        </TopFilterBar>
-        <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
-        {data.posts.map((post) => (
+      <TopFilterBar
+        items={communityFilter.map((filter) => filter.name)}
+        onIndexChange={(index) => {
+          setSelectedFilter(index);
+        }}>
+        <PostButton postingType={'community'} />
+      </TopFilterBar>
+      <View style={{ backgroundColor: BACKGROUND, height: 10 }} onTouchEnd={() => refetch()} />
+      <FlatList
+        data={communityPosts}
+        renderItem={({ item }) => (
           <PostPreview
-            key={post.postId}
-            postId={post.postId}
+            key={item.postId}
+            postId={item.postId}
             header={{
-              subText: { left: post.categoryName, right: post.writtenDate },
+              subText: { left: item.categoryName, right: item.writtenDate },
               Title: () =>
                 CommunityPostAuthor({
-                  memberId: post.authorId,
-                  name: post.authorName,
-                  profileImage: post.authorImage,
-                  memberCategory: post.authorCategoryName,
+                  memberId: item.authorId,
+                  name: item.authorName,
+                  profileImage: item.authorImage,
+                  memberCategory: item.authorCategoryName,
                 }),
             }}
-            description={post.description}
-            isSaved={post.isSaved}
+            description={item.description.replaceAll('\n', '')}
+            isSaved={item.isSaved}
             onPress={() =>
               navigation.navigate('PostDetails', {
                 postType: 'community',
-                postId: post.postId,
+                postId: item.postId,
               })
             }
           />
-        ))}
-      </ScrollView>
+        )}
+        onEndReached={() => {
+          offset.current = data.offset;
+          refetch();
+        }}
+        onEndReachedThreshold={1}
+      />
     </View>
   );
 };

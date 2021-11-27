@@ -6,11 +6,13 @@ import screen from 'store/slices/screen';
 import { spaceApi } from './services/space';
 import { postApi } from './services/post';
 import { memberApi } from './services/member';
+import posts from './slices/posts';
 
 const reducer = combineReducers({
   space,
   auth,
   screen,
+  posts,
   [spaceApi.reducerPath]: spaceApi.reducer,
   [postApi.reducerPath]: postApi.reducer,
   [memberApi.reducerPath]: memberApi.reducer,
