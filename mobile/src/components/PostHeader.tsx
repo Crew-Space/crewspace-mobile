@@ -7,7 +7,7 @@ import Text from 'components/Text';
 import PostCategory from 'components/PostCategory';
 import { PostHeaderProps } from 'types';
 import SvgIcon from 'components/SvgIcon';
-import { postApi, useSavePostMutation, useUnsavePostMutation } from 'store/services/post';
+import { useSavePostMutation, useUnsavePostMutation } from 'store/services/post';
 
 type Props = PostHeaderProps & { postId: number };
 
@@ -16,7 +16,6 @@ const PostHeader = ({ subText, Title, isSaved, postId }: Props) => {
   const [unsavePost] = useUnsavePostMutation();
 
   const onPress = async () => {
-    console.log(isSaved);
     isSaved ? unsavePost(postId) : savePost(postId);
   };
 
