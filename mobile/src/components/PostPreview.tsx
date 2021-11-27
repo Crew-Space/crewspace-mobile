@@ -3,7 +3,7 @@ import { TouchableHighlightProps, View, TouchableHighlight } from 'react-native'
 import { SvgXml } from 'react-native-svg';
 
 import { PostPreviewProps } from 'types';
-import { GRAY1, GRAY2, GRAY4, PRIMARY, WHITE } from 'theme/Colors';
+import { GRAY1, GRAY2, GRAY4, LINE, PRIMARY, WHITE } from 'theme/Colors';
 import { check } from 'assets/svg/icons';
 import Text from 'components/Text';
 import PostHeader from 'components/PostHeader';
@@ -18,6 +18,8 @@ const PostPreview = ({ header, description, isSaved, viewed, postId, ...restProp
       paddingVertical: 18,
       paddingHorizontal: 20,
       backgroundColor: WHITE,
+      borderBottomColor: LINE,
+      borderBottomWidth: 1,
     }}>
     <>
       <PostHeader {...header} isSaved={isSaved} postId={postId} />
