@@ -87,7 +87,6 @@ export const postApi = createApi({
         Object.entries(newPost)
           .filter(([key, _]) => key !== 'image')
           .forEach(([key, value]) => formdata.append(key, value));
-        console.log(formdata);
 
         return {
           url: `/posts/community/${newPost.postCategoryId}/post`,

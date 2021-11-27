@@ -14,7 +14,6 @@ import { useGetMemberQuery } from 'store/services/member';
 const MemberProfileDetailsScreen = () => {
   const { params } = useRoute<MemberProfileDetailsScreenPropsType>();
   const { data } = useGetMemberQuery(params.memberId);
-  console.log(!!params.isMe);
 
   if (!data) return <></>;
 
