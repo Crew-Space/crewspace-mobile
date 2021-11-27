@@ -18,6 +18,7 @@ import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
 import { setToken } from 'store/slices/auth';
 import { setSpaceId } from 'store/slices/space';
 import { useGetMySpacesQuery } from 'store/services/space';
+import CrewOnError from 'components/CrewOnError';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
@@ -71,6 +72,8 @@ const LoginScreen = () => {
   useLayoutEffect(() => {
     setUser();
   }, []);
+
+  if (isError || !data) return <CrewOnError />;
 
   return (
     <SafeAreaView style={styles.container}>

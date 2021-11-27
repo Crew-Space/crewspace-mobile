@@ -12,6 +12,7 @@ import ProfileDetails from './ProfileDetails';
 import { useGetMemberQuery, useUpdateMyProfileMutation } from 'store/services/member';
 import Button from 'components/Button';
 import { ReqUpdateMyProfile } from 'types/Request';
+import CrewOnError from 'components/CrewOnError';
 
 const initialUserInput: ReqUpdateMyProfile = {
   name: '',
@@ -27,7 +28,7 @@ const initialUserInput: ReqUpdateMyProfile = {
 const MemberProfileDetailsScreen = () => {
   const navigation = useNavigation();
   const { params } = useRoute<MemberProfileDetailsScreenPropsType>();
-  const { data, isLoading, isFetching, isSuccess } = useGetMemberQuery(params.memberId);
+  const { data, isLoading, isFetching, isSuccess, isError } = useGetMemberQuery(params.memberId);
   const [updateProfile] = useUpdateMyProfileMutation();
   const [myProfile, setMyProfile] = useState<ReqUpdateMyProfile>(initialUserInput);
   const [disabled, setDisabled] = useState(true);
@@ -50,7 +51,8 @@ const MemberProfileDetailsScreen = () => {
     });
   };
 
-  if (!data) return <></>;
+  if (isLoading) return <></>;
+  if (isError || !data) return <CrewOnError />;
 
   return (
     <SafeAreaView edges={['right', 'left', 'bottom']} style={styles.outer}>

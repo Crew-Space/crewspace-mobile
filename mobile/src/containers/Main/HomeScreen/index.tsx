@@ -14,6 +14,7 @@ import Text from 'components/Text';
 import { useGetSpaceHomeQuery } from 'store/services/space';
 import { setTabName } from 'store/slices/screen';
 import { setHomeNoticePosts } from 'store/slices/posts';
+import CrewOnError from 'components/CrewOnError';
 
 const HomeScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
@@ -62,7 +63,8 @@ const HomeScreen = () => {
     }
   }, [isFetching, isSuccess, isLoading]);
 
-  if (!homeData) return <></>;
+  if (isLoading) return <></>;
+  if (isError || !homeData) return <CrewOnError />;
 
   return (
     <View style={styles.container}>

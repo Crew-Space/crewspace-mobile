@@ -18,6 +18,7 @@ import { useEnterSpaceMutation, useGetRegisterInfoQuery } from 'store/services/s
 import { ReqSpaceEnter } from 'types/Request';
 import { useDispatch } from 'react-redux';
 import { setSpace } from 'store/slices/space';
+import CrewOnError from 'components/CrewOnError';
 
 type StepType = 1 | 2;
 
@@ -45,7 +46,7 @@ const EnterCrewScreen = () => {
   const [stepLevel, setStepLevel] = useState<StepType>(1);
   const [userInput, setUserInput] = useState<ReqSpaceEnter>(initialUserInput);
 
-  const { data: spaceInfo } = useGetRegisterInfoQuery();
+  const { data: spaceInfo, isError } = useGetRegisterInfoQuery();
   const [enterSpace, { data: userInfo, isError: isUserInfoError }] = useEnterSpaceMutation();
 
   const steps: StepsType = {
@@ -92,6 +93,7 @@ const EnterCrewScreen = () => {
   }, [userInfo]);
 
   if (!spaceInfo) return <></>;
+  if (isError || !spaceInfo) return <CrewOnError />;
 
   return (
     <SafeAreaView style={styles.container}>

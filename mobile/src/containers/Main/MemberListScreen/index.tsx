@@ -13,13 +13,18 @@ import SvgIcon from 'components/SvgIcon';
 import MemberProfilePreview from 'components/MemberProfilePreview';
 import { useGetMemberCategoriesQuery, useGetMembersQuery } from 'store/services/member';
 import { MemberProfilePreviewType } from 'types/Response';
+import CrewOnError from 'components/CrewOnError';
 
 const MemberListScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
 
   const { data: categoriesData } = useGetMemberCategoriesQuery();
-  const { data: membersData } = useGetMembersQuery({
+  const {
+    data: membersData,
+    isLoading,
+    isError,
+  } = useGetMembersQuery({
     ...(selectedCategory !== 0 && {
       memberCategoryId: categoriesData
         ? categoriesData.memberCategories[selectedCategory - 1].categoryId
@@ -37,6 +42,9 @@ const MemberListScreen = () => {
       memberId: member.memberId,
       isMe: member.memberId === myProfile?.memberId,
     });
+
+  if (isLoading) return <></>;
+  if (isError || !membersData) return <CrewOnError />;
 
   return (
     <BottomTabSafeAreaView style={styles.container}>

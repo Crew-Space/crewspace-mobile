@@ -1,19 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/core';
 
 import { BACKGROUND, LINE, WHITE } from 'theme/Colors';
 import PostPreview from 'components/PostPreview';
 import PostButton from 'components/PostButton';
 import TopFilterBar from 'components/TopFilterBar';
-import { postApi, useGetNoticePostsQuery } from 'store/services/post';
+import { useGetNoticePostsQuery } from 'store/services/post';
 import { NoticeType } from 'types';
 import { useDispatch, useSelector } from 'react-redux';
 import SvgIcon from 'components/SvgIcon';
 import { crewOnSpace } from 'assets/svg/spacers';
 import { RootRouterParams } from 'types/Route';
 import { resetNoticePosts, setNoticePosts } from 'store/slices/posts';
+import CrewOnError from 'components/CrewOnError';
 
 const noticeFilter: { name: string; filterType: NoticeType }[] = [
   {
@@ -63,12 +64,7 @@ const NoticeScreen = () => {
 
   if (isLoading) return <></>;
 
-  if (isError || !data)
-    return (
-      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-        <SvgIcon xml={crewOnSpace} width={160} disabled />
-      </View>
-    );
+  if (isError || !data) <CrewOnError />;
 
   return (
     <View style={styles.container}>

@@ -17,6 +17,7 @@ import CustomEvent from 'constant/customEvent';
 import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
 import { setSpace } from 'store/slices/space';
 import { useCheckInvitationQuery } from 'store/services/space';
+import CrewOnError from 'components/CrewOnError';
 
 const CodeText = ({ char }: { char: string }) => {
   return (
@@ -33,7 +34,7 @@ const SpaceCodeScreen = () => {
   const dispatch = useDispatch();
   const inputRef = useRef<TextInput>(null);
   const [inputCode, setInputCode] = useState<string[]>(INITIAL_INVITATION_CODE);
-  const { data, isError } = useCheckInvitationQuery(inputCode.join(''), {
+  const { data, isError, isLoading } = useCheckInvitationQuery(inputCode.join(''), {
     skip: inputCode.filter((str) => str !== '-').length !== 6,
   });
 
@@ -70,6 +71,9 @@ const SpaceCodeScreen = () => {
   DeviceEventEmitter.addListener(CustomEvent.welcomeSubButton.name, () =>
     navigation.replace('Invitation'),
   );
+
+  if (isLoading) return <></>;
+  if (isError) return <CrewOnError />;
 
   return (
     <SafeAreaView style={styles.container}>
