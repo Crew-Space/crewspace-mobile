@@ -20,7 +20,7 @@ const TopFilterBar = ({ children, items, defaultIndex = 0, onIndexChange }: Prop
         <View style={styles.topTabBarFilter}>
           {items.map((item, index) => (
             <TouchableText
-              key={index}
+              key={typeof item === 'string' ? item : item.categoryId}
               fontType={'BOLD_14'}
               style={{ marginRight: 20 }}
               color={selectedIndex === index ? BLACK : GRAY2}

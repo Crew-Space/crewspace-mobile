@@ -81,6 +81,7 @@ const CommunityScreen = () => {
       <View style={{ backgroundColor: BACKGROUND, height: 10 }} onTouchEnd={() => refetch()} />
       <FlatList
         data={communityPosts}
+        extraData={communityPosts}
         renderItem={({ item }) => (
           <PostPreview
             key={item.postId}

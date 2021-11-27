@@ -75,12 +75,13 @@ const NoticeScreen = () => {
       <TopFilterBar
         items={noticeFilter.map((filter) => filter.name)}
         onIndexChange={setSelectedFilter}>
-        <PostButton postingType={'notice'} />
+        {false && <PostButton postingType={'notice'} />}
       </TopFilterBar>
       <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
 
       <FlatList
         data={noticePosts}
+        extraData={noticePosts}
         renderItem={({ item }) => (
           <PostPreview
             postId={item.postId}

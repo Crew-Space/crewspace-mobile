@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useRoute } from '@react-navigation/core';
@@ -8,22 +8,93 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { GRAY2, LINE, PRIMARY, WHITE } from 'theme/Colors';
 import Text from 'components/Text';
 import { PostDetailsScreenPropsType } from 'types/Route';
-import { useGetCommunityPostQuery, useGetNoticePostQuery } from 'store/services/post';
+import {
+  useFixNoticeMutation,
+  useGetCommunityPostQuery,
+  useGetNoticePostQuery,
+  useSavePostMutation,
+  useUnfixNoticeMutation,
+  useUnsavePostMutation,
+} from 'store/services/post';
 import { CommunityDetailHeader, NoticeDetailHeader } from './PostDetailHeader';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { pin, save } from 'assets/svg/icons';
 import { SvgXml } from 'react-native-svg';
-import { setPostRead } from 'store/slices/posts';
+import { setPostRead, setPostSave, setPostUnsave } from 'store/slices/posts';
 
 const PostDetailsScreen = () => {
   const dispatch = useDispatch();
+  const [isSaved, setIsSaved] = useState<boolean>();
+  const [isFixed, setIsFixed] = useState<boolean>();
   const {
     params: { postId, postType },
   } = useRoute<PostDetailsScreenPropsType>();
-  const { data: noticeData } = useGetNoticePostQuery(postId, { skip: postType !== 'notice' });
-  const { data: communityData } = useGetCommunityPostQuery(postId, {
+  const {
+    data: noticeData,
+    isLoading: noticeLoading,
+    isSuccess: noticeSuccess,
+  } = useGetNoticePostQuery(postId, {
+    skip: postType !== 'notice',
+  });
+  const {
+    data: communityData,
+    isLoading: communityLoading,
+    isSuccess: communitySuccess,
+  } = useGetCommunityPostQuery(postId, {
     skip: postType !== 'community',
   });
+
+  const [savePost, { isSuccess: saveSuccess, isLoading: saveLoading }] = useSavePostMutation();
+  const [unsavePost, { isSuccess: unsaveSuccess, isLoading: unsaveLoading }] =
+    useUnsavePostMutation();
+  const onSavePress = async () => {
+    isSaved ? unsavePost(postId) : savePost(postId);
+  };
+
+  const [fixPost, { isSuccess: fixSuccess, isLoading: fixLoading }] = useFixNoticeMutation();
+  const [unfixPost, { isSuccess: unfixSuccess, isLoading: unfixLoading }] =
+    useUnfixNoticeMutation();
+  const onFixPress = async () => {
+    isFixed ? unfixPost(postId) : fixPost(postId);
+  };
+
+  useEffect(() => {
+    if (!saveLoading && saveSuccess) {
+      dispatch(setPostSave(postId));
+      setIsSaved(true);
+    }
+  }, [saveSuccess, saveLoading]);
+  useEffect(() => {
+    if (!unsaveLoading && unsaveSuccess) {
+      dispatch(setPostUnsave(postId));
+      setIsSaved(false);
+    }
+  }, [unsaveSuccess, unsaveLoading]);
+
+  useEffect(() => {
+    if (!fixLoading && fixSuccess) {
+      dispatch(setPostSave(postId));
+      setIsFixed(true);
+    }
+  }, [fixSuccess, fixLoading]);
+  useEffect(() => {
+    if (!unfixLoading && unfixSuccess) {
+      dispatch(setPostUnsave(postId));
+      setIsFixed(false);
+    }
+  }, [unfixSuccess, unfixLoading]);
+
+  useEffect(() => {
+    if (!noticeLoading && noticeSuccess && noticeData) {
+      setIsSaved(noticeData.isSaved);
+      setIsFixed(noticeData.isFixed);
+    }
+  }, [noticeLoading, noticeSuccess]);
+  useEffect(() => {
+    if (!communityLoading && communitySuccess && communityData) {
+      setIsSaved(communityData.isSaved);
+    }
+  }, [communityLoading, communitySuccess]);
 
   useEffect(() => {
     dispatch(setPostRead(postId));
@@ -52,32 +123,30 @@ const PostDetailsScreen = () => {
         <Text paragraph>
           {postType === 'notice' ? noticeData?.description : communityData?.description}
         </Text>
-        {(postType === 'notice' ? noticeData : communityData)?.images.map((image, index) => (
-          <Image key={index} source={{ uri: image }} style={{ width: '100%' }} />
-        ))}
+        {(postType === 'notice' ? noticeData : communityData)?.images.map((image, index) => {
+          console.log(image);
+          return (
+            <Image
+              style={styles.image}
+              key={index}
+              source={{ uri: image }}
+              resizeMode={'contain'}
+            />
+          );
+        })}
       </ScrollView>
       <View style={styles.bottomTabBar}>
         {postType === 'notice' && (
-          <TouchableOpacity style={styles.iconButton}>
-            <SvgXml
-              xml={noticeData?.isFixed ? pin.on : pin.off}
-              fill={noticeData?.isFixed ? PRIMARY : GRAY2}
-              width={24}
-            />
-            <Text fontType={'REGULAR_12'} color={noticeData?.isFixed ? PRIMARY : GRAY2}>
+          <TouchableOpacity style={styles.iconButton} onPress={onFixPress}>
+            <SvgXml xml={isFixed ? pin.on : pin.off} fill={isFixed ? PRIMARY : GRAY2} width={24} />
+            <Text fontType={'REGULAR_12'} color={isFixed ? PRIMARY : GRAY2}>
               고정
             </Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity style={styles.iconButton}>
-          <SvgXml
-            xml={(postType === 'notice' ? noticeData : communityData)?.isSaved ? save.on : save.off}
-            fill={(postType === 'notice' ? noticeData : communityData)?.isSaved ? PRIMARY : GRAY2}
-            width={24}
-          />
-          <Text
-            fontType={'REGULAR_12'}
-            color={(postType === 'notice' ? noticeData : communityData)?.isSaved ? PRIMARY : GRAY2}>
+        <TouchableOpacity style={styles.iconButton} onPress={onSavePress}>
+          <SvgXml xml={isSaved ? save.on : save.off} fill={isSaved ? PRIMARY : GRAY2} width={24} />
+          <Text fontType={'REGULAR_12'} color={isSaved ? PRIMARY : GRAY2}>
             저장
           </Text>
         </TouchableOpacity>
@@ -107,6 +176,11 @@ const styles = StyleSheet.create({
   iconButton: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    height: 300,
+    marginVertical: 10,
   },
 });
 

@@ -34,14 +34,20 @@ export const NoticeDetailHeader = ({
       </Text>
       <Text fontType={'BOLD_20'}>{title}</Text>
       <View style={{ flexDirection: 'row', marginTop: 6 }}>
-        <Text fontType={'REGULAR_14'} color={GRAY2}>
+        <Text fontType={'REGULAR_14'} color={GRAY2} style={{ marginRight: 10 }}>
           {writtenDate}
         </Text>
-        {targets.map((target) => (
-          <Text key={target.targetId} fontType={'REGULAR_14'} color={GRAY1}>
-            {`@${target}`}
-          </Text>
-        ))}
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
+          {targets.map((target) => (
+            <Text
+              key={target.targetId}
+              fontType={'REGULAR_14'}
+              color={GRAY1}
+              style={{ marginRight: 6 }}>
+              {`@${target.targetName}`}
+            </Text>
+          ))}
+        </View>
       </View>
     </View>
   );

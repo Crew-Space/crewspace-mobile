@@ -20,7 +20,14 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
 
   const homeNoticePosts = useSelector((state) => state.posts.homeNoticePosts);
-  const { data: homeData, isError, isLoading, isSuccess, isFetching } = useGetSpaceHomeQuery();
+  const {
+    data: homeData,
+    refetch,
+    isError,
+    isLoading,
+    isSuccess,
+    isFetching,
+  } = useGetSpaceHomeQuery();
 
   const scrollYState = useRef(new Animated.Value(0)).current;
   const [refreshing, setRefreshing] = useState(false);
@@ -34,7 +41,7 @@ const HomeScreen = () => {
         refreshing={refreshing}
         onRefresh={() => {
           setRefreshing(true);
-          setTimeout(() => setRefreshing(false), 1000);
+          refetch();
         }}
         progressViewOffset={HEADER_MAX_HEIGHT + STICKY_EXPANDABLE_HEADER_HEIGHT}
       />
@@ -51,6 +58,7 @@ const HomeScreen = () => {
   useEffect(() => {
     if (!isLoading && !isFetching && isSuccess && homeData) {
       dispatch(setHomeNoticePosts(homeData.newNotices));
+      setRefreshing(false);
     }
   }, [isFetching, isSuccess, isLoading]);
 
