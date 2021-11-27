@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
-import { BACKGROUND, GRAY2, LINE, WHITE } from 'theme/Colors';
+import { crewOnSpace } from 'assets/svg/spacers';
+import { CommunityType } from 'types';
 import { RootRouterParams } from 'types/Route';
-import Text from 'components/Text';
+import { BACKGROUND, LINE, WHITE } from 'theme/Colors';
+import { useGetCommunityPostsQuery } from 'store/services/post';
 import PostPreview from 'components/PostPreview';
 import PostButton from 'components/PostButton';
-import ProfileImage from 'components/ProfileImage';
 import TopFilterBar from 'components/TopFilterBar';
-import { CommunityType } from 'types';
-import { MemberProfilePreviewType } from 'types/Response';
-import { useGetCommunityPostsQuery } from 'store/services/post';
-import { useSelector } from 'react-redux';
 import SvgIcon from 'components/SvgIcon';
-import { crewOnSpace } from 'assets/svg/spacers';
+import CommunityPostAuthor from 'components/CommunityPostAuthor';
 
 const communityFilter: { name: string; filterType: CommunityType }[] = [
   {
@@ -27,18 +25,6 @@ const communityFilter: { name: string; filterType: CommunityType }[] = [
     filterType: 'SAVED',
   },
 ];
-
-const CommunityPostWriter = (profile: Omit<MemberProfilePreviewType, 'memberCategoryId'>) => (
-  <View style={{ flexDirection: 'row', marginTop: 5 }}>
-    <ProfileImage uri={profile.profileImage} width={36} style={{ marginRight: 10 }} />
-    <View>
-      <Text fontType={'BOLD_14'}>{profile.name}</Text>
-      <Text fontType={'REGULAR_11'} color={GRAY2}>
-        {profile.memberCategory}
-      </Text>
-    </View>
-  </View>
-);
 
 const CommunityScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
@@ -77,7 +63,7 @@ const CommunityScreen = () => {
             header={{
               subText: { left: post.categoryName, right: post.writtenDate },
               Title: () =>
-                CommunityPostWriter({
+                CommunityPostAuthor({
                   memberId: post.authorId,
                   name: post.authorName,
                   profileImage: post.authorImage,
@@ -85,7 +71,7 @@ const CommunityScreen = () => {
                 }),
             }}
             description={post.description}
-            isSaved={false}
+            isSaved={post.isSaved}
             onPress={() =>
               navigation.navigate('PostDetails', {
                 postType: 'community',
