@@ -49,6 +49,16 @@ export const posts = createSlice({
         ),
       ],
     }),
+
+    setPostRead: (state, action: PayloadAction<number>) => ({
+      ...state,
+      homeNoticePosts: [
+        ...state.homeNoticePosts.map((post) =>
+          post.postId === action.payload ? { ...post, isRead: true } : post,
+        ),
+      ],
+    }),
+
     setHomeNoticePosts: (state, action: PayloadAction<NoticePostPreview[]>) => ({
       ...state,
       homeNoticePosts: [...state.homeNoticePosts, ...action.payload],
@@ -79,6 +89,7 @@ export const posts = createSlice({
 export const {
   setPostSave,
   setPostUnsave,
+  setPostRead,
   setHomeNoticePosts,
   setNoticePosts,
   setCommunityPosts,

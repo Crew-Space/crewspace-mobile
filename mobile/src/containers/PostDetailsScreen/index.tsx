@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { useRoute } from '@react-navigation/core';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,8 +13,10 @@ import { CommunityDetailHeader, NoticeDetailHeader } from './PostDetailHeader';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { pin, save } from 'assets/svg/icons';
 import { SvgXml } from 'react-native-svg';
+import { setPostRead } from 'store/slices/posts';
 
 const PostDetailsScreen = () => {
+  const dispatch = useDispatch();
   const {
     params: { postId, postType },
   } = useRoute<PostDetailsScreenPropsType>();
@@ -21,6 +24,10 @@ const PostDetailsScreen = () => {
   const { data: communityData } = useGetCommunityPostQuery(postId, {
     skip: postType !== 'community',
   });
+
+  useEffect(() => {
+    dispatch(setPostRead(postId));
+  }, []);
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'left', 'right']}>
