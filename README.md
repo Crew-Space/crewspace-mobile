@@ -14,3 +14,6 @@
 * RTK query의 캐싱 기능을 적극적으로 활용
 * 에러에 따른 사용자 화면 분기 처리
 
+### Navigation Structure
+<img src="https://user-images.githubusercontent.com/49540564/143724799-f1f1742f-47fc-4dc4-9412-429a702591c8.png" width=600/>
+
