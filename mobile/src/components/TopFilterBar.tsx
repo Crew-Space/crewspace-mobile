@@ -3,7 +3,7 @@ import { StyleSheet, View, ViewProps } from 'react-native';
 
 import { WHITE, BLACK, GRAY2, LINE } from 'theme/Colors';
 import TouchableText from 'components/TouchableText';
-import { Category } from 'types/Response';
+import { Category } from 'types';
 
 interface Props extends ViewProps {
   items: Category[] | string[];

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Category } from 'types/Response';
+import { Category } from 'types';
 import { MainRouterParamList } from 'types/Route';
 
 export const screen = createSlice({

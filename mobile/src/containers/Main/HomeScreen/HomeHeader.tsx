@@ -15,7 +15,8 @@ import { useNavigation } from '@react-navigation/core';
 import { RootRouterParams } from 'types/Route';
 import { useGetMySpacesQuery } from 'store/services/space';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSpaceId } from 'store/slices/space';
+import { setSpace } from 'store/slices/space';
+import { Space } from 'types';
 
 interface Props {
   scrollYState: Animated.Value;

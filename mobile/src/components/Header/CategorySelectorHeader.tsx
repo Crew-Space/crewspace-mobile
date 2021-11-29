@@ -9,9 +9,9 @@ import Text from 'components/Text';
 import { BLACK, LINE, WHITE } from 'theme/Colors';
 import { normalize } from 'utils';
 import { SCREEN_HEIGHT } from 'theme/Metrics';
-import { Category } from 'types/Response';
 import { setCategory } from 'store/slices/screen';
 import { useGetPostCategoriesQuery } from 'store/services/post';
+import { Category } from 'types';
 
 const HEADER_HEIGHT = normalize(60);
 

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SPACE_INITAL_ID } from 'store/services';
-import { Space } from 'types/Response';
+import { Space } from 'types';
 
 export const space = createSlice({
   name: 'space',

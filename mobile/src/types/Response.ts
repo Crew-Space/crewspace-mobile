@@ -1,42 +1,24 @@
-import { BaseProfile, CommunityType, File, NoticeType, SpaceOptionsInfo } from 'types';
+import {
+  Author,
+  BaseProfile,
+  Category,
+  CommunityType,
+  File,
+  FixedNotice,
+  NoticeType,
+  PostBaseInfo,
+  Space,
+  SpaceOptionsInfo,
+  Target,
+} from 'types';
 import { PickRenameMulti } from 'utils/types';
 
-export type Category = {
-  categoryName: string;
-  categoryId: number;
-};
-export type Target = {
-  targetId: number;
-  targetName: string;
-};
-export type Space = {
-  spaceId: number;
-  spaceName: string;
-  spaceImage: string;
-};
-export type FixedNotice = {
-  categoryName: string;
-  title: string;
-  writtenDate: string;
-};
-export type Author = {
-  authorId: number;
-  authorName: string;
-  authorImage: string;
-  authorCategoryName: string;
-};
-export type PostBaseInfo = {
-  postId: number;
-  categoryName: string;
-  description: string;
-  writtenDate: string;
-  isSaved: boolean;
-};
 export type ReqNewPost = {
   postCategoryId: number;
   image?: File[];
   description: string;
 };
+
 export type ReqNewNoticePost = ReqNewPost & {
   title: string;
   targets: number[];

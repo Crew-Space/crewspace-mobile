@@ -53,8 +53,6 @@ export type SpaceOptionsInfo = {
   etc: string;
 };
 
-// export type MemberProfile = MemberBaseInfo & SpaceOptionsInfo;
-
 /** Space **/
 export type SpaceBaseInfo = {
   spaceName: string;
@@ -66,8 +64,6 @@ export type NoticeType = 'ALL' | 'SAVED' | 'NREAD';
 export type CommunityType = 'ALL' | 'SAVED';
 export type PostType = 'notice' | 'community';
 
-///////
-
 export type BaseProfile = {
   image: string;
   name: string;
@@ -78,4 +74,36 @@ export type File = {
   uri: string;
   type: string;
   name: string;
+};
+
+export type Category = {
+  categoryName: string;
+  categoryId: number;
+};
+export type Target = {
+  targetId: number;
+  targetName: string;
+};
+export type Space = {
+  spaceId: number;
+  spaceName: string;
+  spaceImage: string;
+};
+export type FixedNotice = {
+  categoryName: string;
+  title: string;
+  writtenDate: string;
+};
+export type Author = {
+  authorId: number;
+  authorName: string;
+  authorImage: string;
+  authorCategoryName: string;
+};
+export type PostBaseInfo = {
+  postId: number;
+  categoryName: string;
+  description: string;
+  writtenDate: string;
+  isSaved: boolean;
 };
