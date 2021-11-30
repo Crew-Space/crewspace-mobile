@@ -12,4 +12,5 @@ export { default as CommunityScreen } from './Main/CommunityScreen';
 export { default as HomeScreen } from './Main/HomeScreen';
 export { default as NoticeScreen } from './Main/NoticeScreen';
 export { default as MemberListScreen } from './Main/MemberListScreen';
-export { default as SettingsScreen } from './Main/SettingsScreen';
+
+export { default as SettingHome } from './Settings/SettingHome';

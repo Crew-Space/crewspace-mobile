@@ -5,10 +5,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { WHITE } from 'theme/Colors';
 import Text from 'components/Text';
 
-const SettingsScreen = () => {
+const SettingHome = () => {
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'left', 'right']}>
-      <Text fontType={'REGULAR_16'}>SettingsScreen</Text>
+      <Text fontType={'REGULAR_16'}>SettingHome</Text>
     </SafeAreaView>
   );
 };
@@ -21,4 +21,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SettingsScreen;
+export default SettingHome;

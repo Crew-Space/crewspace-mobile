@@ -2,14 +2,14 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { SettingsParamList } from 'types/Route';
-import { SettingsScreen } from 'containers';
+import { SettingHome } from 'containers';
 
 const Stack = createStackNavigator<SettingsParamList>();
 
 const SettingsNavigation = () => {
   return (
-    <Stack.Navigator initialRouteName='Settings'>
-      <Stack.Screen name='Settings' component={SettingsScreen} />
+    <Stack.Navigator initialRouteName='SettingHome'>
+      <Stack.Screen name='SettingHome' component={SettingHome} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

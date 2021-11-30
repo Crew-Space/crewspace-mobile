@@ -43,7 +43,7 @@ export type MainRouterParamList = {
 };
 
 export type SettingsParamList = {
-  Settings: undefined;
+  SettingHome: undefined;
 };
 
 export type RootRouterParams = StackNavigationProp<RootRouterParamList>;
