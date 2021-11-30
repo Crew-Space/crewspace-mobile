@@ -2,22 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useRoute } from '@react-navigation/core';
 
-import CustomEvent from 'constant/customEvent';
-import { welcomeParams } from 'constant/welcome';
-import { ReqSpaceEnter } from 'types/Request';
-import { EnterSpaceScreenPropsType, RootRouterParams } from 'types/Route';
 import { BLACK, GRAY4, WHITE } from 'theme/Colors';
-import { arrowLeft } from 'assets/svg/icons';
-import { useEnterSpaceMutation, useGetRegisterInfoQuery } from 'store/services/space';
-
 import Text from 'components/Text';
 import SvgIcon from 'components/SvgIcon';
+import { arrowLeft } from 'assets/svg/icons';
 import Button from 'components/Button';
-import CrewOnError from 'components/CrewOnError';
+import { useNavigation } from '@react-navigation/core';
+import { RootRouterParams } from 'types/Route';
+import { welcomeParams } from 'constant/welcome';
+import CustomEvent from 'constant/customEvent';
 import Step1 from './Step1';
 import Step2 from './Step2';
+import { useEnterSpaceMutation, useGetRegisterInfoQuery } from 'store/services/space';
+import { ReqSpaceEnter } from 'types/Request';
+import { useDispatch } from 'react-redux';
+import { setSpace } from 'store/slices/space';
+import CrewOnError from 'components/CrewOnError';
 
 type StepType = 1 | 2;
 
@@ -40,10 +41,8 @@ const initialUserInput: ReqSpaceEnter = {
 };
 
 const EnterSpaceScreen = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation<RootRouterParams>();
-  const {
-    params: { space },
-  } = useRoute<EnterSpaceScreenPropsType>();
   const [stepLevel, setStepLevel] = useState<StepType>(1);
   const [userInput, setUserInput] = useState<ReqSpaceEnter>(initialUserInput);
 
@@ -57,8 +56,9 @@ const EnterSpaceScreen = () => {
     },
     2: {
       descInfo: '추가 프로필을\n입력해 주세요✏️',
-      onPress: async () => {
+      onPress: () => {
         if (!userInput) return;
+
         enterSpace(userInput);
 
         if (isUserInfoError) {
@@ -68,7 +68,8 @@ const EnterSpaceScreen = () => {
     },
   };
 
-  DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, () => {
+  DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, (space) => {
+    dispatch(setSpace(space));
     navigation.replace('Main');
   });
 
