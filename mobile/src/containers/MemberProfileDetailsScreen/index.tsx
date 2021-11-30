@@ -38,7 +38,6 @@ const MemberProfileDetailsScreen = () => {
       setMyProfile({
         ...data,
         profileImage: undefined,
-        memberCategoryId: 0,
       });
     }
   }, [isLoading, isFetching, isSuccess]);
@@ -78,16 +77,18 @@ const MemberProfileDetailsScreen = () => {
           </KeyboardAwareScrollView>
         </View>
       </TouchableWithoutFeedback>
-      <View style={styles.buttonContainer}>
-        <Button
-          disabled={disabled}
-          onPress={() => {
-            updateProfile(myProfile);
-            navigation.goBack();
-          }}>
-          저장
-        </Button>
-      </View>
+      {params.isMe && (
+        <View style={styles.buttonContainer}>
+          <Button
+            disabled={disabled}
+            onPress={() => {
+              updateProfile(myProfile);
+              navigation.goBack();
+            }}>
+            저장
+          </Button>
+        </View>
+      )}
     </SafeAreaView>
   );
 };

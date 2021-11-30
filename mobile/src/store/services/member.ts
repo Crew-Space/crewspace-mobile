@@ -29,7 +29,7 @@ export const memberApi = createApi({
       query: (newProfile) => {
         const formdata = new FormData();
         newProfile.profileImage &&
-          formdata.append('image', {
+          formdata.append('profileImage', {
             ...newProfile.profileImage,
             uri:
               Platform.OS === 'ios'
@@ -37,7 +37,7 @@ export const memberApi = createApi({
                 : newProfile.profileImage.uri,
           });
         Object.entries(newProfile)
-          .filter(([key, _]) => key !== 'image')
+          .filter(([key, _]) => key !== 'profileImage')
           .forEach(([key, value]) => formdata.append(key, value));
 
         return {

@@ -125,4 +125,5 @@ export type ResMembers = {
 export type ResMember = SpaceOptionsInfo &
   PickRenameMulti<BaseProfile, { image: 'profileImage' }> & {
     memberCategory: string;
+    memberCategoryId: number;
   };
