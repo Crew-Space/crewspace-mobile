@@ -1,15 +1,14 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
-import { PostingType, PostType } from 'types';
-import { Space } from './Response';
+import { PostType, Space } from 'types';
 
 export type RootRouterParamList = {
   Auth: undefined;
   Contents: undefined;
   Invitation: NavigatorScreenParams<InvitationParamList> | undefined;
   Main: NavigatorScreenParams<MainRouterParamList> | undefined;
-  Post: { postingType: PostingType };
+  Post: { postType: PostType };
   EditCategory: undefined;
   PostDetails: {
     postType: PostType;

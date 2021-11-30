@@ -8,13 +8,13 @@ import { WHITE, PRIMARY } from 'theme/Colors';
 import { normalize } from 'utils';
 import { pen } from 'assets/svg/icons';
 import { RootRouterParams } from 'types/Route';
-import { PostingType } from 'types';
+import { PostType } from 'types';
 
 interface Props extends TouchableOpacityProps {
-  postingType: PostingType;
+  postType: PostType;
 }
 
-const PostButton = ({ postingType, ...restProps }: Props) => {
+const PostButton = ({ postType, ...restProps }: Props) => {
   const navigation = useNavigation<RootRouterParams>();
 
   return (
@@ -30,7 +30,7 @@ const PostButton = ({ postingType, ...restProps }: Props) => {
       }}
       onPress={() =>
         navigation.navigate('Post', {
-          postingType,
+          postType,
         })
       }>
       <SvgXml xml={pen} fill={WHITE} width={normalize(16)} style={{ marginRight: 4 }} />

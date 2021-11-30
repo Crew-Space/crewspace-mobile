@@ -1,6 +1,8 @@
 import React from 'react';
 
-export type PostingType = 'notice' | 'community';
+export type NoticeType = 'ALL' | 'SAVED' | 'NREAD';
+export type CommunityType = 'ALL' | 'SAVED';
+export type PostType = 'notice' | 'community';
 
 export interface PostHeaderSubTextProps {
   left: string;
@@ -59,10 +61,6 @@ export type SpaceBaseInfo = {
   spaceImage: string;
   bannerImage: string;
 };
-
-export type NoticeType = 'ALL' | 'SAVED' | 'NREAD';
-export type CommunityType = 'ALL' | 'SAVED';
-export type PostType = 'notice' | 'community';
 
 export type BaseProfile = {
   image: string;
