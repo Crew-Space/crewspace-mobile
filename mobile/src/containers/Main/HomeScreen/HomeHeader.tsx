@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Animated, Platform, StyleSheet } from 'react-native';
 
 import { search } from 'assets/svg/icons';
 import { BLACK, WHITE } from 'theme/Colors';
-import { HeaderListItemType } from 'types';
 import {
   HEADER_MAX_HEIGHT,
   HEADER_SCROLL_DISTANCE,
@@ -16,27 +15,17 @@ import { RootRouterParams } from 'types/Route';
 import { useGetMySpacesQuery } from 'store/services/space';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSpace } from 'store/slices/space';
-import { Space } from 'types';
 
 interface Props {
   scrollYState: Animated.Value;
   headerImageUrl: string;
 }
 
-interface HeaderItemProps {
-  space: HeaderListItemType;
-}
-
 const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
   const navigation = useNavigation<RootRouterParams>();
   const dispatch = useDispatch();
-  const spaceId = useSelector((state) => state.space.spaceId);
-  const { data } = useGetMySpacesQuery();
-  const currentSpace = data?.spaces.find((space) => space.spaceId === spaceId);
-
-  if (!currentSpace && data) {
-    dispatch(setSpaceId(data.spaces[0].spaceId));
-  }
+  const space = useSelector((state) => state.space);
+  const { data, isFetching, isError, isSuccess, isLoading } = useGetMySpacesQuery();
 
   const scrollY = Animated.add(
     scrollYState,
@@ -55,7 +44,16 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
     extrapolate: 'clamp',
   });
 
-  if (!data) return <></>;
+  useEffect(() => {
+    if (!isLoading && !isFetching && isSuccess && data) {
+      const cur = data.spaces.find((s) => s.spaceId === space.spaceId);
+      if (!cur) {
+        dispatch(setSpace(data.spaces[0]));
+      }
+    }
+  }, [isFetching, isSuccess, isLoading]);
+
+  if (isError || !data) return <></>;
 
   return (
     <>
@@ -76,9 +74,9 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
         style={[styles.stickyHeader, { transform: [{ translateY: headerTranslate }] }]}>
         <HeaderCurrent
           data={{
-            name: currentSpace?.spaceName || '',
-            id: currentSpace?.spaceId || -1,
-            imageUrl: currentSpace?.spaceImage || '',
+            name: space.spaceName,
+            id: space.spaceId,
+            imageUrl: space.spaceImage,
           }}
           leftButton={{
             xml: search,
