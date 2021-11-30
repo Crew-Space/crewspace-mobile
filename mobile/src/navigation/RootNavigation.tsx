@@ -7,7 +7,6 @@ import { RootRouterParamList } from 'types/Route';
 import { InvitationNavigation, MainNavigation } from 'navigation';
 import {
   EditCategoryScreen,
-  EnterCrewScreen,
   LoginScreen,
   PostScreen,
   SearchScreen,
@@ -92,13 +91,6 @@ const RootNavigation = () => {
           headerLeftContainerStyle: { paddingLeft: 20, paddingVertical: 18 },
           headerRightContainerStyle: { paddingRight: 20 },
         })}
-      />
-      <Stack.Screen
-        name='EnterCrew'
-        component={EnterCrewScreen}
-        options={{
-          headerShown: false,
-        }}
       />
       <Stack.Screen
         name='Search'

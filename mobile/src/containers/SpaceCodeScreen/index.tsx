@@ -1,10 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { DeviceEventEmitter, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/core';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch } from 'react-redux';
 
 import { INITIAL_INVITATION_CODE, NUM_OF_INVITATION_CODE } from 'constant';
 import { scaleFont } from 'theme/Typography';
@@ -14,10 +12,7 @@ import LinkButton from 'components/LinkButton';
 import Text from 'components/Text';
 import { welcomeParams } from 'constant/welcome';
 import CustomEvent from 'constant/customEvent';
-import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
-import { setSpace } from 'store/slices/space';
 import { useCheckInvitationQuery } from 'store/services/space';
-import CrewOnError from 'components/CrewOnError';
 
 const CodeText = ({ char }: { char: string }) => {
   return (
@@ -31,7 +26,6 @@ const CodeText = ({ char }: { char: string }) => {
 
 const SpaceCodeScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
-  const dispatch = useDispatch();
   const inputRef = useRef<TextInput>(null);
   const [inputCode, setInputCode] = useState<string[]>(INITIAL_INVITATION_CODE);
   const { data, isError, isLoading } = useCheckInvitationQuery(inputCode.join(''), {
@@ -63,9 +57,12 @@ const SpaceCodeScreen = () => {
   };
 
   DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, async (space) => {
-    await AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, space.spaceId.toString());
-    dispatch(setSpace(space));
-    navigation.replace('EnterCrew');
+    navigation.replace('Invitation', {
+      screen: 'EnterSpace',
+      params: {
+        space,
+      },
+    });
   });
 
   DeviceEventEmitter.addListener(CustomEvent.welcomeSubButton.name, () =>

@@ -4,7 +4,8 @@ export { default as SearchScreen } from './SearchScreen';
 export { default as WelcomeScreen } from './WelcomeScreen';
 export { default as PostScreen } from './PostScreen';
 export { default as EditCategoryScreen } from './EditCategoryScreen';
-export { default as EnterCrewScreen } from './EnterCrewScreen';
+export { default as EnterSpaceScreen } from './EnterSpaceScreen';
+export { default as MakeSpaceScreen } from './MakeSpaceScreen';
 export { default as MemberProfileDetailsScreen } from './MemberProfileDetailsScreen';
 export { default as PostDetailsScreen } from './PostDetailsScreen';
 

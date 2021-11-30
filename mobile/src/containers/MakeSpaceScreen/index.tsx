@@ -40,7 +40,7 @@ const initialUserInput: ReqSpaceEnter = {
   memberCategoryId: 0,
 };
 
-const EnterCrewScreen = () => {
+const MakeSpaceScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation<RootRouterParams>();
   const [stepLevel, setStepLevel] = useState<StepType>(1);
@@ -170,4 +170,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EnterCrewScreen;
+export default MakeSpaceScreen;

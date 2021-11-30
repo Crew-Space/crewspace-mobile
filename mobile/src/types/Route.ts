@@ -17,7 +17,6 @@ export type RootRouterParamList = {
   Search: {
     searchType: 'post' | 'member';
   };
-  EnterCrew: undefined;
   MemberProfileDetails: {
     memberId: number;
     isMe?: boolean;
@@ -27,7 +26,10 @@ export type RootRouterParamList = {
 export type InvitationParamList = {
   SpaceCode: undefined;
   CreateSpace: undefined;
-  EnterSpace: undefined;
+  EnterSpace: {
+    space: Space;
+  };
+  MakeSpace: undefined;
   Welcome: {
     darkTheme?: boolean;
     data: WelcomeScreenProps;
@@ -86,3 +88,6 @@ export type MemberProfileDetailsScreenPropsType = RouteProp<
 
 /*** PostDetails ***/
 export type PostDetailsScreenPropsType = RouteProp<RootRouterParamList, 'PostDetails'>;
+
+/*** EnterSpace ***/
+export type EnterSpaceScreenPropsType = RouteProp<InvitationParamList, 'EnterSpace'>;
