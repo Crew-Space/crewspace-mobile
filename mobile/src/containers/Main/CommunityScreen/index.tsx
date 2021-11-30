@@ -8,7 +8,7 @@ import { CommunityType } from 'types';
 import { RootRouterParams } from 'types/Route';
 import { BACKGROUND, LINE, WHITE } from 'theme/Colors';
 import { postApi, useGetCommunityPostsQuery } from 'store/services/post';
-import { resetCommunityPosts, addCommunityPosts, setCommunityPosts } from 'store/slices/posts';
+import { resetCommunityPosts, addCommunityPosts } from 'store/slices/posts';
 import PostPreview from 'components/PostPreview';
 import PostButton from 'components/PostButton';
 import TopFilterBar from 'components/TopFilterBar';
@@ -46,16 +46,10 @@ const CommunityScreen = () => {
   });
 
   useEffect(() => {
-    if (!isFetching && isSuccess && data) {
-      dispatch(setCommunityPosts(data.posts));
-    }
-  }, [isSuccess, isLoading]);
-
-  useEffect(() => {
-    if (!isFetching && isSuccess && data) {
+    if (!isFetching && !isLoading && isSuccess && data) {
       dispatch(addCommunityPosts(data.posts));
     }
-  }, [isFetching, isSuccess]);
+  }, [isFetching, isLoading, isSuccess]);
 
   useEffect(() => {
     offset.current = -1;
@@ -77,8 +71,8 @@ const CommunityScreen = () => {
         }}>
         <PostButton postType={'community'} />
       </TopFilterBar>
-      <View style={{ backgroundColor: BACKGROUND, height: 10 }} onTouchEnd={() => refetch()} />
       <FlatList
+        contentContainerStyle={styles.flatContentContainerStyle}
         data={communityPosts}
         extraData={communityPosts}
         renderItem={({ item }) => (
@@ -118,7 +112,11 @@ const CommunityScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: WHITE,
+    backgroundColor: BACKGROUND,
+  },
+  flatContentContainerStyle: {
+    backgroundColor: BACKGROUND,
+    paddingTop: 10,
   },
   topTabBar: {
     flexDirection: 'row',

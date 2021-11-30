@@ -8,7 +8,7 @@ import { BACKGROUND, LINE, WHITE } from 'theme/Colors';
 import { NoticeType } from 'types';
 import { RootRouterParams } from 'types/Route';
 import { postApi, useGetNoticePostsQuery } from 'store/services/post';
-import { addNoticePosts, resetNoticePosts, setNoticePosts } from 'store/slices/posts';
+import { addNoticePosts, resetNoticePosts } from 'store/slices/posts';
 import PostPreview from 'components/PostPreview';
 import PostButton from 'components/PostButton';
 import TopFilterBar from 'components/TopFilterBar';
@@ -49,16 +49,10 @@ const NoticeScreen = () => {
   });
 
   useEffect(() => {
-    if (!isFetching && isSuccess && data) {
-      dispatch(setNoticePosts(data.posts));
-    }
-  }, [isSuccess, isLoading]);
-
-  useEffect(() => {
-    if (!isFetching && isSuccess && data) {
+    if (!isFetching && !isLoading && isSuccess && data) {
       dispatch(addNoticePosts(data.posts));
     }
-  }, [isFetching, isSuccess]);
+  }, [isFetching, isLoading, isSuccess]);
 
   useEffect(() => {
     offset.current = -1;
@@ -85,6 +79,7 @@ const NoticeScreen = () => {
       <FlatList
         data={noticePosts}
         extraData={noticePosts}
+        contentContainerStyle={styles.flatContentContainerStyle}
         renderItem={({ item }) => (
           <PostPreview
             postId={item.postId}
@@ -117,7 +112,11 @@ const NoticeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: WHITE,
+    backgroundColor: BACKGROUND,
+  },
+  flatContentContainerStyle: {
+    backgroundColor: BACKGROUND,
+    paddingTop: 10,
   },
   topTabBar: {
     flexDirection: 'row',
