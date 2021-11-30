@@ -17,7 +17,7 @@ export const postApi = createApi({
     baseUrl: ENV.apiUrl,
     prepareHeaders: header,
   }),
-  tagTypes: ['CommunityPost', 'NoticePost'],
+  tagTypes: ['CommunityPost', 'NoticePost', 'save', 'fix'],
   endpoints: (builder) => ({
     getPostCategories: builder.query<ResPostCategory, void>({
       query: () => '/posts/categories',
@@ -41,6 +41,7 @@ export const postApi = createApi({
     getNoticePost: builder.query<NoticePost, number>({
       query: (postId) => `/posts/notice/${postId}`,
       transformResponse: (response: { data: NoticePost }) => response.data,
+      providesTags: ['save', 'fix'],
     }),
     getCommunityPosts: builder.query<ResCommunityPosts, ReqPosts>({
       query: (params) => ({ url: '/posts/community', params }),
@@ -50,6 +51,7 @@ export const postApi = createApi({
     getCommunityPost: builder.query<CommunityPost, number>({
       query: (postId) => `/posts/community/${postId}`,
       transformResponse: (response: { data: CommunityPost }) => response.data,
+      providesTags: ['save'],
     }),
 
     savePost: builder.mutation<void, number>({
@@ -58,6 +60,7 @@ export const postApi = createApi({
         method: 'POST',
       }),
       transformResponse: (response: { data: void }) => response.data,
+      invalidatesTags: ['save'],
     }),
     unsavePost: builder.mutation<void, number>({
       query: (postId) => ({
@@ -65,6 +68,7 @@ export const postApi = createApi({
         method: 'DELETE',
       }),
       transformResponse: (response: { data: void }) => response.data,
+      invalidatesTags: ['save'],
     }),
     fixNotice: builder.mutation<void, number>({
       query: (postId) => ({
@@ -72,6 +76,7 @@ export const postApi = createApi({
         method: 'POST',
       }),
       transformResponse: (response: { data: void }) => response.data,
+      invalidatesTags: ['fix'],
     }),
     unfixNotice: builder.mutation<void, number>({
       query: (postId) => ({
@@ -79,6 +84,7 @@ export const postApi = createApi({
         method: 'DELETE',
       }),
       transformResponse: (response: { data: void }) => response.data,
+      invalidatesTags: ['fix'],
     }),
 
     postCommunity: builder.mutation<void, ReqNewPost>({
