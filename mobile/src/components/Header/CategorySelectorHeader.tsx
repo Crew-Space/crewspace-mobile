@@ -8,7 +8,7 @@ import { expandMore } from 'assets/svg/icons';
 import { BLACK, LINE, WHITE } from 'theme/Colors';
 import { SCREEN_HEIGHT } from 'theme/Metrics';
 import { setCategory } from 'store/slices/screen';
-import { useGetPostCategoriesQuery } from 'store/services/post';
+import { postApi, useGetPostCategoriesQuery } from 'store/services/post';
 import SvgIcon from 'components/SvgIcon';
 import Text from 'components/Text';
 import useHeaderAnimation from 'hooks/useHeaderAnimation';
@@ -28,10 +28,12 @@ const CategorySelectorHeader = () => {
       switch (tabName) {
         case 'Notice':
           setCategories(data.noticeCategories);
+          dispatch(postApi.util.invalidateTags(['NoticePost']));
           dispatch(setCategory(data.noticeCategories[0]));
           break;
         case 'Community':
           setCategories(data.communityCategories);
+          dispatch(postApi.util.invalidateTags(['CommunityPost']));
           dispatch(setCategory(data.communityCategories[0]));
           break;
       }

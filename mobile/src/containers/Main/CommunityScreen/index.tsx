@@ -7,12 +7,12 @@ import { useNavigation } from '@react-navigation/native';
 import { CommunityType } from 'types';
 import { RootRouterParams } from 'types/Route';
 import { BACKGROUND, LINE, WHITE } from 'theme/Colors';
-import { useGetCommunityPostsQuery } from 'store/services/post';
+import { postApi, useGetCommunityPostsQuery } from 'store/services/post';
+import { resetCommunityPosts, addCommunityPosts, setCommunityPosts } from 'store/slices/posts';
 import PostPreview from 'components/PostPreview';
 import PostButton from 'components/PostButton';
 import TopFilterBar from 'components/TopFilterBar';
 import CommunityPostAuthor from 'components/CommunityPostAuthor';
-import { resetCommunityPosts, setCommunityPosts } from 'store/slices/posts';
 import CrewOnError from 'components/CrewOnError';
 
 const communityFilter: { name: string; filterType: CommunityType }[] = [
@@ -46,19 +46,24 @@ const CommunityScreen = () => {
   });
 
   useEffect(() => {
+    if (!isFetching && isSuccess && data) {
+      dispatch(setCommunityPosts(data.posts));
+    }
+  }, [isSuccess, isLoading]);
+
+  useEffect(() => {
+    if (!isFetching && isSuccess && data) {
+      dispatch(addCommunityPosts(data.posts));
+    }
+  }, [isFetching, isSuccess]);
+
+  useEffect(() => {
     offset.current = -1;
     dispatch(resetCommunityPosts());
     refetch();
   }, [selectedFilter, currentCategory]);
 
-  useEffect(() => {
-    if (!isLoading && !isFetching && isSuccess && data) {
-      dispatch(setCommunityPosts(data.posts));
-    }
-  }, [isFetching, isSuccess, isLoading]);
-
   if (isLoading) return <></>;
-
   if (isError || !data) return <CrewOnError />;
 
   return (
@@ -66,9 +71,11 @@ const CommunityScreen = () => {
       <TopFilterBar
         items={communityFilter.map((filter) => filter.name)}
         onIndexChange={(index) => {
+          offset.current = -1;
+          dispatch(postApi.util.invalidateTags(['CommunityPost']));
           setSelectedFilter(index);
         }}>
-        <PostButton postingType={'community'} />
+        <PostButton postType={'community'} />
       </TopFilterBar>
       <View style={{ backgroundColor: BACKGROUND, height: 10 }} onTouchEnd={() => refetch()} />
       <FlatList

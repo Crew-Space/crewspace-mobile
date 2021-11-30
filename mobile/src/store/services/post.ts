@@ -17,7 +17,7 @@ export const postApi = createApi({
     baseUrl: ENV.apiUrl,
     prepareHeaders: header,
   }),
-  tagTypes: ['CommunityPost'],
+  tagTypes: ['CommunityPost', 'NoticePost'],
   endpoints: (builder) => ({
     getPostCategories: builder.query<ResPostCategory, void>({
       query: () => '/posts/categories',
@@ -36,6 +36,7 @@ export const postApi = createApi({
     getNoticePosts: builder.query<ResNoticePosts, ReqPosts>({
       query: (params) => ({ url: '/posts/notice', params }),
       transformResponse: (response: { data: ResNoticePosts }) => response.data,
+      providesTags: ['NoticePost'],
     }),
     getNoticePost: builder.query<NoticePost, number>({
       query: (postId) => `/posts/notice/${postId}`,

@@ -1,19 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { FlatList } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/core';
 
 import { BACKGROUND, LINE, WHITE } from 'theme/Colors';
+import { NoticeType } from 'types';
+import { RootRouterParams } from 'types/Route';
+import { postApi, useGetNoticePostsQuery } from 'store/services/post';
+import { addNoticePosts, resetNoticePosts, setNoticePosts } from 'store/slices/posts';
 import PostPreview from 'components/PostPreview';
 import PostButton from 'components/PostButton';
 import TopFilterBar from 'components/TopFilterBar';
-import { useGetNoticePostsQuery } from 'store/services/post';
-import { NoticeType } from 'types';
-import { useDispatch, useSelector } from 'react-redux';
-import SvgIcon from 'components/SvgIcon';
-import { crewOnSpace } from 'assets/svg/spacers';
-import { RootRouterParams } from 'types/Route';
-import { resetNoticePosts, setNoticePosts } from 'store/slices/posts';
 import CrewOnError from 'components/CrewOnError';
 
 const noticeFilter: { name: string; filterType: NoticeType }[] = [
@@ -51,27 +49,36 @@ const NoticeScreen = () => {
   });
 
   useEffect(() => {
+    if (!isFetching && isSuccess && data) {
+      dispatch(setNoticePosts(data.posts));
+    }
+  }, [isSuccess, isLoading]);
+
+  useEffect(() => {
+    if (!isFetching && isSuccess && data) {
+      dispatch(addNoticePosts(data.posts));
+    }
+  }, [isFetching, isSuccess]);
+
+  useEffect(() => {
     offset.current = -1;
     dispatch(resetNoticePosts());
     refetch();
   }, [selectedFilter, currentCategory]);
 
-  useEffect(() => {
-    if (!isLoading && !isFetching && isSuccess && data) {
-      dispatch(setNoticePosts(data.posts));
-    }
-  }, [isFetching, isSuccess, isLoading]);
-
   if (isLoading) return <></>;
-
-  if (isError || !data) <CrewOnError />;
+  if (isError || !data) return <CrewOnError />;
 
   return (
     <View style={styles.container}>
       <TopFilterBar
         items={noticeFilter.map((filter) => filter.name)}
-        onIndexChange={setSelectedFilter}>
-        {false && <PostButton postingType={'notice'} />}
+        onIndexChange={(index) => {
+          offset.current = -1;
+          dispatch(postApi.util.invalidateTags(['NoticePost']));
+          setSelectedFilter(index);
+        }}>
+        {false && <PostButton postType={'notice'} />}
       </TopFilterBar>
       <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
 
