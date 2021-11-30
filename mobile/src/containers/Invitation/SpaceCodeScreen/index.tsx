@@ -32,9 +32,9 @@ const SpaceCodeScreen = () => {
     skip: inputCode.filter((str) => str !== '-').length !== 6,
   });
 
-  const onMakeSpacePress = useCallback(() => {
+  const onMakeSpacePress = () => {
     navigation.navigate('Invitation', { screen: 'CreateSpace' });
-  }, [navigation]);
+  };
 
   const onSubmitEditing = async () => {
     if (inputCode.filter((str) => str !== '-').length === 6 && data) {

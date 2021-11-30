@@ -2,8 +2,12 @@ import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { SvgXml } from 'react-native-svg';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import { close } from 'assets/svg/icons';
 import { RootRouterParamList } from 'types/Route';
+import { BLACK, PRIMARY } from 'theme/Colors';
 import { InvitationNavigation, MainNavigation } from 'navigation';
 import {
   EditCategoryScreen,
@@ -13,10 +17,6 @@ import {
   MemberProfileDetailsScreen,
   PostDetailsScreen,
 } from 'containers';
-import { SvgXml } from 'react-native-svg';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { close } from 'assets/svg/icons';
-import { BLACK, PRIMARY } from 'theme/Colors';
 import Text from 'components/Text';
 import { PostScreenHeader, CategorySelectorHeader } from 'components/Header';
 
