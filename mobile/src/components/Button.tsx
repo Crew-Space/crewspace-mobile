@@ -14,7 +14,8 @@ const Button = ({ children, style, disabled, ...restProps }: TouchableOpacityPro
         { ...(disabled && { backgroundColor: GRAY3 }) },
       ]}
       {...restProps}
-      activeOpacity={0.7}>
+      activeOpacity={0.7}
+      disabled={disabled}>
       <Text fontType={'BOLD_16'} style={[buttonStyles.mainButton.text]}>
         {children}
       </Text>
