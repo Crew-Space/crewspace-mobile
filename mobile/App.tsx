@@ -1,9 +1,11 @@
 import React from 'react';
-import { StatusBar, useColorScheme } from 'react-native';
+import { LogBox, StatusBar, useColorScheme } from 'react-native';
 import { Provider } from 'react-redux';
 
 import RootNavigation from 'navigation/RootNavigation';
 import store from 'store';
+
+// LogBox.ignoreAllLogs();
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';

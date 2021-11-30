@@ -38,6 +38,7 @@ const RootNavigation = () => {
         component={InvitationNavigation}
         options={{
           headerShown: false,
+          animationEnabled: false,
         }}
       />
       <Stack.Screen
@@ -45,6 +46,7 @@ const RootNavigation = () => {
         component={MainNavigation}
         options={{
           header: CategorySelectorHeader,
+          animationEnabled: false,
         }}
       />
       <Stack.Screen
@@ -76,7 +78,7 @@ const RootNavigation = () => {
       <Stack.Screen
         name='PostDetails'
         component={PostDetailsScreen}
-        options={({ navigation, route }) => ({
+        options={({ navigation }) => ({
           headerTitle: '상세 보기',
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.goBack()}>

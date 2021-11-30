@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { SvgXml } from 'react-native-svg';
@@ -18,17 +18,20 @@ import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
 import { setToken } from 'store/slices/auth';
 import { setSpaceId } from 'store/slices/space';
 import { useGetMySpacesQuery } from 'store/services/space';
-import CrewOnError from 'components/CrewOnError';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
   const dispatch = useDispatch();
-  const { data, isSuccess, isError } = useGetMySpacesQuery();
+  const { data, isSuccess, isError, isLoading } = useGetMySpacesQuery();
   const token = useRef<string>();
+  const [loginPage, setLoginPage] = useState(false);
 
   const setUser = async () => {
     const accessToken = (await AsyncStorage.getItem(ASYNC_STORAGE_KEY.ACCESS_TOKEN)) || null;
-    if (!accessToken) return;
+    if (!accessToken) {
+      setLoginPage(true);
+      return;
+    }
 
     token.current = accessToken;
     dispatch(setToken({ token: accessToken }));
@@ -36,7 +39,10 @@ const LoginScreen = () => {
 
   const setSpace = async () => {
     const id = await AsyncStorage.getItem(ASYNC_STORAGE_KEY.SPACE_ID);
-    if (!id) return;
+    if (!id) {
+      setLoginPage(true);
+      return;
+    }
 
     if (!data?.spaces.length) {
       await AsyncStorage.removeItem(ASYNC_STORAGE_KEY.SPACE_ID);
@@ -52,7 +58,7 @@ const LoginScreen = () => {
     } else {
       dispatch(setSpaceId(+id));
     }
-    navigation.navigate('Main');
+    navigation.replace('Main');
   };
 
   const onPress = async () => {
@@ -63,17 +69,22 @@ const LoginScreen = () => {
   };
 
   useEffect(() => {
-    if ((isError && !data) || token.current === undefined) return;
+    if (token.current === undefined) return;
 
     if (isSuccess && token.current) setSpace();
     SplashScreen.hide();
-  }, [data, token.current, isSuccess, isError]);
+  }, [data, token.current, isSuccess]);
+
+  useEffect(() => {
+    if (isError) SplashScreen.hide();
+  }, [isError]);
 
   useLayoutEffect(() => {
     setUser();
   }, []);
 
-  if (isError || !data) return <CrewOnError />;
+  if (isLoading) return <></>;
+  if (!loginPage) return <View style={{ backgroundColor: WHITE }} />;
 
   return (
     <SafeAreaView style={styles.container}>
