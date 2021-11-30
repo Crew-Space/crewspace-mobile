@@ -2,30 +2,23 @@ import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 
 import { GRAY1, GRAY2, GRAY3, GRAY4, PRIMARY } from 'theme/Colors';
-import Text from 'components/Text';
 import SvgIcon from 'components/SvgIcon';
 import { image } from 'assets/svg/icons';
 import LineTextInput from 'components/LineTextInput';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { ReqSpaceEnter } from 'types/Request';
+import { ReqMakeSpace } from 'types/Request';
 import { launchImageLibrary } from 'react-native-image-picker';
 import ProfileImage from 'components/ProfileImage';
 
-type MemberCategory = {
-  categoryId: number;
-  categoryName: string;
-};
-
 interface Props {
-  memberCategories: MemberCategory[];
-  setUserInfo: React.Dispatch<React.SetStateAction<ReqSpaceEnter>>;
-  userInfo: ReqSpaceEnter;
+  setSpaceInput: React.Dispatch<React.SetStateAction<ReqMakeSpace>>;
+  spaceInput: ReqMakeSpace;
 }
 
-const Step1 = ({ memberCategories, setUserInfo, userInfo }: Props) => {
+const Step1 = ({ setSpaceInput, spaceInput }: Props) => {
   const onChangeText = (text: string, name: string) => {
-    setUserInfo({
-      ...userInfo,
+    setSpaceInput({
+      ...spaceInput,
       [name]: text,
     });
   };
@@ -33,8 +26,8 @@ const Step1 = ({ memberCategories, setUserInfo, userInfo }: Props) => {
   const onChoosePhoto = () => {
     launchImageLibrary({ mediaType: 'photo', selectionLimit: 1 }, (response) => {
       if (response && response.assets) {
-        setUserInfo({
-          ...userInfo,
+        setSpaceInput({
+          ...spaceInput,
           image: {
             uri: response.assets[0].uri,
             type: response.assets[0].type,
@@ -46,11 +39,11 @@ const Step1 = ({ memberCategories, setUserInfo, userInfo }: Props) => {
   };
 
   return (
-    <>
+    <View style={styles.container}>
       <TouchableOpacity activeOpacity={0.6} style={{ paddingTop: 20, alignItems: 'center' }}>
         <TouchableOpacity style={styles.circle} onPress={onChoosePhoto}>
-          {userInfo.image ? (
-            <ProfileImage uri={userInfo.image.uri} />
+          {spaceInput.image ? (
+            <ProfileImage uri={spaceInput.image.uri} />
           ) : (
             <SvgIcon xml={image} fill={GRAY3} width={24} disabled />
           )}
@@ -65,7 +58,7 @@ const Step1 = ({ memberCategories, setUserInfo, userInfo }: Props) => {
           maxLength={20}
           name={'name'}
           onChangeText={onChangeText}
-          defaultValue={userInfo.name}
+          defaultValue={spaceInput.name}
         />
       </View>
       <View style={styles.paddingWidth}>
@@ -78,45 +71,17 @@ const Step1 = ({ memberCategories, setUserInfo, userInfo }: Props) => {
           name={'description'}
           onChangeText={onChangeText}
           blurOnSubmit
-          defaultValue={userInfo.description}
+          defaultValue={spaceInput.description}
         />
       </View>
-      <View style={styles.paddingWidth}>
-        <Text fontType={'REGULAR_12'} color={GRAY2}>
-          회원분류
-        </Text>
-        <View style={styles.categoryList}>
-          {memberCategories.map((category) => (
-            <View
-              key={category.categoryId}
-              style={[
-                styles.categoryItem,
-                {
-                  ...(userInfo.memberCategoryId === category.categoryId && {
-                    borderColor: PRIMARY,
-                  }),
-                },
-              ]}
-              onTouchEnd={() =>
-                setUserInfo({
-                  ...userInfo,
-                  memberCategoryId: category.categoryId,
-                })
-              }>
-              <Text
-                fontType={'REGULAR_14'}
-                color={userInfo.memberCategoryId === category.categoryId ? PRIMARY : GRAY1}>
-                {category.categoryName}
-              </Text>
-            </View>
-          ))}
-        </View>
-      </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 20,
+  },
   paddingWidth: {
     paddingTop: 40,
     width: '100%',

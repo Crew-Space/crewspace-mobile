@@ -110,3 +110,9 @@ export type PostBaseInfo = {
   writtenDate: string;
   isSaved: boolean;
 };
+
+export type NewCategoryType = {
+  name: string;
+  isDeletable: boolean;
+  isEditable: boolean;
+};
