@@ -2,13 +2,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SPACE_INITAL_ID } from 'store/services';
 import { Space } from 'types';
 
+const initialState: Space = {
+  spaceId: SPACE_INITAL_ID,
+  spaceName: '',
+  spaceImage: '',
+};
+
 export const space = createSlice({
   name: 'space',
-  initialState: {
-    spaceId: SPACE_INITAL_ID,
-    spaceName: '',
-    spaceImage: '',
-  },
+  initialState,
   reducers: {
     setSpace: (_state, action: PayloadAction<Space>) => action.payload,
     setSpaceId: (state, action: PayloadAction<number>) => ({ ...state, spaceId: action.payload }),

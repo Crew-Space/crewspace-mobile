@@ -1,16 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Category } from 'types';
-import { MainRouterParamList } from 'types/Route';
+import { MainRouterParamList, RootRouterParamList } from 'types/Route';
+
+const initialState: {
+  tabName: keyof MainRouterParamList | keyof Pick<RootRouterParamList, 'Post'>;
+  category: Category;
+} = {
+  tabName: 'Home',
+  category: {
+    categoryName: '',
+    categoryId: -1,
+  },
+};
 
 export const screen = createSlice({
   name: 'screen',
-  initialState: {
-    tabName: '',
-    category: {
-      categoryName: '',
-      categoryId: -1,
-    },
-  },
+  initialState,
   reducers: {
     setTabName: (state, action: PayloadAction<keyof MainRouterParamList>) => ({
       ...state,
