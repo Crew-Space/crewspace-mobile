@@ -31,15 +31,15 @@ const SectionList = ({ sectionTitle, data, containerStyle }: Prop) => {
           <Text fontType={'BOLD_16'}>{sectionTitle}</Text>
         </View>
       )}
-      {data.map((item) => (
+      {data.map((item, index) => (
         <>
           {item.toggle ? (
-            <View style={styles.item}>
+            <View key={index} style={styles.item}>
               <Text fontType={item.fontType}>{item.text}</Text>
               <Switch {...item.toggle} />
             </View>
           ) : (
-            <TouchableOpacity style={styles.item}>
+            <TouchableOpacity key={index} style={styles.item} activeOpacity={0.6}>
               <Text fontType={item.fontType}>{item.text}</Text>
               <SvgXml xml={expandMore.right} width={20} fill={GRAY2} />
             </TouchableOpacity>
