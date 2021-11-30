@@ -29,7 +29,7 @@ export const memberApi = createApi({
       query: (newProfile) => {
         const formdata = new FormData();
         newProfile.profileImage &&
-          formdata.append('profileImage', {
+          formdata.append('image', {
             ...newProfile.profileImage,
             uri:
               Platform.OS === 'ios'
