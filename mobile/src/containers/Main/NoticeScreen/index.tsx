@@ -74,8 +74,6 @@ const NoticeScreen = () => {
         }}>
         {false && <PostButton postType={'notice'} />}
       </TopFilterBar>
-      <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
-
       <FlatList
         data={noticePosts}
         extraData={noticePosts}

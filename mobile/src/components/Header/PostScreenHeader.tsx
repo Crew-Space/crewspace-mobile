@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
@@ -9,13 +9,12 @@ import SvgIcon from 'components/SvgIcon';
 import { close, expandMore } from 'assets/svg/icons';
 import Text from 'components/Text';
 import { BLACK, LINE, PRIMARY, WHITE } from 'theme/Colors';
-import { normalize } from 'utils';
 import { SCREEN_HEIGHT } from 'theme/Metrics';
 import { useGetPostCategoriesQuery, usePostCommunityMutation } from 'store/services/post';
-import { Category } from 'types/Response';
+import { Category } from 'types';
 import TouchableText from 'components/TouchableText';
-
-const HEADER_HEIGHT = normalize(60);
+import useHeaderAnimation from 'hooks/useHeaderAnimation';
+import { HEADER_HEIGHT } from 'constant';
 
 const PostScreenHeader = () => {
   const navigation = useNavigation<RootRouterParams>();
@@ -23,15 +22,12 @@ const PostScreenHeader = () => {
     categoryId: -1,
     categoryName: '',
   });
-  const [categories, setCategories] = useState<Category[]>([]);
-
   const { data, isSuccess, isLoading, isFetching } = useGetPostCategoriesQuery();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [translateAnim, fadeAnim, expanded, toggleExpaned] = useHeaderAnimation(categories.length);
+
   const [communityPost] = usePostCommunityMutation();
   const newPost = useSelector((state) => state.newPost);
-
-  const [extanded, setExtanded] = useState<boolean>(false);
-  const translateAnim = useRef(new Animated.Value(0)).current;
-  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (!isLoading && isSuccess && !isFetching && data) {
@@ -40,53 +36,23 @@ const PostScreenHeader = () => {
     }
   }, [isLoading, isSuccess, isFetching]);
 
-  useEffect(() => {
-    if (!extanded) {
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 100,
-          useNativeDriver: true,
-        }),
-        Animated.timing(translateAnim, {
-          toValue: 0,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    } else {
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 0.7,
-          duration: 100,
-          useNativeDriver: true,
-        }),
-        Animated.timing(translateAnim, {
-          toValue: HEADER_HEIGHT * (categories.length + 1),
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    }
-  }, [extanded]);
-
   if (!data) return <></>;
 
   return (
     <>
-      {extanded && (
+      {expanded && (
         <Animated.View
           style={[styles.background, { opacity: fadeAnim }]}
-          onTouchEnd={() => setExtanded(!extanded)}
+          onTouchEnd={() => toggleExpaned()}
         />
       )}
       <View style={{ height: getStatusBarHeight(), backgroundColor: WHITE, zIndex: 1 }} />
       <View>
-        <View style={[styles.itemContainer, styles.container]}>
+        <View style={[styles.itemContainer, styles.container, { height: HEADER_HEIGHT }]}>
           <SvgIcon xml={close} width={24} onPress={() => navigation.goBack()} />
-          <View style={styles.title} onTouchEnd={() => setExtanded(!extanded)}>
+          <View style={styles.title} onTouchEnd={() => toggleExpaned()}>
             <Text fontType={'BOLD_18'}>{selectedCategory.categoryName}</Text>
-            <SvgIcon xml={!extanded ? expandMore.down : expandMore.up} width={20} />
+            <SvgIcon xml={!expanded ? expandMore.down : expandMore.up} width={20} />
           </View>
           <TouchableText
             color={PRIMARY}
@@ -102,7 +68,6 @@ const PostScreenHeader = () => {
             styles.expandList,
             {
               transform: [{ translateY: translateAnim }],
-              top: -(HEADER_HEIGHT * categories.length),
             },
           ]}>
           {categories
@@ -110,10 +75,10 @@ const PostScreenHeader = () => {
             .map((category) => (
               <View
                 key={category.categoryId}
-                style={styles.itemContainer}
+                style={[styles.itemContainer, { height: HEADER_HEIGHT }]}
                 onTouchEnd={() => {
                   setSelectedCategory(category);
-                  setExtanded(!extanded);
+                  toggleExpaned();
                 }}>
                 <Text fontType={'BOLD_18'}>{category.categoryName}</Text>
               </View>
@@ -134,11 +99,9 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 18,
     paddingHorizontal: 20,
     borderBottomWidth: 1,
     borderBottomColor: LINE,
-    height: HEADER_HEIGHT,
   },
   title: {
     flexDirection: 'row',
