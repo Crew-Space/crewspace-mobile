@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { header } from 'store/services';
 import ENV from 'environments';
-import { ReqSpaceEnter } from 'types/Request';
+import { ReqMakeSpace, ReqSpaceEnter } from 'types/Request';
 import {
+  ResMakeSpace,
   ResMySpaces,
   ResRegisterInfo,
   ResSpace,
@@ -47,6 +48,25 @@ export const spaceApi = createApi({
       query: () => '/spaces',
       transformResponse: (response: { data: ResMySpaces }) => response.data,
     }),
+
+    makeSpace: builder.mutation<ResMakeSpace, ReqMakeSpace>({
+      query: (spaceInfo) => {
+        const formdata = new FormData();
+        Object.entries(spaceInfo).forEach(([key, value]) => formdata.append(key, value));
+
+        spaceInfo.image && formdata.append('image', spaceInfo.image);
+        Object.entries(spaceInfo)
+          .filter(([key, _]) => key !== 'image')
+          .forEach(([key, value]) => formdata.append(key, value));
+
+        return {
+          url: '/space',
+          method: 'POST',
+          body: formdata,
+        };
+      },
+      transformResponse: (response: { data: ResMakeSpace }) => response.data,
+    }),
   }),
 });
 
@@ -56,4 +76,5 @@ export const {
   useGetMySpacesQuery,
   useEnterSpaceMutation,
   useGetSpaceHomeQuery,
+  useMakeSpaceMutation,
 } = spaceApi;

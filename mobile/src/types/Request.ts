@@ -19,3 +19,12 @@ export type ReqUpdateMyProfile = SpaceOptionsInfo &
   Omit<BaseProfile, 'image'> & { profileImage?: File } & {
     memberCategoryId: number;
   };
+
+export type ReqMakeSpace = Modify<BaseProfile, { image?: File }> & {
+  memberCategory: string[];
+  hasBirthdate: boolean;
+  hasEmail: boolean;
+  hasContact: boolean;
+  hasSns: boolean;
+  hasEtc: boolean;
+};

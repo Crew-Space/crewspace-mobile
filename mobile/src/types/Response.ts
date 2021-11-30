@@ -91,6 +91,10 @@ export type ResSpaceEnter = {
   categoryName: string;
 };
 
+export type ResMakeSpace = Space & {
+  invitationCode: string;
+};
+
 /** posts */
 export type ResPostCategory = {
   noticeCategories: Category[];
