@@ -70,12 +70,22 @@ export const posts = createSlice({
     }),
     setNoticePosts: (state, action: PayloadAction<NoticePostPreview[]>) => ({
       ...state,
-      noticePosts: [...state.noticePosts, ...action.payload],
+      noticePosts: action.payload,
     }),
     setCommunityPosts: (state, action: PayloadAction<CommunityPostPreview[]>) => ({
       ...state,
+      communityPosts: action.payload,
+    }),
+
+    addNoticePosts: (state, action: PayloadAction<NoticePostPreview[]>) => ({
+      ...state,
+      noticePosts: [...state.noticePosts, ...action.payload],
+    }),
+    addCommunityPosts: (state, action: PayloadAction<CommunityPostPreview[]>) => ({
+      ...state,
       communityPosts: [...state.communityPosts, ...action.payload],
     }),
+
     resetHomeNoticePosts: (state, _action: PayloadAction<void>) => ({
       ...state,
       homeNoticePosts: [],
@@ -98,6 +108,8 @@ export const {
   setHomeNoticePosts,
   setNoticePosts,
   setCommunityPosts,
+  addNoticePosts,
+  addCommunityPosts,
   resetHomeNoticePosts,
   resetNoticePosts,
   resetCommunityPosts,
