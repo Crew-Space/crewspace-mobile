@@ -57,11 +57,16 @@ export const posts = createSlice({
           post.postId === action.payload ? { ...post, isRead: true } : post,
         ),
       ],
+      noticePosts: [
+        ...state.noticePosts.map((post) =>
+          post.postId === action.payload ? { ...post, isRead: true } : post,
+        ),
+      ],
     }),
 
     setHomeNoticePosts: (state, action: PayloadAction<NoticePostPreview[]>) => ({
       ...state,
-      homeNoticePosts: [...state.homeNoticePosts, ...action.payload],
+      homeNoticePosts: action.payload,
     }),
     setNoticePosts: (state, action: PayloadAction<NoticePostPreview[]>) => ({
       ...state,
