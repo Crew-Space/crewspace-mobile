@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/core';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
 import CustomEvent from 'constant/customEvent';
 import { welcomeParams } from 'constant/welcome';
 import { ReqSpaceEnter } from 'types/Request';
 import { EnterSpaceScreenPropsType, RootRouterParams } from 'types/Route';
 import { BLACK, GRAY4, WHITE } from 'theme/Colors';
 import { arrowLeft } from 'assets/svg/icons';
-import { setSpace } from 'store/slices/space';
 import { useEnterSpaceMutation, useGetRegisterInfoQuery } from 'store/services/space';
 
 import Text from 'components/Text';
@@ -44,7 +40,6 @@ const initialUserInput: ReqSpaceEnter = {
 };
 
 const EnterSpaceScreen = () => {
-  const dispatch = useDispatch();
   const navigation = useNavigation<RootRouterParams>();
   const {
     params: { space },
@@ -64,9 +59,6 @@ const EnterSpaceScreen = () => {
       descInfo: '추가 프로필을\n입력해 주세요✏️',
       onPress: async () => {
         if (!userInput) return;
-
-        await AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, space.spaceId.toString());
-        dispatch(setSpace(space));
         enterSpace(userInput);
 
         if (isUserInfoError) {

@@ -16,7 +16,7 @@ import { crewOnEarth } from 'assets/svg/spacers';
 import ENV from 'environments';
 import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
 import { setToken } from 'store/slices/auth';
-import { setSpaceId } from 'store/slices/space';
+import { setSpace } from 'store/slices/space';
 import { useGetMySpacesQuery } from 'store/services/space';
 
 const LoginScreen = () => {
@@ -37,7 +37,7 @@ const LoginScreen = () => {
     dispatch(setToken({ token: accessToken }));
   };
 
-  const setSpace = async () => {
+  const setCurrentSpace = async () => {
     const id = await AsyncStorage.getItem(ASYNC_STORAGE_KEY.SPACE_ID);
     if (!id) {
       setLoginPage(true);
@@ -50,13 +50,13 @@ const LoginScreen = () => {
       return;
     }
 
-    const currentSpaceId = data?.spaces.find((space) => space.spaceId === +id);
+    const currentSpace = data.spaces.find((space) => space.spaceId === +id);
 
-    if (!currentSpaceId) {
+    if (!currentSpace) {
       await AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, data.spaces[0].spaceId.toString());
-      dispatch(setSpaceId(data.spaces[0].spaceId));
+      dispatch(setSpace(data.spaces[0]));
     } else {
-      dispatch(setSpaceId(+id));
+      dispatch(setSpace(currentSpace));
     }
     navigation.replace('Main');
   };
@@ -71,7 +71,7 @@ const LoginScreen = () => {
   useEffect(() => {
     if (token.current === undefined) return;
 
-    if (isSuccess && token.current) setSpace();
+    if (isSuccess && token.current) setCurrentSpace();
     else setLoginPage(true);
     SplashScreen.hide();
   }, [data, token.current, isSuccess]);

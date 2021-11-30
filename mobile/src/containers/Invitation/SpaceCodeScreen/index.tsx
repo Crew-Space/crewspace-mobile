@@ -1,9 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { DeviceEventEmitter, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/core';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
 import { INITIAL_INVITATION_CODE, NUM_OF_INVITATION_CODE } from 'constant';
 import { scaleFont } from 'theme/Typography';
 import { BLACK, GRAY1, GRAY2, GRAY4, RED, WHITE } from 'theme/Colors';
@@ -13,6 +16,7 @@ import Text from 'components/Text';
 import { welcomeParams } from 'constant/welcome';
 import CustomEvent from 'constant/customEvent';
 import { useCheckInvitationQuery } from 'store/services/space';
+import { setSpace } from 'store/slices/space';
 
 const CodeText = ({ char }: { char: string }) => {
   return (
@@ -25,6 +29,7 @@ const CodeText = ({ char }: { char: string }) => {
 };
 
 const SpaceCodeScreen = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation<InvitationParams>();
   const inputRef = useRef<TextInput>(null);
   const [inputCode, setInputCode] = useState<string[]>(INITIAL_INVITATION_CODE);
@@ -50,6 +55,8 @@ const SpaceCodeScreen = () => {
   };
 
   DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, async (space) => {
+    await AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, space.spaceId.toString());
+    dispatch(setSpace(space));
     navigation.replace('EnterSpace', {
       space,
     });
