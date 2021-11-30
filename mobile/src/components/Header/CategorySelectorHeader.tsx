@@ -1,33 +1,30 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
-import SvgIcon from 'components/SvgIcon';
+import { Category } from 'types';
 import { expandMore } from 'assets/svg/icons';
-import Text from 'components/Text';
 import { BLACK, LINE, WHITE } from 'theme/Colors';
-import { normalize } from 'utils';
 import { SCREEN_HEIGHT } from 'theme/Metrics';
 import { setCategory } from 'store/slices/screen';
 import { useGetPostCategoriesQuery } from 'store/services/post';
-import { Category } from 'types';
-
-const HEADER_HEIGHT = normalize(60);
+import SvgIcon from 'components/SvgIcon';
+import Text from 'components/Text';
+import useHeaderAnimation from 'hooks/useHeaderAnimation';
+import { HEADER_HEIGHT } from 'constant';
 
 const CategorySelectorHeader = () => {
   const dispatch = useDispatch();
   const tabName = useSelector((state) => state.screen.tabName);
   const currentCategory = useSelector((state) => state.screen.category);
-  const { data, isSuccess } = useGetPostCategoriesQuery();
+  const { data, isSuccess, isFetching } = useGetPostCategoriesQuery();
   const [categories, setCategories] = useState<Category[]>([]);
 
-  const [extanded, setExtanded] = useState<boolean>(false);
-  const translateAnim = useRef(new Animated.Value(0)).current;
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [translateAnim, fadeAnim, expanded, toggleExpaned] = useHeaderAnimation(categories.length);
 
   useEffect(() => {
-    if (isSuccess && data) {
+    if (!isFetching && isSuccess && data) {
       switch (tabName) {
         case 'Notice':
           setCategories(data.noticeCategories);
@@ -39,54 +36,25 @@ const CategorySelectorHeader = () => {
           break;
       }
     }
-  }, [data, isSuccess, tabName]);
-
-  useEffect(() => {
-    if (!extanded) {
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 100,
-          useNativeDriver: true,
-        }),
-        Animated.timing(translateAnim, {
-          toValue: 0,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    } else {
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 0.7,
-          duration: 100,
-          useNativeDriver: true,
-        }),
-        Animated.timing(translateAnim, {
-          toValue: HEADER_HEIGHT * (categories.length + 1),
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    }
-  }, [extanded]);
+  }, [data, isSuccess, isFetching, tabName]);
 
   if (!(tabName === 'Notice' || tabName === 'Community')) return <></>;
 
   return (
-    <>
-      {extanded && (
+    <View>
+      {expanded && (
         <Animated.View
           style={[styles.background, { opacity: fadeAnim }]}
-          onTouchEnd={() => setExtanded(!extanded)}
+          onTouchEnd={() => toggleExpaned()}
         />
       )}
       <View style={{ height: getStatusBarHeight(), backgroundColor: WHITE, zIndex: 1 }} />
       <View>
-        <View style={[styles.itemContainer, styles.container]}>
-          <View style={styles.title} onTouchEnd={() => setExtanded(!extanded)}>
+        <View
+          style={[styles.currentItemContainer, styles.itemContainer, { height: HEADER_HEIGHT }]}>
+          <View style={styles.title} onTouchEnd={() => toggleExpaned()}>
             <Text fontType={'BOLD_18'}>{currentCategory.categoryName}</Text>
-            <SvgIcon xml={!extanded ? expandMore.down : expandMore.up} width={20} disabled />
+            <SvgIcon xml={!expanded ? expandMore.down : expandMore.up} width={20} disabled />
           </View>
         </View>
         <Animated.View
@@ -94,7 +62,7 @@ const CategorySelectorHeader = () => {
             styles.expandList,
             {
               transform: [{ translateY: translateAnim }],
-              top: -(HEADER_HEIGHT * categories.length),
+              top: '-100%',
             },
           ]}>
           {categories
@@ -102,39 +70,37 @@ const CategorySelectorHeader = () => {
             .map((category) => (
               <View
                 key={category.categoryId}
-                style={styles.itemContainer}
+                style={[styles.itemContainer, { height: HEADER_HEIGHT }]}
                 onTouchEnd={() => {
                   dispatch(setCategory(category));
-                  setExtanded(!extanded);
+                  toggleExpaned();
                 }}>
                 <Text fontType={'BOLD_18'}>{category.categoryName}</Text>
               </View>
             ))}
         </Animated.View>
       </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  currentItemContainer: {
     zIndex: 1,
   },
   itemContainer: {
     backgroundColor: WHITE,
     justifyContent: 'center',
     alignItems: 'flex-start',
-    paddingVertical: 18,
     paddingHorizontal: 20,
     borderBottomWidth: 1,
     borderBottomColor: LINE,
-    height: HEADER_HEIGHT,
   },
   title: {
     flexDirection: 'row',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    height: '100%',
   },
   expandList: {
     zIndex: 0,

@@ -1,4 +1,5 @@
 import { MemberProfile } from 'types';
+import { normalize } from 'utils';
 
 export const GUIDELINE_BASE_WIDTH = 375;
 
@@ -19,3 +20,5 @@ export const PROFILE_TEXT: {
   sns: 'SNS',
   etc: '기타',
 };
+
+export const HEADER_HEIGHT = normalize(60);
