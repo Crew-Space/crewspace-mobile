@@ -38,7 +38,6 @@ const RootNavigation = () => {
         component={InvitationNavigation}
         options={{
           headerShown: false,
-          animationEnabled: false,
         }}
       />
       <Stack.Screen

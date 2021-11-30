@@ -72,9 +72,6 @@ const SpaceCodeScreen = () => {
     navigation.replace('Invitation'),
   );
 
-  if (isLoading) return <></>;
-  if (isError) return <CrewOnError />;
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ marginTop: '20%', alignItems: 'center', width: '100%' }}>

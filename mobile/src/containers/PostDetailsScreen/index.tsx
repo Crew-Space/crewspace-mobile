@@ -21,6 +21,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { pin, save } from 'assets/svg/icons';
 import { SvgXml } from 'react-native-svg';
 import { setPostRead, setPostSave, setPostUnsave } from 'store/slices/posts';
+import { spaceApi } from 'store/services/space';
 
 const PostDetailsScreen = () => {
   const dispatch = useDispatch();
@@ -56,6 +57,7 @@ const PostDetailsScreen = () => {
     useUnfixNoticeMutation();
   const onFixPress = async () => {
     isFixed ? unfixPost(postId) : fixPost(postId);
+    spaceApi.util.invalidateTags(['HomeNotice']);
   };
 
   useEffect(() => {

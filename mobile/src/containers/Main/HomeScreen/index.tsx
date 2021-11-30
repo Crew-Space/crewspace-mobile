@@ -2,23 +2,34 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Animated, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
 import { RootRouterParams } from 'types/Route';
-import { GRAY2, WHITE } from 'theme/Colors';
-import PostPreview from 'components/PostPreview';
-import PinnedNoticeList from './PinnedNoticeList';
-import SectionHeader from 'components/SectionHeader';
-import HomeHeader from './HomeHeader';
-import { HEADER_MAX_HEIGHT, STICKY_EXPANDABLE_HEADER_HEIGHT } from './constant';
-import Text from 'components/Text';
-import { useGetSpaceHomeQuery } from 'store/services/space';
+import { BACKGROUND, GRAY2 } from 'theme/Colors';
 import { setTabName } from 'store/slices/screen';
+import { setSpace } from 'store/slices/space';
 import { setHomeNoticePosts } from 'store/slices/posts';
+import { useGetMySpacesQuery, useGetSpaceHomeQuery } from 'store/services/space';
+import PostPreview from 'components/PostPreview';
+import SectionHeader from 'components/SectionHeader';
+import Text from 'components/Text';
+import { HEADER_MAX_HEIGHT, STICKY_EXPANDABLE_HEADER_HEIGHT } from './constant';
 import CrewOnError from 'components/CrewOnError';
+import HomeHeader from './HomeHeader';
+import PinnedNoticeList from './PinnedNoticeList';
 
 const HomeScreen = () => {
-  const navigation = useNavigation<RootRouterParams>();
   const dispatch = useDispatch();
+  const navigation = useNavigation<RootRouterParams>();
+  const spaceId = useSelector((state) => state.space.spaceId);
+  const {
+    data: spacesData,
+    isError: spacesError,
+    isLoading: spacesLoading,
+    isSuccess: spacesSuccess,
+    isFetching: spacesFetching,
+  } = useGetMySpacesQuery();
 
   const homeNoticePosts = useSelector((state) => state.posts.homeNoticePosts);
   const {
@@ -32,6 +43,7 @@ const HomeScreen = () => {
 
   const scrollYState = useRef(new Animated.Value(0)).current;
   const [refreshing, setRefreshing] = useState(false);
+
   const ScrollViewProps = {
     scrollEventThrottle: 16,
     onScroll: Animated.event([{ nativeEvent: { contentOffset: { y: scrollYState } } }], {
@@ -57,6 +69,17 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
+    console.log('########## homescreen spaces #########');
+    if (!spacesLoading && !spacesSuccess && spacesFetching && spacesData) {
+      const cur =
+        spacesData.spaces.find((space) => space.spaceId === spaceId) || spacesData.spaces[0];
+      AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, cur.spaceId.toString());
+      dispatch(setSpace(cur));
+    }
+  }, [spacesLoading, spacesSuccess, spacesFetching]);
+
+  useEffect(() => {
+    console.log('########## homescreen home #########');
     if (!isLoading && !isFetching && isSuccess && homeData) {
       dispatch(setHomeNoticePosts(homeData.newNotices));
       setRefreshing(false);
@@ -65,6 +88,7 @@ const HomeScreen = () => {
 
   if (isLoading) return <></>;
   if (isError || !homeData) return <CrewOnError />;
+  console.log(homeData);
 
   return (
     <View style={styles.container}>
@@ -77,6 +101,7 @@ const HomeScreen = () => {
                 right: notice.writtenDate,
               },
               Title: notice.title,
+              postId: notice.postId,
             }))}
           />
         )}
@@ -89,7 +114,7 @@ const HomeScreen = () => {
               });
             }}>
             <Text fontType={'REGULAR_14'} color={GRAY2}>
-              {'더보기'}
+              {'더 보기'}
             </Text>
           </TouchableOpacity>
         </SectionHeader>
@@ -113,7 +138,6 @@ const HomeScreen = () => {
           />
         ))}
       </Animated.ScrollView>
-
       <HomeHeader scrollYState={scrollYState} headerImageUrl={homeData.bannerImage} />
     </View>
   );
@@ -122,7 +146,10 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: WHITE,
+    backgroundColor: BACKGROUND,
+  },
+  currentItemContainer: {
+    zIndex: 1,
   },
 });
 

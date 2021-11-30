@@ -16,6 +16,7 @@ export const spaceApi = createApi({
     baseUrl: ENV.apiUrl,
     prepareHeaders: header,
   }),
+  tagTypes: ['HomeNotice'],
   endpoints: (builder) => ({
     checkInvitation: builder.query<ResSpace, string>({
       query: (spaceCode) => `/space/${spaceCode}`,

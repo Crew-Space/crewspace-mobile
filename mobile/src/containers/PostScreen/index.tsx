@@ -47,7 +47,7 @@ const PostScreen = () => {
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
       <ScrollView style={styles.input}>
-        {params.postingType === 'notice' && (
+        {params.postType === 'notice' && (
           <View style={styles.inputTitle}>
             <TextInput fontType={'BOLD_20'} placeholder={'제목'} name={'title'} />
           </View>
@@ -71,7 +71,7 @@ const PostScreen = () => {
       </ScrollView>
       <View style={styles.bottomTab}>
         <SvgIcon xml={image} onPress={onChoosePhoto} />
-        {params.postingType === 'notice' && (
+        {params.postType === 'notice' && (
           <>
             <SvgIcon xml={attachFile} />
             <SvgIcon xml={settings.off} />

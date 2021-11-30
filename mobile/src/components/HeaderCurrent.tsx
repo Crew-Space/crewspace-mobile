@@ -37,7 +37,11 @@ const HeaderCurrent = ({ data, leftButton }: SelectorProps) => {
 };
 
 const styles = StyleSheet.create({
-  flexRowCenter: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
+  flexRowCenter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   spaceItem: {
     flexDirection: 'row',
     alignItems: 'center',

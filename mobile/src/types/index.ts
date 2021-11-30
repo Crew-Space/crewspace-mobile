@@ -1,7 +1,8 @@
 import React from 'react';
 
-export type NoticeType = 'ALL' | 'SAVED' | 'NREAD';
-export type CommunityType = 'ALL' | 'SAVED';
+export type FilterType = 'ALL' | 'SAVED' | 'NREAD';
+export type NoticeType = FilterType;
+export type CommunityType = Omit<FilterType, 'NREAD'>;
 export type PostType = 'notice' | 'community';
 
 export interface PostHeaderSubTextProps {
@@ -18,6 +19,7 @@ export interface PostHeaderProps {
 export interface PinnedNoticeHeaderProps {
   subText: PostHeaderSubTextProps;
   Title: string;
+  postId: number;
 }
 
 export interface PostPreviewProps {
@@ -55,6 +57,8 @@ export type SpaceOptionsInfo = {
   etc: string;
 };
 
+export type MemberProfile = MemberBaseInfo & SpaceOptionsInfo;
+
 /** Space **/
 export type SpaceBaseInfo = {
   spaceName: string;
@@ -91,6 +95,7 @@ export type FixedNotice = {
   categoryName: string;
   title: string;
   writtenDate: string;
+  postId: number;
 };
 export type Author = {
   authorId: number;
