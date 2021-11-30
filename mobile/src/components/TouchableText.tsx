@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text as RNText, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import { StyleSheet, Text as RNText, TextProps, TouchableOpacity } from 'react-native';
 
 import { TypoProps, textStyles } from 'theme/Typography';
 import { BLACK } from 'theme/Colors';
 
-type Props = TypoProps & TouchableOpacityProps;
+type Props = TypoProps & TextProps;
 
 const TouchableText = ({ children, style, color, fontType, paragraph, ...restProps }: Props) => {
   return (
