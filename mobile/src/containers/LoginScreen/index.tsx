@@ -72,6 +72,7 @@ const LoginScreen = () => {
     if (token.current === undefined) return;
 
     if (isSuccess && token.current) setSpace();
+    else setLoginPage(true);
     SplashScreen.hide();
   }, [data, token.current, isSuccess]);
 
