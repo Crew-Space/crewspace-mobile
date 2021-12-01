@@ -1,6 +1,5 @@
-import { GUIDELINE_BASE_WIDTH } from 'constant';
 import { PixelRatio, Platform } from 'react-native';
-import { SCREEN_WIDTH } from 'theme/Metrics';
+import { GUIDELINE_BASE_WIDTH, SCREEN_WIDTH } from 'theme/Metrics';
 
 export const normalize = (size: number): number => {
   const newSize = size * (SCREEN_WIDTH / GUIDELINE_BASE_WIDTH);

@@ -4,3 +4,5 @@ const { width, height } = Dimensions.get('window');
 
 export const SCREEN_WIDTH = width < height ? width : height;
 export const SCREEN_HEIGHT = width < height ? height : width;
+
+export const GUIDELINE_BASE_WIDTH = 375;

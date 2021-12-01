@@ -1,5 +1,4 @@
-import { GUIDELINE_BASE_WIDTH } from 'constant';
-import { SCREEN_WIDTH } from 'theme/Metrics';
+import { GUIDELINE_BASE_WIDTH, SCREEN_WIDTH } from 'theme/Metrics';
 
 export const FONT = {
   R: 'AppleSDGothicNeoR00',
