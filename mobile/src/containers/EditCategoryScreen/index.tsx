@@ -3,60 +3,51 @@ import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { plus, trash } from 'assets/svg/icons';
-import { BACKGROUND, GRAY2, LINE, WHITE } from 'theme/Colors';
+import { BACKGROUND, WHITE } from 'theme/Colors';
 import InfoBox from 'components/InfoBox';
-import SectionHeader from 'components/SectionHeader';
-import SvgIcon from 'components/SvgIcon';
-import TextInput from 'components/TextInput';
-import TouchableText from 'components/TouchableText';
+import { CategoryType } from 'types';
+import CategoryEditList from 'components/CategoryEditList';
 
-const mock = {
+const mock: { [key: string]: CategoryType[] } = {
   notice: [
-    { text: '일반 공지', id: 0 },
-    { text: '활동 공지', id: 1 },
+    {
+      id: 0,
+      name: '일반 공지',
+      isDeletable: false,
+      isEditable: true,
+    },
+    {
+      id: 1,
+      name: '활동 공지',
+      isDeletable: true,
+      isEditable: true,
+    },
   ],
   community: [
-    { text: '일반 글', id: 2 },
-    { text: '인사이트', id: 3 },
-    { text: '일상 공유', id: 4 },
+    {
+      id: 2,
+      name: '일반 글',
+      isDeletable: false,
+      isEditable: true,
+    },
+    {
+      id: 3,
+      name: '인사이트',
+      isDeletable: true,
+      isEditable: true,
+    },
+    {
+      id: 4,
+      name: '일상 공유',
+      isDeletable: true,
+      isEditable: true,
+    },
   ],
-};
-
-const ListItem = ({ key, name, onPress }) => (
-  <View key={key} style={styles.item}>
-    <TextInput defaultValue={name} />
-    <SvgIcon xml={trash} fill={GRAY2} width={24} onPress={onPress} />
-  </View>
-);
-
-const NewItem = ({ addMode, categoryList, setCategoryList, setAddMode }) => {
-  const [inputText, setInputText] = useState<string>();
-
-  return (
-    <View style={styles.item}>
-      <TextInput placeholder={'카테고리 이름'} onChangeText={setInputText} />
-      <View style={{ flexDirection: 'row' }}>
-        <TouchableText onPress={() => setAddMode('none')}>취소</TouchableText>
-        <View style={{ width: 20 }} />
-        <TouchableText
-          onPress={() => {
-            setCategoryList({
-              ...categoryList,
-              [addMode]: [...categoryList[addMode], { text: inputText, id: 100 }],
-            });
-            setAddMode('none');
-          }}>
-          추가
-        </TouchableText>
-      </View>
-    </View>
-  );
 };
 
 const EditCategoryScreen = () => {
-  const [addMode, setAddMode] = useState<'none' | 'notice' | 'community'>('none');
-  const [categoryList, setCategoryList] = useState<typeof mock>(mock);
+  const [noticeCategories, setNoticeCategories] = useState(mock.notice);
+  const [communityCategories, setCommunityCategories] = useState(mock.community);
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
@@ -64,56 +55,18 @@ const EditCategoryScreen = () => {
         <View style={{ padding: 20, backgroundColor: WHITE }}>
           <InfoBox boxType={'warning'} text={"'일반' 카테고리는 삭제가 불가능해요"} />
         </View>
-        <View style={{ marginBottom: 8 }}>
-          <SectionHeader text={'공지'}>
-            <SvgIcon xml={plus} fill={GRAY2} onPress={() => setAddMode('notice')} />
-          </SectionHeader>
-          {categoryList.notice.map((item, index) => (
-            <ListItem
-              key={index}
-              name={item.text}
-              onPress={() =>
-                setCategoryList({
-                  ...categoryList,
-                  notice: categoryList.notice.filter((e) => e.id !== item.id),
-                })
-              }
-            />
-          ))}
-          {addMode === 'notice' && (
-            <NewItem
-              categoryList={categoryList}
-              setCategoryList={setCategoryList}
-              setAddMode={setAddMode}
-              addMode={addMode}
-            />
-          )}
-        </View>
-        <View style={{ marginBottom: 8 }}>
-          <SectionHeader text={'커뮤니티'}>
-            <SvgIcon xml={plus} fill={GRAY2} onPress={() => setAddMode('community')} />
-          </SectionHeader>
-          {categoryList.community.map((item, index) => (
-            <ListItem
-              key={index}
-              name={item.text}
-              onPress={() =>
-                setCategoryList({
-                  ...categoryList,
-                  community: categoryList.community.filter((e) => e.id !== item.id),
-                })
-              }
-            />
-          ))}
-          {addMode === 'community' && (
-            <NewItem
-              categoryList={categoryList}
-              setCategoryList={setCategoryList}
-              setAddMode={setAddMode}
-              addMode={addMode}
-            />
-          )}
-        </View>
+        <CategoryEditList
+          title={'공지'}
+          data={noticeCategories}
+          setCategories={setNoticeCategories}
+          placeholder={'카테고리 이름'}
+        />
+        <CategoryEditList
+          title={'커뮤니티'}
+          data={communityCategories}
+          setCategories={setCommunityCategories}
+          placeholder={'카테고리 이름'}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -124,15 +77,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     backgroundColor: BACKGROUND,
-  },
-  item: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 18,
-    paddingHorizontal: 20,
-    backgroundColor: WHITE,
-    borderBottomWidth: 1,
-    borderBottomColor: LINE,
   },
 });
 

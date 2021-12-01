@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { NewCategoryType } from 'types';
+import { CategoryType } from 'types';
 import { GRAY2, LINE, PRIMARY, WHITE } from 'theme/Colors';
 import SectionHeader from './SectionHeader';
 import SvgIcon from './SvgIcon';
@@ -10,28 +10,30 @@ import TextInput from './TextInput';
 import TouchableText from './TouchableText';
 import Text from './Text';
 import { SvgXml } from 'react-native-svg';
+import { PickRenameMulti } from 'utils/types';
 
 type EditModeType = 'new' | 'none';
+type IdOptionalCategory = PickRenameMulti<CategoryType, { id?: number }>;
 
 interface Props {
   title: string;
-  data: NewCategoryType[];
-  setCategories: (data: NewCategoryType[]) => void;
+  data: IdOptionalCategory[];
+  setCategories: (data: IdOptionalCategory[]) => void;
   placeholder?: string;
 }
 
 interface ItemProps {
   index: number;
-  category: NewCategoryType;
-  setCategories: (data: NewCategoryType[]) => void;
-  categories: NewCategoryType[];
+  category: IdOptionalCategory;
+  setCategories: (data: IdOptionalCategory[]) => void;
+  categories: IdOptionalCategory[];
 }
 
 interface NewITemProps {
   placeholder?: string;
-  setCategories: (data: NewCategoryType[]) => void;
+  setCategories: (data: IdOptionalCategory[]) => void;
   setEditMode: (mode: EditModeType) => void;
-  categories: NewCategoryType[];
+  categories: IdOptionalCategory[];
 }
 
 const ListItem = ({ index, category, setCategories, categories }: ItemProps) => {

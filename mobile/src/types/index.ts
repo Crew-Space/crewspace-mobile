@@ -111,7 +111,8 @@ export type PostBaseInfo = {
   isSaved: boolean;
 };
 
-export type NewCategoryType = {
+export type CategoryType = {
+  id: number;
   name: string;
   isDeletable: boolean;
   isEditable: boolean;
