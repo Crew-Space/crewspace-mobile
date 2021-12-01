@@ -33,21 +33,9 @@ export const posts = createSlice({
       ],
     }),
     setPostUnsave: (state, action: PayloadAction<number>) => ({
-      homeNoticePosts: [
-        ...state.homeNoticePosts.map((post) =>
-          post.postId === action.payload ? { ...post, isSaved: false } : post,
-        ),
-      ],
-      noticePosts: [
-        ...state.noticePosts.map((post) =>
-          post.postId === action.payload ? { ...post, isSaved: false } : post,
-        ),
-      ],
-      communityPosts: [
-        ...state.communityPosts.map((post) =>
-          post.postId === action.payload ? { ...post, isSaved: false } : post,
-        ),
-      ],
+      homeNoticePosts: [...state.homeNoticePosts.filter((post) => post.postId !== action.payload)],
+      noticePosts: [...state.noticePosts.filter((post) => post.postId !== action.payload)],
+      communityPosts: [...state.communityPosts.filter((post) => post.postId !== action.payload)],
     }),
 
     setPostRead: (state, action: PayloadAction<number>) => ({
