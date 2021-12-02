@@ -1,5 +1,6 @@
 export const PRIMARY = '#FF7134';
 export const PRIMARY_LIGHT = '#FDF1EC';
+export const PRIMARY_EXTRA_LIGHT = '#FFF8F5';
 export const RED = '#F53E50';
 export const RED_LIGHT = '#feecee';
 export const BLACK = '#333A44';
