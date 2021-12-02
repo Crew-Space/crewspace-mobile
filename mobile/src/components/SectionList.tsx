@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, SwitchProps, View, ViewStyle } from 'react-native';
+import { Switch, TouchableOpacity } from 'react-native-gesture-handler';
 
 import Text from 'components/Text';
 import { GRAY2, LINE, WHITE } from 'theme/Colors';
 import { TypoType } from 'theme/Typography';
 import { SvgXml } from 'react-native-svg';
 import { expandMore } from 'assets/svg/icons';
-import { Switch, TouchableOpacity } from 'react-native-gesture-handler';
 
 export type ItemType = {
   text: string;
@@ -32,19 +32,19 @@ const SectionList = ({ sectionTitle, data, containerStyle }: Prop) => {
         </View>
       )}
       {data.map((item, index) => (
-        <>
+        <View key={index}>
           {item.toggle ? (
-            <View key={index} style={styles.item}>
+            <View style={styles.item}>
               <Text fontType={item.fontType}>{item.text}</Text>
               <Switch {...item.toggle} />
             </View>
           ) : (
-            <TouchableOpacity key={index} style={styles.item} activeOpacity={0.6}>
+            <TouchableOpacity style={styles.item} activeOpacity={0.6}>
               <Text fontType={item.fontType}>{item.text}</Text>
               <SvgXml xml={expandMore.right} width={20} fill={GRAY2} />
             </TouchableOpacity>
           )}
-        </>
+        </View>
       ))}
     </View>
   );
