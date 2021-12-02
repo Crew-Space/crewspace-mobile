@@ -74,6 +74,7 @@ export const {
   useCheckInvitationQuery,
   useGetRegisterInfoQuery,
   useGetMySpacesQuery,
+  useLazyGetMySpacesQuery,
   useEnterSpaceMutation,
   useGetSpaceHomeQuery,
   useMakeSpaceMutation,

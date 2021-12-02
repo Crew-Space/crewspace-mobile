@@ -4,6 +4,7 @@ import { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
 import { PostType, Space } from 'types';
 
 export type RootRouterParamList = {
+  Login: undefined;
   Auth: undefined;
   Contents: undefined;
   Invitation: NavigatorScreenParams<InvitationParamList> | undefined;
@@ -21,6 +22,7 @@ export type RootRouterParamList = {
     memberId: number;
     isMe?: boolean;
   };
+  KaKaoLogin: undefined;
 };
 
 export type InvitationParamList = {

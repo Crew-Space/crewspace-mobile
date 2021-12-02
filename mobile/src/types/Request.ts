@@ -28,3 +28,12 @@ export type ReqMakeSpace = Modify<BaseProfile, { image?: File }> & {
   hasSns: boolean;
   hasEtc: boolean;
 };
+
+export type ReqKaKaoLogin = {
+  success: true;
+  mgs: string;
+  token: {
+    grandType: 'bearer';
+    accessToken: string;
+  };
+};
