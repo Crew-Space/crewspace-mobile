@@ -17,7 +17,7 @@ const KaKakoLoginWebView = () => {
 
   const setUserAuth = async () => {
     await AsyncStorage.setItem(ASYNC_STORAGE_KEY.ACCESS_TOKEN, accessToken);
-    dispatch(setToken({ token: accessToken }));
+    dispatch(setToken(accessToken));
   };
 
   const onMessage = (event: WebViewMessageEvent) => {

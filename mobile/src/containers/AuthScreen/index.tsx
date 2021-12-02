@@ -21,7 +21,7 @@ const AuthScreen = () => {
     const accessToken = await AsyncStorage.getItem(ASYNC_STORAGE_KEY.ACCESS_TOKEN);
     console.log(accessToken);
     if (accessToken) {
-      dispatch(setToken({ token: accessToken }));
+      dispatch(setToken(accessToken));
       trigger();
     } else {
       navigation.navigate('Login');
