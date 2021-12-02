@@ -71,21 +71,26 @@ const MemberListScreen = () => {
         items={[{ categoryName: '전체', categoryId: -1 }, ...categoriesData.memberCategories]}
         onIndexChange={setSelectedCategory}
       />
-      <ScrollView>
-        {myProfile && (
-          <MemberProfilePreview me {...myProfile} onPress={() => onProfilePress(myProfile)} />
-        )}
-        <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
-        {membersData.members
-          .filter((member) => member.memberId !== categoriesData.myMemberId)
-          .map((member) => (
-            <MemberProfilePreview
-              key={member.memberId}
-              {...member}
-              onPress={() => onProfilePress(member)}
-            />
-          ))}
-      </ScrollView>
+      <View style={{ backgroundColor: BACKGROUND }}>
+        <ScrollView>
+          {myProfile && (
+            <>
+              <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
+              <MemberProfilePreview me {...myProfile} onPress={() => onProfilePress(myProfile)} />
+            </>
+          )}
+          <View style={{ backgroundColor: BACKGROUND, height: 10 }} />
+          {membersData.members
+            .filter((member) => member.memberId !== categoriesData.myMemberId)
+            .map((member) => (
+              <MemberProfilePreview
+                key={member.memberId}
+                {...member}
+                onPress={() => onProfilePress(member)}
+              />
+            ))}
+        </ScrollView>
+      </View>
     </BottomTabSafeAreaView>
   );
 };
@@ -102,6 +107,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderBottomWidth: 1,
     borderBottomColor: LINE,
+    backgroundColor: WHITE,
   },
 });
 
