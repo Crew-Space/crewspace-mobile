@@ -3,11 +3,8 @@ import { Animated, Platform, StyleSheet } from 'react-native';
 
 import { search } from 'assets/svg/icons';
 import { BLACK, WHITE } from 'theme/Colors';
-import {
-  HEADER_MAX_HEIGHT,
-  HEADER_SCROLL_DISTANCE,
-  STICKY_EXPANDABLE_HEADER_HEIGHT,
-} from './constant';
+import { HEADER_MAX_HEIGHT, HEADER_SCROLL_DISTANCE } from './constant';
+import { HEADER_HEIGHT } from 'constant';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from 'theme/Metrics';
 import HeaderCurrent from 'components/HeaderCurrent';
 import { useNavigation } from '@react-navigation/core';
@@ -29,7 +26,7 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
 
   const scrollY = Animated.add(
     scrollYState,
-    Platform.OS === 'ios' ? HEADER_MAX_HEIGHT + STICKY_EXPANDABLE_HEADER_HEIGHT : 0,
+    Platform.OS === 'ios' ? HEADER_MAX_HEIGHT + HEADER_HEIGHT : 0,
   );
 
   const headerTranslate = scrollY.interpolate({
@@ -116,16 +113,16 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     overflow: 'hidden',
-    height: STICKY_EXPANDABLE_HEADER_HEIGHT,
+    height: HEADER_HEIGHT,
     zIndex: 10,
   },
   headerList: {
     position: 'absolute',
-    top: HEADER_MAX_HEIGHT + STICKY_EXPANDABLE_HEADER_HEIGHT - 2,
+    top: HEADER_MAX_HEIGHT + HEADER_HEIGHT,
     left: 0,
     right: 0,
     overflow: 'hidden',
-    height: STICKY_EXPANDABLE_HEADER_HEIGHT,
+    height: HEADER_HEIGHT,
   },
   background: {
     position: 'absolute',

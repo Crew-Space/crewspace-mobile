@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
+import { HEADER_HEIGHT } from 'constant';
 import { RootRouterParams } from 'types/Route';
 import { BACKGROUND, GRAY2 } from 'theme/Colors';
 import { setTabName } from 'store/slices/screen';
@@ -14,7 +15,7 @@ import { useGetMySpacesQuery, useGetSpaceHomeQuery } from 'store/services/space'
 import PostPreview from 'components/PostPreview';
 import SectionHeader from 'components/SectionHeader';
 import Text from 'components/Text';
-import { HEADER_MAX_HEIGHT, STICKY_EXPANDABLE_HEADER_HEIGHT } from './constant';
+import { HEADER_MAX_HEIGHT } from './constant';
 import CrewOnError from 'components/CrewOnError';
 import HomeHeader from './HomeHeader';
 import PinnedNoticeList from './PinnedNoticeList';
@@ -56,11 +57,11 @@ const HomeScreen = () => {
           setRefreshing(true);
           refetch();
         }}
-        progressViewOffset={HEADER_MAX_HEIGHT + STICKY_EXPANDABLE_HEADER_HEIGHT}
+        progressViewOffset={HEADER_MAX_HEIGHT + HEADER_HEIGHT}
       />
     ),
     contentInset: {
-      top: HEADER_MAX_HEIGHT + STICKY_EXPANDABLE_HEADER_HEIGHT,
+      top: HEADER_MAX_HEIGHT + HEADER_HEIGHT,
     },
     contentOffset: {
       x: 0,
@@ -69,7 +70,6 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    console.log('########## homescreen spaces #########');
     if (!spacesLoading && !spacesSuccess && spacesFetching && spacesData) {
       const cur =
         spacesData.spaces.find((space) => space.spaceId === spaceId) || spacesData.spaces[0];
@@ -79,7 +79,6 @@ const HomeScreen = () => {
   }, [spacesLoading, spacesSuccess, spacesFetching]);
 
   useEffect(() => {
-    console.log('########## homescreen home #########');
     if (!isLoading && !isFetching && isSuccess && homeData) {
       dispatch(setHomeNoticePosts(homeData.newNotices));
       setRefreshing(false);
