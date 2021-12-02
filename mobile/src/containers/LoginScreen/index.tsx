@@ -23,17 +23,12 @@ const LoginScreen = () => {
   };
 
   useEffect(() => {
-    console.log('LoginScreen', errorCode);
     switch (errorCode) {
       case 1:
-        // 뭔가 다른 에러 처리
         Alert.alert(
-          'Alert Title',
-          'My Alert Msg',
-          [
-            { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-            { text: 'OK', onPress: () => console.log('OK Pressed') },
-          ],
+          '무언가 잘못되었습니다...',
+          '운영진에게 도움을 요청해주세요!',
+          [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
           { cancelable: false },
         );
         break;

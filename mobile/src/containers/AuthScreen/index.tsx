@@ -19,7 +19,6 @@ const AuthScreen = () => {
 
   const setUser = async () => {
     const accessToken = await AsyncStorage.getItem(ASYNC_STORAGE_KEY.ACCESS_TOKEN);
-    console.log(accessToken);
     if (accessToken) {
       dispatch(setToken(accessToken));
       trigger();
