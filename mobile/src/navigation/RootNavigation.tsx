@@ -16,6 +16,8 @@ import {
   SearchScreen,
   MemberProfileDetailsScreen,
   PostDetailsScreen,
+  KaKakoLoginWebView,
+  AuthScreen,
 } from 'containers';
 import Text from 'components/Text';
 import { PostScreenHeader, CategorySelectorHeader } from 'components/Header';
@@ -27,6 +29,13 @@ const RootNavigation = () => {
     <Stack.Navigator initialRouteName={'Auth'}>
       <Stack.Screen
         name='Auth'
+        component={AuthScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name='Login'
         component={LoginScreen}
         options={{
           headerShown: false,
@@ -112,6 +121,13 @@ const RootNavigation = () => {
           ),
           headerLeftContainerStyle: { paddingLeft: 20, paddingVertical: 18 },
         })}
+      />
+      <Stack.Screen
+        name='KaKaoLogin'
+        component={KaKakoLoginWebView}
+        options={{
+          presentation: 'modal',
+        }}
       />
     </Stack.Navigator>
   );

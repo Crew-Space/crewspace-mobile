@@ -1,11 +1,9 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { SvgXml } from 'react-native-svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import SplashScreen from 'react-native-splash-screen';
 
 import { logo } from 'assets/svg';
 import kakaoLogin from 'assets/svg/kakaoLogin';
@@ -13,79 +11,50 @@ import { BLACK, GRAY2, WHITE } from 'theme/Colors';
 import Text from 'components/Text';
 import { RootRouterParams } from 'types/Route';
 import { crewOnEarth } from 'assets/svg/spacers';
-import ENV from 'environments';
-import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
-import { setToken } from 'store/slices/auth';
-import { setSpace } from 'store/slices/space';
-import { useGetMySpacesQuery } from 'store/services/space';
+import useSetCurrentSpace from 'hooks/useSetCurrentSpace';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
-  const dispatch = useDispatch();
-  const { data, isSuccess, isError, isLoading } = useGetMySpacesQuery();
-  const token = useRef<string>();
-  const [loginPage, setLoginPage] = useState(false);
-
-  const setUser = async () => {
-    const accessToken = (await AsyncStorage.getItem(ASYNC_STORAGE_KEY.ACCESS_TOKEN)) || null;
-    if (!accessToken) {
-      setLoginPage(true);
-      return;
-    }
-
-    token.current = accessToken;
-    dispatch(setToken({ token: accessToken }));
-  };
-
-  const setCurrentSpace = async () => {
-    const id = await AsyncStorage.getItem(ASYNC_STORAGE_KEY.SPACE_ID);
-    if (!id) {
-      setLoginPage(true);
-      return;
-    }
-
-    if (!data?.spaces.length) {
-      await AsyncStorage.removeItem(ASYNC_STORAGE_KEY.SPACE_ID);
-      navigation.replace('Invitation');
-      return;
-    }
-
-    const currentSpace = data.spaces.find((space) => space.spaceId === +id);
-
-    if (!currentSpace) {
-      await AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, data.spaces[0].spaceId.toString());
-      dispatch(setSpace(data.spaces[0]));
-    } else {
-      dispatch(setSpace(currentSpace));
-    }
-    navigation.replace('Main');
-  };
+  const token = useSelector((state) => state.auth.token);
+  const { isSuccess, errorCode, trigger, currentSpace } = useSetCurrentSpace();
 
   const onPress = async () => {
-    await AsyncStorage.setItem(ASYNC_STORAGE_KEY.ACCESS_TOKEN, ENV.token);
-    dispatch(setToken({ token: ENV.token }));
-
-    navigation.replace('Invitation');
+    navigation.navigate('KaKaoLogin');
   };
 
   useEffect(() => {
-    if (token.current === undefined) return;
-
-    if (isSuccess && token.current) setCurrentSpace();
-    else setLoginPage(true);
-    SplashScreen.hide();
-  }, [data, token.current, isSuccess]);
+    console.log('LoginScreen', errorCode);
+    switch (errorCode) {
+      case 1:
+        // 뭔가 다른 에러 처리
+        Alert.alert(
+          'Alert Title',
+          'My Alert Msg',
+          [
+            { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ],
+          { cancelable: false },
+        );
+        break;
+      case 2:
+        navigation.navigate('Invitation');
+        break;
+    }
+  }, [errorCode]);
 
   useEffect(() => {
-    if (isError) SplashScreen.hide();
-  }, [isError]);
+    if (isSuccess && currentSpace) {
+      navigation.navigate('Main');
+    }
+  }, [isSuccess, currentSpace]);
 
-  useLayoutEffect(() => {
-    setUser();
-  }, []);
-
-  if (isLoading) return <></>;
-  if (!loginPage) return <View style={{ backgroundColor: WHITE }} />;
+  useEffect(() => {
+    if (token) {
+      console.log('loginScreen', token);
+      trigger();
+    }
+  }, [token]);
 
   return (
     <SafeAreaView style={styles.container}>
