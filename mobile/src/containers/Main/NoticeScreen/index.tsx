@@ -86,7 +86,7 @@ const NoticeScreen = () => {
               subText: { left: item.categoryName, right: item.writtenDate },
               Title: item.title,
             }}
-            description={item.description?.replaceAll('\n', '')}
+            description={item.description?.replace(/\n/g, '')}
             isSaved={item.isSaved}
             viewed={item.isRead}
             onPress={() =>
