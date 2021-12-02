@@ -1,10 +1,9 @@
-import ENV from 'environments';
 import { RootState } from 'store';
 
 export const SPACE_INITAL_ID = -1;
 
 export const header = (headers: Headers, { getState }: { getState: () => unknown }) => {
-  const token = ENV.token;
+  const token = (getState() as RootState).auth.token;
   const spaceId = (getState() as RootState).space.spaceId;
 
   if (token) {
