@@ -11,18 +11,22 @@ export const memberApi = createApi({
     baseUrl: ENV.apiUrl,
     prepareHeaders: header,
   }),
+  tagTypes: ['Reset'],
   endpoints: (builder) => ({
     getMemberCategories: builder.query<ResMemberCategories, void>({
       query: () => '/members/categories',
       transformResponse: (response: { data: ResMemberCategories }) => response.data,
+      providesTags: ['Reset'],
     }),
     getMembers: builder.query<ResMembers, { memberCategoryId?: number }>({
       query: (params) => ({ url: '/members', params }),
       transformResponse: (response: { data: ResMembers }) => response.data,
+      providesTags: ['Reset'],
     }),
     getMember: builder.query<ResMember, number>({
       query: (memberId) => `/members/${memberId}`,
       transformResponse: (response: { data: ResMember }) => response.data,
+      providesTags: ['Reset'],
     }),
 
     updateMyProfile: builder.mutation<void, ReqUpdateMyProfile>({

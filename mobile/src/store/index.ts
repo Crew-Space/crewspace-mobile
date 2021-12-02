@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
 import logger from 'redux-logger';
 
 import reducer from 'store/reducer';
@@ -20,3 +21,13 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export default store;
+
+export const useResetAllApiState = () => {
+  const dispatch = useDispatch();
+  const resetApiState = () => {
+    dispatch(postApi.util.invalidateTags(['Reset']));
+    dispatch(memberApi.util.invalidateTags(['Reset']));
+    dispatch(spaceApi.util.invalidateTags(['Reset']));
+  };
+  return resetApiState;
+};

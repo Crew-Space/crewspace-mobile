@@ -43,7 +43,6 @@ const MemberListScreen = () => {
       isMe: member.memberId === myProfile?.memberId,
     });
 
-  if (isLoading) return <></>;
   if (isError || !membersData) return <CrewOnError />;
 
   return (

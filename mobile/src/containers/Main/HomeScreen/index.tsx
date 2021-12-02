@@ -85,9 +85,7 @@ const HomeScreen = () => {
     }
   }, [isFetching, isSuccess, isLoading]);
 
-  if (isLoading) return <></>;
   if (isError || !homeData) return <CrewOnError />;
-  console.log(homeData);
 
   return (
     <View style={styles.container}>

@@ -16,9 +16,6 @@ type ErrorCode = 0 | 1 | 2;
 
 const useGetCurrentSpace = () => {
   const dispatch = useDispatch();
-  const spaceId = (async function () {
-    AsyncStorage.getItem(ASYNC_STORAGE_KEY.SPACE_ID);
-  })();
   const [currentSpace, setSpace] = useState<Space | null>(null);
   const [errorCode, setErrorCode] = useState<ErrorCode>(0);
   const [trigger, { data, isSuccess, isError: queryError }] = useLazyGetMySpacesQuery();
@@ -43,11 +40,14 @@ const useGetCurrentSpace = () => {
       if (data.spaces.length === 0) {
         setErrorCode(2);
       } else {
-        const mySpace = spaceId
-          ? data.spaces.find((space) => space.spaceId === +spaceId)
-          : undefined;
-        setSpace(mySpace || data.spaces[0]);
-        dispatch(setMySpaces(data.spaces));
+        (async function () {
+          const spaceId = await AsyncStorage.getItem(ASYNC_STORAGE_KEY.SPACE_ID);
+          const mySpace = spaceId
+            ? data.spaces.find((space) => space.spaceId === +spaceId)
+            : undefined;
+          setSpace(mySpace || data.spaces[0]);
+          dispatch(setMySpaces(data.spaces));
+        })();
       }
     }
   }, [isSuccess, data]);

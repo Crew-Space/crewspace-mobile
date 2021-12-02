@@ -17,15 +17,17 @@ export const spaceApi = createApi({
     baseUrl: ENV.apiUrl,
     prepareHeaders: header,
   }),
-  tagTypes: ['HomeNotice'],
+  tagTypes: ['HomeNotice', 'Reset'],
   endpoints: (builder) => ({
     checkInvitation: builder.query<ResSpace, string>({
       query: (spaceCode) => `/space/${spaceCode}`,
       transformResponse: (response: { data: ResSpace }) => response.data,
+      providesTags: ['Reset'],
     }),
     getRegisterInfo: builder.query<ResRegisterInfo, void>({
       query: () => '/space/register-info',
       transformResponse: (response: { data: ResRegisterInfo }) => response.data,
+      providesTags: ['Reset'],
     }),
     enterSpace: builder.mutation<ResSpaceEnter, ReqSpaceEnter>({
       query: (userInfo) => {
@@ -43,10 +45,12 @@ export const spaceApi = createApi({
     getSpaceHome: builder.query<ResSpaceHome, void>({
       query: () => '/space',
       transformResponse: (response: { data: ResSpaceHome }) => response.data,
+      providesTags: ['Reset'],
     }),
     getMySpaces: builder.query<ResMySpaces, void>({
       query: () => '/spaces',
       transformResponse: (response: { data: ResMySpaces }) => response.data,
+      providesTags: ['Reset'],
     }),
 
     makeSpace: builder.mutation<ResMakeSpace, ReqMakeSpace>({

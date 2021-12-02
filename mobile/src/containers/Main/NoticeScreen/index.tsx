@@ -60,7 +60,6 @@ const NoticeScreen = () => {
     refetch();
   }, [selectedFilter, currentCategory]);
 
-  if (isLoading) return <></>;
   if (isError || !data) return <CrewOnError />;
 
   return (

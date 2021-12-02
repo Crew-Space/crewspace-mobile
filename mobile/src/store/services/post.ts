@@ -17,7 +17,7 @@ export const postApi = createApi({
     baseUrl: ENV.apiUrl,
     prepareHeaders: header,
   }),
-  tagTypes: ['CommunityPost', 'NoticePost', 'save', 'fix'],
+  tagTypes: ['CommunityPost', 'NoticePost', 'save', 'fix', 'Reset'],
   endpoints: (builder) => ({
     getPostCategories: builder.query<ResPostCategory, void>({
       query: () => '/posts/categories',
@@ -30,28 +30,29 @@ export const postApi = createApi({
           { categoryName: '커뮤니티 전체', categoryId: -1 },
           ...response.data.communityCategories,
         ],
+        tagTypes: ['Reset'],
       }),
     }),
 
     getNoticePosts: builder.query<ResNoticePosts, ReqPosts>({
       query: (params) => ({ url: '/posts/notice', params }),
       transformResponse: (response: { data: ResNoticePosts }) => response.data,
-      providesTags: ['NoticePost'],
+      providesTags: ['NoticePost', 'Reset'],
     }),
     getNoticePost: builder.query<NoticePost, number>({
       query: (postId) => `/posts/notice/${postId}`,
       transformResponse: (response: { data: NoticePost }) => response.data,
-      providesTags: ['save', 'fix'],
+      providesTags: ['save', 'fix', 'Reset'],
     }),
     getCommunityPosts: builder.query<ResCommunityPosts, ReqPosts>({
       query: (params) => ({ url: '/posts/community', params }),
       transformResponse: (response: { data: ResCommunityPosts }) => response.data,
-      providesTags: ['CommunityPost'],
+      providesTags: ['CommunityPost', 'Reset'],
     }),
     getCommunityPost: builder.query<CommunityPost, number>({
       query: (postId) => `/posts/community/${postId}`,
       transformResponse: (response: { data: CommunityPost }) => response.data,
-      providesTags: ['save'],
+      providesTags: ['save', 'Reset'],
     }),
 
     savePost: builder.mutation<void, number>({

@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Animated, StyleSheet, View, ViewProps } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { ScrollView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { plus } from 'assets/svg/icons';
 import { BLACK, PRIMARY, WHITE } from 'theme/Colors';
@@ -13,6 +14,8 @@ import Text from 'components/Text';
 import SvgIcon from 'components/SvgIcon';
 import MenuItem from './MenuItem';
 import useSideMenuAnimation from './useSideMenuAnimation';
+import { useResetAllApiState } from 'store';
+import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
 
 const SLIDE_MENU_WIDTH = 300;
 const SLIDE_DURATION = 200;
@@ -21,18 +24,13 @@ const SideMenu = ({ children, ...restProps }: ViewProps) => {
   const dispatch = useDispatch();
   const currentSpace = useSelector((state) => state.space.current);
   const mySpaces = useSelector((state) => state.space.mySpaces);
-  const isOpen = useSelector((state) => state.sideMenu.isOpen);
+
+  const resetApiState = useResetAllApiState();
 
   const [translateAnim, fadeAnim, expanded, toggleExpaned] = useSideMenuAnimation(
     SLIDE_MENU_WIDTH,
     SLIDE_DURATION,
   );
-
-  useEffect(() => {
-    if (isOpen) {
-    } else {
-    }
-  }, [isOpen]);
 
   return (
     <View {...restProps} style={[styles.container]}>
@@ -63,6 +61,10 @@ const SideMenu = ({ children, ...restProps }: ViewProps) => {
               isActive={currentSpace.spaceId === space.spaceId}
               onPress={() => {
                 dispatch(setCurrentSpace(space));
+                resetApiState();
+                (async function () {
+                  await AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, space.spaceId.toString());
+                })();
                 toggleExpaned();
               }}
             />
