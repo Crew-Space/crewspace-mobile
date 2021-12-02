@@ -14,7 +14,6 @@ import { useMakeSpaceMutation } from 'store/services/space';
 import Text from 'components/Text';
 import SvgIcon from 'components/SvgIcon';
 import Button from 'components/Button';
-import CrewOnError from 'components/CrewOnError';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
@@ -86,9 +85,9 @@ const MakeSpaceScreen = () => {
         {stepLevel === 1 ? (
           <Step1 setSpaceInput={setSpaceInput} spaceInput={spaceInput} />
         ) : stepLevel === 2 ? (
-          <Step2 />
+          <Step2 setSpaceInput={setSpaceInput} spaceInput={spaceInput} />
         ) : (
-          <Step3 />
+          <Step3 setSpaceInput={setSpaceInput} spaceInput={spaceInput} />
         )}
       </KeyboardAwareScrollView>
       <View style={styles.butttonView}>

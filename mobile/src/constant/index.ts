@@ -19,4 +19,12 @@ export const PROFILE_TEXT: {
   etc: '기타',
 };
 
+export const SPACE_MEMBER_INFO_OPTIONS_TEXT = {
+  hasBirthdate: '생년월일',
+  hasEmail: '이메일',
+  hasContact: '휴대전화',
+  hasSns: 'SNS',
+  hasEtc: '기타',
+};
+
 export const HEADER_HEIGHT = normalize(60);

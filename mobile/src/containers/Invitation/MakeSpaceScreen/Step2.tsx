@@ -4,6 +4,12 @@ import { ScrollView } from 'react-native-gesture-handler';
 import InfoBox from 'components/InfoBox';
 import CategoryEditList from 'components/CategoryEditList';
 import { CategoryType } from 'types';
+import { ReqMakeSpace } from 'types/Request';
+
+interface Props {
+  setSpaceInput: React.Dispatch<React.SetStateAction<ReqMakeSpace>>;
+  spaceInput: ReqMakeSpace;
+}
 
 const initialCategories: Omit<CategoryType, 'id'>[] = [
   {
@@ -18,11 +24,14 @@ const initialCategories: Omit<CategoryType, 'id'>[] = [
   },
 ];
 
-const Step2 = () => {
+const Step2 = ({ setSpaceInput, spaceInput }: Props) => {
   const [membercategories, setMemberCategories] = useState(initialCategories);
 
   useEffect(() => {
-    console.log(membercategories);
+    setSpaceInput({
+      ...spaceInput,
+      memberCategory: membercategories.map((category) => category.name),
+    });
   }, [membercategories]);
 
   return (
