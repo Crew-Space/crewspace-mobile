@@ -123,6 +123,7 @@ const HomeScreen = () => {
               subText: { left: notice.categoryName, right: notice.writtenDate },
               Title: notice.title,
             }}
+            image={notice.image}
             description={notice.description}
             isSaved={notice.isSaved}
             viewed={notice.isRead}

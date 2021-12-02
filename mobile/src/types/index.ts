@@ -26,6 +26,7 @@ export interface PostPreviewProps {
   postId: number;
   header: Omit<PostHeaderProps, 'isSaved'>;
   description: string;
+  image: string;
   isSaved?: boolean;
   viewed?: boolean;
 }

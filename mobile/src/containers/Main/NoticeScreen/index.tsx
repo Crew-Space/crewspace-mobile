@@ -85,6 +85,7 @@ const NoticeScreen = () => {
               subText: { left: item.categoryName, right: item.writtenDate },
               Title: item.title,
             }}
+            image={item.image}
             description={item.description?.replace(/\n/g, '')}
             isSaved={item.isSaved}
             viewed={item.isRead}

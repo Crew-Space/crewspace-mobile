@@ -88,6 +88,7 @@ const CommunityScreen = () => {
                   memberCategory: item.authorCategoryName,
                 }),
             }}
+            image={item.image}
             description={item.description?.replace(/\n/g, '')}
             isSaved={item.isSaved}
             onPress={() =>

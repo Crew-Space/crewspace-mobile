@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableHighlightProps, View, TouchableHighlight } from 'react-native';
+import { TouchableHighlightProps, View, TouchableHighlight, StyleSheet, Image } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
 import { PostPreviewProps } from 'types';
@@ -7,27 +7,34 @@ import { GRAY1, GRAY2, GRAY4, LINE, PRIMARY, WHITE } from 'theme/Colors';
 import { check } from 'assets/svg/icons';
 import Text from 'components/Text';
 import PostHeader from 'components/PostHeader';
+import { normalize } from 'utils';
 
 type Props = PostPreviewProps & TouchableHighlightProps;
 
-const PostPreview = ({ header, description, isSaved, viewed, postId, ...restProps }: Props) => (
-  <TouchableHighlight
-    {...restProps}
-    underlayColor={GRAY4}
-    style={{
-      paddingVertical: 18,
-      paddingHorizontal: 20,
-      backgroundColor: WHITE,
-      borderBottomColor: LINE,
-      borderBottomWidth: 1,
-    }}>
+const PostPreview = ({
+  header,
+  description,
+  isSaved,
+  viewed,
+  postId,
+  image,
+  ...restProps
+}: Props) => (
+  <TouchableHighlight {...restProps} underlayColor={GRAY4} style={styles.container}>
     <>
       <PostHeader {...header} isSaved={isSaved} postId={postId} />
-      <Text paragraph fontType={'REGULAR_14'} color={GRAY1} style={{ marginTop: 10 }}>
-        {`${description.slice(0, 100)}...`}
-      </Text>
+      <View style={styles.contents}>
+        <View style={{ flex: 1 }}>
+          <Text paragraph fontType={'REGULAR_14'} color={GRAY1}>
+            {`${description.replace(/\n/g, '').slice(0, 100)}${
+              description.length >= 100 ? '...' : ''
+            }`}
+          </Text>
+        </View>
+        {!!image && <Image source={{ uri: image }} style={styles.image} />}
+      </View>
       {viewed !== undefined && (
-        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+        <View style={styles.viewed}>
           <SvgXml
             xml={check}
             fill={viewed ? PRIMARY : GRAY2}
@@ -42,5 +49,33 @@ const PostPreview = ({ header, description, isSaved, viewed, postId, ...restProp
     </>
   </TouchableHighlight>
 );
+
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 18,
+    paddingHorizontal: 20,
+    backgroundColor: WHITE,
+    borderBottomColor: LINE,
+    borderBottomWidth: 1,
+  },
+  contents: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  image: {
+    borderRadius: 8,
+    overflow: 'hidden',
+    width: normalize(63),
+    height: normalize(63),
+    resizeMode: 'cover',
+    marginLeft: 10,
+  },
+  viewed: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+});
 
 export default PostPreview;
