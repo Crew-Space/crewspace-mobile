@@ -16,12 +16,15 @@ import MenuItem from './MenuItem';
 import useSideMenuAnimation from './useSideMenuAnimation';
 import { useResetAllApiState } from 'store';
 import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
+import { useNavigation } from '@react-navigation/core';
+import { RootRouterParams } from 'types/Route';
 
 const SLIDE_MENU_WIDTH = 300;
 const SLIDE_DURATION = 200;
 
 const SideMenu = ({ children, ...restProps }: ViewProps) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation<RootRouterParams>();
   const currentSpace = useSelector((state) => state.space.current);
   const mySpaces = useSelector((state) => state.space.mySpaces);
 
@@ -51,7 +54,16 @@ const SideMenu = ({ children, ...restProps }: ViewProps) => {
         ]}>
         <View style={styles.title}>
           <Text fontType={'BOLD_18'}>동아리 스페이스</Text>
-          <SvgIcon xml={plus} fill={PRIMARY} width={24} />
+          <SvgIcon
+            xml={plus}
+            fill={PRIMARY}
+            width={24}
+            onPress={() =>
+              navigation.navigate('Invitation', {
+                screen: 'MakeSpace',
+              })
+            }
+          />
         </View>
         <ScrollView>
           {mySpaces.map((space) => (
