@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 
 import RootNavigation from 'navigation/RootNavigation';
 import store from 'store';
+import SideMenu from 'components/side-menu';
 
 // LogBox.ignoreAllLogs();
 
@@ -13,8 +14,10 @@ const App = () => {
   return (
     <>
       <Provider store={store}>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <RootNavigation />
+        <SideMenu>
+          <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+          <RootNavigation />
+        </SideMenu>
       </Provider>
     </>
   );
