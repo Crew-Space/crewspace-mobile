@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { expandMore } from 'assets/svg/icons';
+import { barMenu } from 'assets/svg/icons';
 import { HeaderListItemType } from 'types';
-import { BLACK, LINE, WHITE } from 'theme/Colors';
+import { BLACK, GRAY2, LINE, WHITE } from 'theme/Colors';
 import { normalize } from 'utils';
 import SvgIcon from 'components/SvgIcon';
 import ProfileImage from 'components/ProfileImage';
 import Text from 'components/Text';
+import { useDispatch } from 'react-redux';
+import { toggleSideMenu } from 'store/slices/sideMenu';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface SelectorProps {
   data: HeaderListItemType;
@@ -18,19 +21,26 @@ interface SelectorProps {
 }
 
 const HeaderCurrent = ({ data, leftButton }: SelectorProps) => {
-  const [expended, setExpended] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   return (
-    <View
-      style={[styles.spaceItem, { justifyContent: 'space-between' }]}
-      onTouchEnd={() => setExpended(!expended)}>
-      <View style={styles.flexRowCenter}>
+    <View style={[styles.spaceItem, { justifyContent: 'space-between' }]}>
+      <TouchableOpacity
+        activeOpacity={0.4}
+        style={styles.flexRowCenter}
+        onPress={() => dispatch(toggleSideMenu())}>
+        <SvgIcon
+          disabled
+          xml={barMenu}
+          fill={GRAY2}
+          width={normalize(20)}
+          style={{ marginRight: 10 }}
+        />
         {!!data.imageUrl && (
           <ProfileImage uri={data.imageUrl} width={24} style={{ marginRight: 8 }} />
         )}
         <Text fontType={'BOLD_18'}>{data.name}</Text>
-        <SvgIcon xml={expandMore.down} fill={BLACK} width={normalize(20)} />
-      </View>
+      </TouchableOpacity>
       {leftButton && <SvgIcon xml={leftButton.xml} fill={BLACK} onPress={leftButton.onPress} />}
     </View>
   );

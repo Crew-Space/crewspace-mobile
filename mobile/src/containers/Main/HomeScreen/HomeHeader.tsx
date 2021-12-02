@@ -6,7 +6,7 @@ import { BLACK, WHITE } from 'theme/Colors';
 import { HEADER_MAX_HEIGHT, HEADER_SCROLL_DISTANCE } from './constant';
 import { HEADER_HEIGHT } from 'constant';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from 'theme/Metrics';
-import HeaderCurrent from 'components/HeaderCurrent';
+import HeaderCurrent from 'containers/Main/HomeScreen/HeaderCurrent';
 import { useNavigation } from '@react-navigation/core';
 import { RootRouterParams } from 'types/Route';
 import { useGetMySpacesQuery } from 'store/services/space';
