@@ -89,7 +89,7 @@ const CommunityScreen = () => {
                   memberCategory: item.authorCategoryName,
                 }),
             }}
-            description={item.description.replaceAll('\n', '')}
+            description={item.description?.replaceAll('\n', '')}
             isSaved={item.isSaved}
             onPress={() =>
               navigation.navigate('PostDetails', {
