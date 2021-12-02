@@ -2,16 +2,14 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Animated, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
 import { HEADER_HEIGHT } from 'constant';
 import { RootRouterParams } from 'types/Route';
 import { BACKGROUND, GRAY2 } from 'theme/Colors';
 import { setTabName } from 'store/slices/screen';
-import { setCurrentSpace } from 'store/slices/space';
 import { setHomeNoticePosts } from 'store/slices/posts';
-import { useGetMySpacesQuery, useGetSpaceHomeQuery } from 'store/services/space';
+import { useGetSpaceHomeQuery } from 'store/services/space';
+
 import PostPreview from 'components/PostPreview';
 import SectionHeader from 'components/SectionHeader';
 import Text from 'components/Text';
@@ -23,14 +21,6 @@ import PinnedNoticeList from './PinnedNoticeList';
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation<RootRouterParams>();
-  const spaceId = useSelector((state) => state.space.current.spaceId);
-  const {
-    data: spacesData,
-    isError: spacesError,
-    isLoading: spacesLoading,
-    isSuccess: spacesSuccess,
-    isFetching: spacesFetching,
-  } = useGetMySpacesQuery();
 
   const homeNoticePosts = useSelector((state) => state.posts.homeNoticePosts);
   const {
@@ -68,15 +58,6 @@ const HomeScreen = () => {
       y: -HEADER_MAX_HEIGHT,
     },
   };
-
-  useEffect(() => {
-    if (!spacesLoading && !spacesSuccess && spacesFetching && spacesData) {
-      const cur =
-        spacesData.spaces.find((space) => space.spaceId === spaceId) || spacesData.spaces[0];
-      AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, cur.spaceId.toString());
-      dispatch(setCurrentSpace(cur));
-    }
-  }, [spacesLoading, spacesSuccess, spacesFetching]);
 
   useEffect(() => {
     if (!isLoading && !isFetching && isSuccess && homeData) {

@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Animated } from 'react-native';
 
-import { HEADER_HEIGHT } from 'constant';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSideMenu } from 'store/slices/sideMenu';
+import { useLazyGetMySpacesQuery } from 'store/services/space';
+import { setMySpaces } from 'store/slices/space';
 
 const useSideMenuAnimation = (
   width: number,
@@ -15,6 +16,7 @@ const useSideMenuAnimation = (
   toggleExpaned: () => void,
 ] => {
   const dispatch = useDispatch();
+  const [trigger, { data, isSuccess }] = useLazyGetMySpacesQuery();
   const expanded = useSelector((state) => state.sideMenu.isOpen);
   const translateAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -47,7 +49,14 @@ const useSideMenuAnimation = (
   ]);
 
   useEffect(() => {
+    if (isSuccess && data) {
+      dispatch(setMySpaces(data.spaces));
+    }
+  }, [isSuccess, data]);
+
+  useEffect(() => {
     if (!expanded) {
+      trigger();
       expandAmin.start();
     } else {
       contractAmin.start();
