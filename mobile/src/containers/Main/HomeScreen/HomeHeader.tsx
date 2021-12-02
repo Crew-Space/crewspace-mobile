@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/core';
 import { RootRouterParams } from 'types/Route';
 import { useGetMySpacesQuery } from 'store/services/space';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSpace } from 'store/slices/space';
+import { setCurrentSpace } from 'store/slices/space';
 
 interface Props {
   scrollYState: Animated.Value;
@@ -21,7 +21,7 @@ interface Props {
 const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
   const navigation = useNavigation<RootRouterParams>();
   const dispatch = useDispatch();
-  const space = useSelector((state) => state.space);
+  const space = useSelector((state) => state.space.current);
   const { data, isFetching, isError, isSuccess, isLoading } = useGetMySpacesQuery();
 
   const scrollY = Animated.add(
@@ -45,7 +45,7 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
     if (!isLoading && !isFetching && isSuccess && data) {
       const cur = data.spaces.find((s) => s.spaceId === space.spaceId);
       if (!cur) {
-        dispatch(setSpace(data.spaces[0]));
+        dispatch(setCurrentSpace(data.spaces[0]));
       }
     }
   }, [isFetching, isSuccess, isLoading]);

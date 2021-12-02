@@ -9,7 +9,7 @@ import { HEADER_HEIGHT } from 'constant';
 import { RootRouterParams } from 'types/Route';
 import { BACKGROUND, GRAY2 } from 'theme/Colors';
 import { setTabName } from 'store/slices/screen';
-import { setSpace } from 'store/slices/space';
+import { setCurrentSpace } from 'store/slices/space';
 import { setHomeNoticePosts } from 'store/slices/posts';
 import { useGetMySpacesQuery, useGetSpaceHomeQuery } from 'store/services/space';
 import PostPreview from 'components/PostPreview';
@@ -23,7 +23,7 @@ import PinnedNoticeList from './PinnedNoticeList';
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation<RootRouterParams>();
-  const spaceId = useSelector((state) => state.space.spaceId);
+  const spaceId = useSelector((state) => state.space.current.spaceId);
   const {
     data: spacesData,
     isError: spacesError,
@@ -74,7 +74,7 @@ const HomeScreen = () => {
       const cur =
         spacesData.spaces.find((space) => space.spaceId === spaceId) || spacesData.spaces[0];
       AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, cur.spaceId.toString());
-      dispatch(setSpace(cur));
+      dispatch(setCurrentSpace(cur));
     }
   }, [spacesLoading, spacesSuccess, spacesFetching]);
 

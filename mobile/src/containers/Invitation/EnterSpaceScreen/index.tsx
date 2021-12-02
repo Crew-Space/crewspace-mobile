@@ -17,7 +17,7 @@ import Step2 from './Step2';
 import { useEnterSpaceMutation, useGetRegisterInfoQuery } from 'store/services/space';
 import { ReqSpaceEnter } from 'types/Request';
 import { useDispatch } from 'react-redux';
-import { setSpace } from 'store/slices/space';
+import { setCurrentSpace } from 'store/slices/space';
 import CrewOnError from 'components/CrewOnError';
 
 type StepType = 1 | 2;
@@ -69,7 +69,7 @@ const EnterSpaceScreen = () => {
   };
 
   DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, (space) => {
-    dispatch(setSpace(space));
+    dispatch(setCurrentSpace(space));
     navigation.replace('Main');
   });
 

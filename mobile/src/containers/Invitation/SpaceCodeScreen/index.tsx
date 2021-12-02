@@ -16,7 +16,7 @@ import Text from 'components/Text';
 import { welcomeParams } from 'constant/welcome';
 import CustomEvent from 'constant/customEvent';
 import { useCheckInvitationQuery } from 'store/services/space';
-import { setSpace } from 'store/slices/space';
+import { setCurrentSpace } from 'store/slices/space';
 
 const CodeText = ({ char }: { char: string }) => {
   return (
@@ -56,7 +56,7 @@ const SpaceCodeScreen = () => {
 
   DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, async (space) => {
     await AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, space.spaceId.toString());
-    dispatch(setSpace(space));
+    dispatch(setCurrentSpace(space));
     navigation.replace('EnterSpace', {
       space,
     });

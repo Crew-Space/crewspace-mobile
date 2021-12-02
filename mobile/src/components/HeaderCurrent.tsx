@@ -29,7 +29,7 @@ const HeaderCurrent = ({ data, leftButton }: SelectorProps) => {
           <ProfileImage uri={data.imageUrl} width={24} style={{ marginRight: 8 }} />
         )}
         <Text fontType={'BOLD_18'}>{data.name}</Text>
-        <SvgIcon disabled xml={expandMore.down} fill={BLACK} width={normalize(20)} />
+        <SvgIcon xml={expandMore.down} fill={BLACK} width={normalize(20)} />
       </View>
       {leftButton && <SvgIcon xml={leftButton.xml} fill={BLACK} onPress={leftButton.onPress} />}
     </View>
