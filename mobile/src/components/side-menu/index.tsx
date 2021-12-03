@@ -58,11 +58,12 @@ const SideMenu = ({ children, ...restProps }: ViewProps) => {
             xml={plus}
             fill={PRIMARY}
             width={24}
-            onPress={() =>
+            onPress={() => {
               navigation.navigate('Invitation', {
                 screen: 'MakeSpace',
-              })
-            }
+              });
+              toggleExpaned();
+            }}
           />
         </View>
         <ScrollView>

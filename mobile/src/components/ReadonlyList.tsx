@@ -17,7 +17,7 @@ const ReadonlyList = ({ title, data }: Props) => {
         </View>
       )}
       {data.map((name, index) => (
-        <View style={styles.item}>
+        <View key={index} style={styles.item}>
           <Text key={index}>{name}</Text>
         </View>
       ))}
