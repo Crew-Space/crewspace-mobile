@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
+import { Alert, DeviceEventEmitter, StyleSheet, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
@@ -79,6 +79,12 @@ const MakeSpaceScreen = () => {
   });
 
   useEffect(() => {
+    if (isError) {
+      Alert.alert('요청 실패', '동아리를 만드는데 실패했어요');
+    }
+  }, [isError]);
+
+  useEffect(() => {
     if (isSuccess && data) {
       navigation.replace('Invitation', {
         screen: 'Welcome',
@@ -121,7 +127,7 @@ const MakeSpaceScreen = () => {
         )}
       </KeyboardAwareScrollView>
       <View style={styles.butttonView}>
-        {steps[stepLevel].prevStep && (
+        {steps[stepLevel].prevStep !== null && (
           <>
             <Button
               onPress={() => setStepLevel(steps[stepLevel].prevStep)}
