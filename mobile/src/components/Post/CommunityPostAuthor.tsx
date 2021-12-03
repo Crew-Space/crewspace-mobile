@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, ViewProps } from 'react-native';
-import ProfileImage from './ProfileImage';
-import Text from 'components/Text';
+
 import { MemberProfilePreviewType } from 'types/Response';
 import { GRAY2 } from 'theme/Colors';
+import ProfileImage from 'components/ProfileImage';
+import Text from 'components/Text';
 
 type Props = Omit<MemberProfilePreviewType, 'memberCategoryId'> & ViewProps;
 

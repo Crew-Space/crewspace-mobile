@@ -10,10 +10,9 @@ import { BACKGROUND, LINE, WHITE } from 'theme/Colors';
 import { postApi, useGetCommunityPostsQuery } from 'store/services/post';
 import { resetCommunityPosts, addCommunityPosts } from 'store/slices/posts';
 
-import PostPreview from 'components/PostPreview';
 import { PostButton } from 'components/Button';
 import TopFilterBar from 'components/TopFilterBar';
-import CommunityPostAuthor from 'components/CommunityPostAuthor';
+import { CommunityPostAuthor, PostPreview } from 'components/Post';
 import CrewOnError from 'components/CrewOnError';
 
 const communityFilter: { name: string; filterType: CommunityType }[] = [

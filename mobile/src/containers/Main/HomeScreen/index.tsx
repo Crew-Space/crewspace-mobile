@@ -9,15 +9,15 @@ import { BACKGROUND, GRAY2 } from 'theme/Colors';
 import { setTabName } from 'store/slices/screen';
 import { setHomeNoticePosts } from 'store/slices/posts';
 import { useGetSpaceHomeQuery } from 'store/services/space';
+import { setIsAdmin } from 'store/slices/auth';
 
-import PostPreview from 'components/PostPreview';
+import { PostPreview } from 'components/Post';
 import SectionHeader from 'components/SectionHeader';
 import Text from 'components/Text';
-import { HEADER_MAX_HEIGHT } from './constant';
 import CrewOnError from 'components/CrewOnError';
+import { HEADER_MAX_HEIGHT } from './constant';
 import HomeHeader from './HomeHeader';
 import PinnedNoticeList from './PinnedNoticeList';
-import { setIsAdmin } from 'store/slices/auth';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();

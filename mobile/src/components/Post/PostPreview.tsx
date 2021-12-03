@@ -2,12 +2,13 @@ import React from 'react';
 import { TouchableHighlightProps, View, TouchableHighlight, StyleSheet, Image } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
-import { PostPreviewProps } from 'types';
-import { GRAY1, GRAY2, GRAY4, LINE, PRIMARY, WHITE } from 'theme/Colors';
 import { check } from 'assets/svg/icons';
-import Text from 'components/Text';
-import PostHeader from 'components/PostHeader';
+import { PostPreviewProps } from 'types';
 import { normalize } from 'utils';
+import { GRAY1, GRAY2, GRAY4, LINE, PRIMARY, WHITE } from 'theme/Colors';
+
+import Text from 'components/Text';
+import PostHeader from './PostHeader';
 
 type Props = PostPreviewProps & TouchableHighlightProps;
 

@@ -10,7 +10,7 @@ import { RootRouterParams } from 'types/Route';
 import { postApi, useGetNoticePostsQuery } from 'store/services/post';
 import { addNoticePosts, resetNoticePosts } from 'store/slices/posts';
 
-import PostPreview from 'components/PostPreview';
+import { PostPreview } from 'components/Post';
 import { PostButton } from 'components/Button';
 import TopFilterBar from 'components/TopFilterBar';
 import CrewOnError from 'components/CrewOnError';

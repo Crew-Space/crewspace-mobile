@@ -4,12 +4,13 @@ import { useDispatch } from 'react-redux';
 
 import { save } from 'assets/svg/icons';
 import { GRAY2, PRIMARY } from 'theme/Colors';
-import Text from 'components/Text';
-import PostCategory from 'components/PostCategory';
 import { PostHeaderProps } from 'types';
-import SvgIcon from 'components/SvgIcon';
 import { useSavePostMutation, useUnsavePostMutation } from 'store/services/post';
 import { setPostSave, setPostUnsave } from 'store/slices/posts';
+
+import Text from 'components/Text';
+import SvgIcon from 'components/SvgIcon';
+import PostCategory from './PostCategory';
 
 type Props = PostHeaderProps & { postId: number };
 

@@ -10,7 +10,7 @@ import { PinnedNoticeProps } from 'types';
 import { RootRouterParams } from 'types/Route';
 import { normalize } from 'utils';
 import Text from 'components/Text';
-import PostHeader from 'components/PostHeader';
+import { PostHeader } from 'components/Post';
 import { useUnfixNoticeMutation } from 'store/services/post';
 
 const PinnedNotice = ({ header }: PinnedNoticeProps) => {
