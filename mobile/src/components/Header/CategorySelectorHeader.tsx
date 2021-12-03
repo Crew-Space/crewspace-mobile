@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/core';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { Category } from 'types';
-import { expandMore } from 'assets/svg/icons';
+import { expandMore, settings } from 'assets/svg/icons';
 import { BLACK, LINE, WHITE } from 'theme/Colors';
 import { SCREEN_HEIGHT } from 'theme/Metrics';
 import { setCategory } from 'store/slices/screen';
@@ -13,10 +14,13 @@ import SvgIcon from 'components/SvgIcon';
 import Text from 'components/Text';
 import useHeaderAnimation from 'hooks/useHeaderAnimation';
 import { HEADER_HEIGHT } from 'constant';
+import { RootRouterParams } from 'types/Route';
 
 const CategorySelectorHeader = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation<RootRouterParams>();
   const tabName = useSelector((state) => state.screen.tabName);
+  const isAdmin = useSelector((state) => state.auth.isAdmin);
   const currentCategory = useSelector((state) => state.screen.category);
   const { data, isSuccess, isFetching } = useGetPostCategoriesQuery();
   const [categories, setCategories] = useState<Category[]>([]);
@@ -58,6 +62,16 @@ const CategorySelectorHeader = () => {
             <Text fontType={'BOLD_18'}>{currentCategory.categoryName}</Text>
             <SvgIcon xml={!expanded ? expandMore.down : expandMore.up} width={20} disabled />
           </View>
+          {isAdmin && (
+            <SvgIcon
+              xml={settings.off}
+              fill={BLACK}
+              width={24}
+              onPress={() => {
+                navigation.navigate('EditCategory');
+              }}
+            />
+          )}
         </View>
         <Animated.View
           style={[
@@ -91,9 +105,10 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   itemContainer: {
+    flexDirection: 'row',
     backgroundColor: WHITE,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 20,
     borderBottomWidth: 1,
     borderBottomColor: LINE,
