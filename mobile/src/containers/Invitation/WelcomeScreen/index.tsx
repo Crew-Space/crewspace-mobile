@@ -59,7 +59,9 @@ const WelcomeScreen = () => {
           {data.linkButtonName && (
             <LinkButton
               style={{ marginTop: 30 }}
-              onPress={() => DeviceEventEmitter.emit(CustomEvent.welcomeSubButton.name)}>
+              onPress={() =>
+                DeviceEventEmitter.emit(CustomEvent.welcomeSubButton.name, data.space)
+              }>
               {data.linkButtonName}
             </LinkButton>
           )}

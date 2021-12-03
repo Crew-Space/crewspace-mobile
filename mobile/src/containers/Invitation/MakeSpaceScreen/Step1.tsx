@@ -29,9 +29,9 @@ const Step1 = ({ setSpaceInput, spaceInput }: Props) => {
         setSpaceInput({
           ...spaceInput,
           image: {
-            uri: response.assets[0].uri,
-            type: response.assets[0].type,
-            name: response.assets[0].fileName,
+            uri: response.assets[0].uri!,
+            type: response.assets[0].type!,
+            name: response.assets[0].fileName!,
           },
         });
       }

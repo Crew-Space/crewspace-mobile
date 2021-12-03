@@ -23,7 +23,12 @@ const Step3 = ({ setSpaceInput, spaceInput }: Props) => {
   useEffect(() => {
     setSpaceInput({
       ...spaceInput,
-      ...checkValue,
+      ...checkValue.reduce((acc, cur) => {
+        return {
+          ...acc,
+          [cur.key]: cur.value,
+        };
+      }, {}),
     });
   }, [checkValue]);
 

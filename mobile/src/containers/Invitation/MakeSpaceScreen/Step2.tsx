@@ -30,7 +30,7 @@ const Step2 = ({ setSpaceInput, spaceInput }: Props) => {
   useEffect(() => {
     setSpaceInput({
       ...spaceInput,
-      memberCategory: membercategories.map((category) => category.name),
+      memberCategory: membercategories.map((category) => category.name).slice(1),
     });
   }, [membercategories]);
 

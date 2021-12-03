@@ -36,9 +36,9 @@ const Step1 = ({ memberCategories, setUserInfo, userInfo }: Props) => {
         setUserInfo({
           ...userInfo,
           image: {
-            uri: response.assets[0].uri,
-            type: response.assets[0].type,
-            name: response.assets[0].fileName,
+            uri: response.assets[0].uri!,
+            type: response.assets[0].type!,
+            name: response.assets[0].fileName!,
           },
         });
       }

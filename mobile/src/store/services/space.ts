@@ -17,7 +17,7 @@ export const spaceApi = createApi({
     baseUrl: ENV.apiUrl,
     prepareHeaders: header,
   }),
-  tagTypes: ['HomeNotice', 'Reset'],
+  tagTypes: ['HomeNotice', 'Reset', 'New'],
   endpoints: (builder) => ({
     checkInvitation: builder.query<ResSpace, string>({
       query: (spaceCode) => `/space/${spaceCode}`,
@@ -27,7 +27,7 @@ export const spaceApi = createApi({
     getRegisterInfo: builder.query<ResRegisterInfo, void>({
       query: () => '/space/register-info',
       transformResponse: (response: { data: ResRegisterInfo }) => response.data,
-      providesTags: ['Reset'],
+      providesTags: ['Reset', 'New'],
     }),
     enterSpace: builder.mutation<ResSpaceEnter, ReqSpaceEnter>({
       query: (userInfo) => {
@@ -41,26 +41,27 @@ export const spaceApi = createApi({
         };
       },
       transformResponse: (response: { data: ResSpaceEnter }) => response.data,
+      invalidatesTags: ['New'],
     }),
     getSpaceHome: builder.query<ResSpaceHome, void>({
       query: () => '/space',
       transformResponse: (response: { data: ResSpaceHome }) => response.data,
-      providesTags: ['Reset'],
+      providesTags: ['Reset', 'New'],
     }),
     getMySpaces: builder.query<ResMySpaces, void>({
       query: () => '/spaces',
       transformResponse: (response: { data: ResMySpaces }) => response.data,
-      providesTags: ['Reset'],
+      providesTags: ['Reset', 'New'],
     }),
 
     makeSpace: builder.mutation<ResMakeSpace, ReqMakeSpace>({
       query: (spaceInfo) => {
         const formdata = new FormData();
-        Object.entries(spaceInfo).forEach(([key, value]) => formdata.append(key, value));
-
         spaceInfo.image && formdata.append('image', spaceInfo.image);
+        spaceInfo.memberCategory.forEach((category) => formdata.append('memberCategory', category));
+
         Object.entries(spaceInfo)
-          .filter(([key, _]) => key !== 'image')
+          .filter(([key, _]) => key !== 'image' && key !== 'memberCategory')
           .forEach(([key, value]) => formdata.append(key, value));
 
         return {
@@ -70,6 +71,7 @@ export const spaceApi = createApi({
         };
       },
       transformResponse: (response: { data: ResMakeSpace }) => response.data,
+      invalidatesTags: ['New'],
     }),
   }),
 });

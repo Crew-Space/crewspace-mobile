@@ -17,6 +17,10 @@ import Button from 'components/Button';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
+import { setCurrentSpace } from 'store/slices/space';
+import { useDispatch } from 'react-redux';
+import { welcomeParams } from 'constant/welcome';
+import { useResetAllApiState } from 'store';
 
 type StepType = 1 | 2 | 3;
 
@@ -24,6 +28,7 @@ type StepsType = {
   [key in StepType]: {
     descInfo: string;
     onPress: () => void;
+    prevStep: StepType | null;
   };
 };
 
@@ -39,38 +44,63 @@ const initialUserInput: ReqMakeSpace = {
 };
 
 const MakeSpaceScreen = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation<RootRouterParams>();
   const [stepLevel, setStepLevel] = useState<StepType>(1);
   const [spaceInput, setSpaceInput] = useState<ReqMakeSpace>(initialUserInput);
 
   const [makeSpace, { data, isError, isSuccess, isLoading }] = useMakeSpaceMutation();
+  const resetApiState = useResetAllApiState();
 
   const steps: StepsType = {
     1: {
       descInfo: '만나서 반가워요 🙌 \n이름과 사진을 설정해 주세요',
       onPress: () => setStepLevel(2),
+      prevStep: null,
     },
     2: {
       descInfo: '동아리의 회원분류를\n설정해 주세요👥',
       onPress: () => setStepLevel(3),
+      prevStep: 1,
     },
     3: {
       descInfo: '동아리 가입 시 필요한\n회원정보를 설정해 주세요✅',
       onPress: async () => {
-        if (!spaceInput) return;
         makeSpace(spaceInput);
       },
+      prevStep: 2,
     },
   };
 
-  DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, () => {
+  DeviceEventEmitter.addListener(CustomEvent.welcomeSubButton.name, (space) => {
+    resetApiState();
+    dispatch(setCurrentSpace(space));
     navigation.replace('Main');
   });
 
   useEffect(() => {
-    if (isSuccess && !isLoading) {
+    if (isSuccess && data) {
+      navigation.replace('Invitation', {
+        screen: 'Welcome',
+        params: {
+          data: {
+            ...welcomeParams.makeSpace,
+            spaceInvitationCode: data.invitationCode,
+            space: {
+              spaceId: data.spaceId,
+              spaceName: data.spaceName,
+              spaceImage: data.spaceImage,
+            },
+            profile: {
+              name: data.spaceName,
+              imageUrl: data.spaceImage,
+              description: '초대코드를 복사하여\n동아리 팀원들을 초대해보세요!',
+            },
+          },
+        },
+      });
     }
-  }, [isSuccess, isLoading]);
+  }, [isSuccess, data]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -91,9 +121,11 @@ const MakeSpaceScreen = () => {
         )}
       </KeyboardAwareScrollView>
       <View style={styles.butttonView}>
-        {stepLevel === 2 && (
+        {steps[stepLevel].prevStep && (
           <>
-            <Button onPress={() => setStepLevel(1)} style={{ width: 90, backgroundColor: BLACK }}>
+            <Button
+              onPress={() => setStepLevel(steps[stepLevel].prevStep)}
+              style={{ width: 90, backgroundColor: BLACK }}>
               <SvgIcon xml={arrowLeft} fill={WHITE} width={24} disabled />
             </Button>
             <View style={{ width: 10 }} />
