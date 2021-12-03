@@ -10,7 +10,7 @@ import { close, expandMore } from 'assets/svg/icons';
 import Text from 'components/Text';
 import { BLACK, LINE, PRIMARY, WHITE } from 'theme/Colors';
 import { SCREEN_HEIGHT } from 'theme/Metrics';
-import { useGetPostCategoriesQuery, usePostCommunityMutation } from 'store/services/post';
+import { useLazyGetPostCategoriesQuery, usePostCommunityMutation } from 'store/services/post';
 import { Category } from 'types';
 import TouchableText from 'components/TouchableText';
 import useHeaderAnimation from 'hooks/useHeaderAnimation';
@@ -18,23 +18,41 @@ import { HEADER_HEIGHT } from 'constant';
 
 const PostScreenHeader = () => {
   const navigation = useNavigation<RootRouterParams>();
+  const [getPostCategories, { data, isSuccess, isLoading, isFetching }] =
+    useLazyGetPostCategoriesQuery();
+
   const [selectedCategory, setSelectedCategory] = useState<Category>({
     categoryId: -1,
     categoryName: '',
   });
-  const { data, isSuccess, isLoading, isFetching } = useGetPostCategoriesQuery();
+  const currentSpaceId = useSelector((state) => state.space.current.spaceId);
+  const tabName = useSelector((state) => state.screen.tabName);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [translateAnim, fadeAnim, expanded, toggleExpaned] = useHeaderAnimation(categories.length);
+  const [categoryLength, setCategoryLength, translateAnim, fadeAnim, expanded, toggleExpaned] =
+    useHeaderAnimation();
 
   const [communityPost] = usePostCommunityMutation();
   const newPost = useSelector((state) => state.newPost);
 
   useEffect(() => {
+    getPostCategories();
+  }, [currentSpaceId]);
+
+  useEffect(() => {
     if (!isLoading && isSuccess && !isFetching && data) {
-      setCategories(data.communityCategories.slice(1));
-      setSelectedCategory(data.communityCategories[1]);
+      const categoryData = (
+        tabName === 'Notice' ? data.noticeCategories : data.communityCategories
+      ).filter((category) => category.categoryId > 0);
+      console.log(tabName, categoryData);
+      setCategories(categoryData);
+      setSelectedCategory(categoryData[0]);
+      setCategoryLength(categoryData.length);
     }
   }, [isLoading, isSuccess, isFetching]);
+
+  useEffect(() => {
+    getPostCategories();
+  }, []);
 
   if (!data) return <></>;
 
@@ -68,6 +86,7 @@ const PostScreenHeader = () => {
             styles.expandList,
             {
               transform: [{ translateY: translateAnim }],
+              top: -categoryLength * HEADER_HEIGHT,
             },
           ]}>
           {categories

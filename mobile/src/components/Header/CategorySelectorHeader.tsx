@@ -14,7 +14,7 @@ import { BLACK, GRAY4, LINE, PRIMARY, WHITE } from 'theme/Colors';
 import { SCREEN_HEIGHT } from 'theme/Metrics';
 import useHeaderAnimation from 'hooks/useHeaderAnimation';
 import { setCategory } from 'store/slices/screen';
-import { postApi, useGetPostCategoriesQuery } from 'store/services/post';
+import { postApi, useLazyGetPostCategoriesQuery } from 'store/services/post';
 import SvgIcon from 'components/SvgIcon';
 import Text from 'components/Text';
 
@@ -23,31 +23,33 @@ const CategorySelectorHeader = () => {
   const navigation = useNavigation<RootRouterParams>();
   const tabName = useSelector((state) => state.screen.tabName);
   const isAdmin = useSelector((state) => state.auth.isAdmin);
+  const currentSpaceId = useSelector((state) => state.space.current.spaceId);
   const currentCategory = useSelector((state) => state.screen.category);
-  const { data, isSuccess, isFetching } = useGetPostCategoriesQuery();
+  const [getPostCategories, { data, isSuccess, isFetching }] = useLazyGetPostCategoriesQuery();
   const [categories, setCategories] = useState<Category[]>([]);
 
   const [categoryLength, setCategoryLength, translateAnim, fadeAnim, expanded, toggleExpaned] =
     useHeaderAnimation();
 
   useEffect(() => {
+    getPostCategories();
+  }, [currentSpaceId]);
+
+  useEffect(() => {
     if (!isFetching && isSuccess && data) {
-      switch (tabName) {
-        case 'Notice':
-          setCategoryLength(data.noticeCategories.length);
-          setCategories(data.noticeCategories);
-          dispatch(postApi.util.invalidateTags(['NoticePost']));
-          dispatch(setCategory(data.noticeCategories[0]));
-          break;
-        case 'Community':
-          setCategoryLength(data.communityCategories.length);
-          setCategories(data.communityCategories);
-          dispatch(postApi.util.invalidateTags(['CommunityPost']));
-          dispatch(setCategory(data.communityCategories[0]));
-          break;
-      }
+      const categoryData = tabName === 'Notice' ? data.noticeCategories : data.communityCategories;
+      setCategoryLength(categoryData.length);
+      setCategories(categoryData);
+      dispatch(
+        postApi.util.invalidateTags([tabName === 'Notice' ? 'NoticePost' : 'CommunityPost']),
+      );
+      dispatch(setCategory(categoryData[0]));
     }
   }, [data, isSuccess, isFetching, tabName]);
+
+  useEffect(() => {
+    getPostCategories();
+  }, []);
 
   if (!(tabName === 'Notice' || tabName === 'Community')) return <></>;
 

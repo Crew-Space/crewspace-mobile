@@ -112,6 +112,7 @@ export const postApi = createApi({
 
 export const {
   useGetPostCategoriesQuery,
+  useLazyGetPostCategoriesQuery,
   useGetNoticePostsQuery,
   useGetNoticePostQuery,
   useGetCommunityPostsQuery,
