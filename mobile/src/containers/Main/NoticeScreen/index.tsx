@@ -36,6 +36,7 @@ const NoticeScreen = () => {
   const currentCategory = useSelector((state) => state.screen.category);
   const [selectedFilter, setSelectedFilter] = useState<number>(0);
   const noticePosts = useSelector((state) => state.posts.noticePosts);
+  const isAdmin = useSelector((state) => state.auth.isAdmin);
   const offset = useRef(-1);
 
   const { data, refetch, isError, isLoading, isSuccess, isFetching } = useGetNoticePostsQuery({
@@ -71,7 +72,7 @@ const NoticeScreen = () => {
           dispatch(postApi.util.invalidateTags(['NoticePost']));
           setSelectedFilter(index);
         }}>
-        {false && <PostButton postType={'notice'} />}
+        {isAdmin && <PostButton postType={'notice'} />}
       </TopFilterBar>
       <FlatList
         data={noticePosts}

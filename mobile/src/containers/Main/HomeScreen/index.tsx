@@ -17,6 +17,7 @@ import { HEADER_MAX_HEIGHT } from './constant';
 import CrewOnError from 'components/CrewOnError';
 import HomeHeader from './HomeHeader';
 import PinnedNoticeList from './PinnedNoticeList';
+import { setIsAdmin } from 'store/slices/auth';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -62,6 +63,7 @@ const HomeScreen = () => {
   useEffect(() => {
     if (!isLoading && !isFetching && isSuccess && homeData) {
       dispatch(setHomeNoticePosts(homeData.newNotices));
+      dispatch(setIsAdmin(homeData.isAdmin));
       setRefreshing(false);
     }
   }, [isFetching, isSuccess, isLoading]);
