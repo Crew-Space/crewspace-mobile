@@ -3,18 +3,20 @@ import { Animated, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { SvgXml } from 'react-native-svg';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
+import { expandMore, info, settings } from 'assets/svg/icons';
 import { Category } from 'types';
-import { expandMore, settings } from 'assets/svg/icons';
-import { BLACK, LINE, WHITE } from 'theme/Colors';
+import { RootRouterParams } from 'types/Route';
+import { HEADER_HEIGHT, MY_NOTICE_ID } from 'constant';
+import { BLACK, GRAY4, LINE, PRIMARY, WHITE } from 'theme/Colors';
 import { SCREEN_HEIGHT } from 'theme/Metrics';
+import useHeaderAnimation from 'hooks/useHeaderAnimation';
 import { setCategory } from 'store/slices/screen';
 import { postApi, useGetPostCategoriesQuery } from 'store/services/post';
 import SvgIcon from 'components/SvgIcon';
 import Text from 'components/Text';
-import useHeaderAnimation from 'hooks/useHeaderAnimation';
-import { HEADER_HEIGHT } from 'constant';
-import { RootRouterParams } from 'types/Route';
 
 const CategorySelectorHeader = () => {
   const dispatch = useDispatch();
@@ -25,17 +27,20 @@ const CategorySelectorHeader = () => {
   const { data, isSuccess, isFetching } = useGetPostCategoriesQuery();
   const [categories, setCategories] = useState<Category[]>([]);
 
-  const [translateAnim, fadeAnim, expanded, toggleExpaned] = useHeaderAnimation(categories.length);
+  const [categoryLength, setCategoryLength, translateAnim, fadeAnim, expanded, toggleExpaned] =
+    useHeaderAnimation();
 
   useEffect(() => {
     if (!isFetching && isSuccess && data) {
       switch (tabName) {
         case 'Notice':
+          setCategoryLength(data.noticeCategories.length);
           setCategories(data.noticeCategories);
           dispatch(postApi.util.invalidateTags(['NoticePost']));
           dispatch(setCategory(data.noticeCategories[0]));
           break;
         case 'Community':
+          setCategoryLength(data.communityCategories.length);
           setCategories(data.communityCategories);
           dispatch(postApi.util.invalidateTags(['CommunityPost']));
           dispatch(setCategory(data.communityCategories[0]));
@@ -78,21 +83,36 @@ const CategorySelectorHeader = () => {
             styles.expandList,
             {
               transform: [{ translateY: translateAnim }],
-              top: '-100%',
+              top: -categoryLength * HEADER_HEIGHT,
             },
           ]}>
           {categories
             .filter((category) => category.categoryId !== currentCategory.categoryId)
             .map((category) => (
-              <View
+              <TouchableHighlight
+                underlayColor={GRAY4}
                 key={category.categoryId}
                 style={[styles.itemContainer, { height: HEADER_HEIGHT }]}
-                onTouchEnd={() => {
+                onPress={() => {
                   dispatch(setCategory(category));
                   toggleExpaned();
                 }}>
-                <Text fontType={'BOLD_18'}>{category.categoryName}</Text>
-              </View>
+                <>
+                  <View>
+                    <Text fontType={'BOLD_18'}>{category.categoryName}</Text>
+                  </View>
+                  {tabName === 'Notice' && category.categoryId === MY_NOTICE_ID && (
+                    <View style={styles.myNotice}>
+                      <SvgXml xml={info} width={16} fill={PRIMARY} style={{ marginRight: 4 }} />
+                      <View style={{ justifyContent: 'center' }}>
+                        <Text fontType={'REGULAR_14'} color={PRIMARY}>
+                          내게 필요한 공지만 모아볼 수 있어요
+                        </Text>
+                      </View>
+                    </View>
+                  )}
+                </>
+              </TouchableHighlight>
             ))}
         </Animated.View>
       </View>
@@ -107,11 +127,19 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
     backgroundColor: WHITE,
-    justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
     borderBottomWidth: 1,
     borderBottomColor: LINE,
+  },
+  header: {
+    flexDirection: 'row',
+  },
+  myNotice: {
+    marginLeft: 8,
+    flexDirection: 'row',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   title: {
     flexDirection: 'row',

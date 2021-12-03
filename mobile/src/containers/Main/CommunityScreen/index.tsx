@@ -14,6 +14,7 @@ import { PostButton } from 'components/Button';
 import TopFilterBar from 'components/TopFilterBar';
 import { CommunityPostAuthor, PostPreview } from 'components/Post';
 import CrewOnError from 'components/CrewOnError';
+import { POST_ALL_ID } from 'constant';
 
 const communityFilter: { name: string; filterType: CommunityType }[] = [
   {
@@ -35,8 +36,8 @@ const CommunityScreen = () => {
   const communityPosts = useSelector((state) => state.posts.communityPosts);
   const offset = useRef(-1);
 
-  const { data, refetch, isError, isLoading, isSuccess, isFetching } = useGetCommunityPostsQuery({
-    ...(currentCategory.categoryId !== -1 && {
+  const { data, refetch, isError, isSuccess } = useGetCommunityPostsQuery({
+    ...(currentCategory.categoryId !== POST_ALL_ID && {
       postCategoryId: currentCategory.categoryId,
     }),
     ...(offset.current !== -1 && {
@@ -46,10 +47,10 @@ const CommunityScreen = () => {
   });
 
   useEffect(() => {
-    if (!isFetching && !isLoading && isSuccess && data) {
+    if (isSuccess && data) {
       dispatch(addCommunityPosts(data.posts));
     }
-  }, [isFetching, isLoading, isSuccess]);
+  }, [data, isSuccess]);
 
   useEffect(() => {
     offset.current = -1;

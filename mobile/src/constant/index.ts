@@ -28,3 +28,6 @@ export const SPACE_MEMBER_INFO_OPTIONS_TEXT = {
 };
 
 export const HEADER_HEIGHT = normalize(60);
+
+export const POST_ALL_ID = -2;
+export const MY_NOTICE_ID = -1;

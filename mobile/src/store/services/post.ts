@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { MY_NOTICE_ID, POST_ALL_ID } from 'constant';
 import ENV from 'environments';
 import { header } from 'store/services';
 import { ReqPosts } from 'types/Request';
@@ -23,11 +24,12 @@ export const postApi = createApi({
       query: () => '/posts/categories',
       transformResponse: (response: { data: ResPostCategory }) => ({
         noticeCategories: [
-          { categoryName: '공지 전체', categoryId: -1 },
+          { categoryId: POST_ALL_ID, categoryName: '공지 전체' },
+          { categoryId: MY_NOTICE_ID, categoryName: '내 공지' },
           ...response.data.noticeCategories,
         ],
         communityCategories: [
-          { categoryName: '커뮤니티 전체', categoryId: -1 },
+          { categoryId: POST_ALL_ID, categoryName: '커뮤니티 전체' },
           ...response.data.communityCategories,
         ],
         tagTypes: ['Reset'],

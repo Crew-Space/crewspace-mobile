@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FlatList } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/core';
 
+import { POST_ALL_ID } from 'constant';
 import { BACKGROUND, LINE, WHITE } from 'theme/Colors';
 import { NoticeType } from 'types';
 import { RootRouterParams } from 'types/Route';
@@ -41,7 +42,7 @@ const NoticeScreen = () => {
   const offset = useRef(-1);
 
   const { data, refetch, isError, isLoading, isSuccess, isFetching } = useGetNoticePostsQuery({
-    ...(currentCategory.categoryId !== -1 && {
+    ...(currentCategory.categoryId !== POST_ALL_ID && {
       postCategoryId: currentCategory.categoryId,
     }),
     ...(offset.current !== -1 && {
