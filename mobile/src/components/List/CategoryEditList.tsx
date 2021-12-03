@@ -3,12 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
 import { plus, trash, verified } from 'assets/svg/icons';
-import { IdOptionalCategory } from 'types';
 import { GRAY2, LINE, PRIMARY, WHITE } from 'theme/Colors';
+import { IdOptionalCategory } from 'types/component';
 
 import SectionHeader from 'components/SectionHeader';
 import SvgIcon from 'components/SvgIcon';
-import TextInput from 'components/TextInput';
+import { TextInput } from 'components/TextInput';
 import TouchableText from 'components/TouchableText';
 import Text from 'components/Text';
 

@@ -3,7 +3,8 @@ import { StyleSheet, View } from 'react-native';
 
 import Text from 'components/Text';
 import { GRAY3 } from 'theme/Colors';
-import TextInput, { TextInputProps } from './TextInput';
+import { TextInput } from 'components/TextInput';
+import { TextInputProps } from 'types/component';
 
 type Props = TextInputProps & {
   defaultValue?: string;

@@ -1,20 +1,9 @@
 import React from 'react';
-import {
-  StyleSheet,
-  TextInput as RNTextInput,
-  TextInputProps as RNTextInputProps,
-  View,
-} from 'react-native';
+import { StyleSheet, TextInput as RNTextInput, View } from 'react-native';
 
-import { TypoProps, textStyles } from 'theme/Typography';
+import { textStyles } from 'theme/Typography';
 import { BLACK } from 'theme/Colors';
-
-export type TextInputProps = TypoProps &
-  Omit<RNTextInputProps, 'onChangeText' | 'onBlur'> & {
-    name: string;
-    onChangeText?: (text: string, name: string) => void;
-    onBlur?: (name: string) => void;
-  };
+import { TextInputProps } from 'types/component';
 
 const TextInput = ({
   style,

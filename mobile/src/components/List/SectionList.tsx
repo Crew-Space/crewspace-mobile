@@ -4,7 +4,7 @@ import { Switch, TouchableOpacity } from 'react-native-gesture-handler';
 import { SvgXml } from 'react-native-svg';
 
 import { expandMore } from 'assets/svg/icons';
-import { ItemType } from 'types';
+import { ItemType } from 'types/component';
 import { GRAY2, LINE, WHITE } from 'theme/Colors';
 import Text from 'components/Text';
 

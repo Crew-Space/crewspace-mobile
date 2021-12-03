@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LineTextInput from 'components/LineTextInput';
+import { LineTextInput } from 'components/TextInput';
 import { ReqSpaceEnter } from 'types/Request';
 import { StyleSheet, View } from 'react-native';
 

@@ -4,7 +4,7 @@ import { StyleSheet, View, ViewProps } from 'react-native';
 import { GRAY1, GRAY2, PRIMARY, WHITE } from 'theme/Colors';
 import { Author, Target } from 'types';
 import Text from 'components/Text';
-import CommunityPostAuthor from 'components/CommunityPostAuthor';
+import { CommunityPostAuthor } from 'components/Post';
 
 type BaseProps = {
   categoryName: string;

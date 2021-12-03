@@ -5,7 +5,7 @@ import { GRAY1, GRAY2, GRAY3, GRAY4, PRIMARY } from 'theme/Colors';
 import Text from 'components/Text';
 import SvgIcon from 'components/SvgIcon';
 import { image } from 'assets/svg/icons';
-import LineTextInput from 'components/LineTextInput';
+import { LineTextInput } from 'components/TextInput';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ReqSpaceEnter } from 'types/Request';
 import { launchImageLibrary } from 'react-native-image-picker';

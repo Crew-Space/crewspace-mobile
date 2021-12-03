@@ -4,9 +4,11 @@ import { useDispatch } from 'react-redux';
 import { useRoute } from '@react-navigation/core';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { SvgXml } from 'react-native-svg';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
+import { pin, save } from 'assets/svg/icons';
 import { GRAY2, LINE, PRIMARY, WHITE } from 'theme/Colors';
-import Text from 'components/Text';
 import { PostDetailsScreenPropsType } from 'types/Route';
 import {
   useFixNoticeMutation,
@@ -16,12 +18,11 @@ import {
   useUnfixNoticeMutation,
   useUnsavePostMutation,
 } from 'store/services/post';
-import { CommunityDetailHeader, NoticeDetailHeader } from './PostDetailHeader';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { pin, save } from 'assets/svg/icons';
-import { SvgXml } from 'react-native-svg';
 import { setPostRead, setPostSave, setPostUnsave } from 'store/slices/posts';
 import { spaceApi } from 'store/services/space';
+
+import Text from 'components/Text';
+import { CommunityDetailHeader, NoticeDetailHeader } from './PostDetailHeader';
 
 const PostDetailsScreen = () => {
   const dispatch = useDispatch();

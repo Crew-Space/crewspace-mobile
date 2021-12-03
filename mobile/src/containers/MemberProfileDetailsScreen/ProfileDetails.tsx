@@ -5,7 +5,7 @@ import { ResMember } from 'types/Response';
 import { ReqUpdateMyProfile } from 'types/Request';
 import { expandMore } from 'assets/svg/icons';
 import { GRAY2 } from 'theme/Colors';
-import BirthdayInput from 'components/BirthdayInput';
+import { BirthdayInput } from 'components/TextInput';
 import Text from 'components/Text';
 import SvgIcon from 'components/SvgIcon';
 import TitleDescribe from './TitleDescribe';

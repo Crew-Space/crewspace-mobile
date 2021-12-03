@@ -6,7 +6,7 @@ import { PROFILE_TEXT } from 'constant';
 import { GRAY1, GRAY2, LINE } from 'theme/Colors';
 import { normalize } from 'utils';
 import Text from 'components/Text';
-import TextInput from 'components/TextInput';
+import { TextInput } from 'components/TextInput';
 
 interface Props extends ViewProps {
   name: keyof ResMember;

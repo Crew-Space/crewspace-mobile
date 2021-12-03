@@ -1,6 +1,4 @@
 import React from 'react';
-import { SwitchProps } from 'react-native';
-import { TypoType } from 'theme/Typography';
 
 export type FilterType = 'ALL' | 'SAVED' | 'NREAD';
 export type NoticeType = FilterType;
@@ -119,16 +117,4 @@ export type CategoryType = {
   name: string;
   isDeletable: boolean;
   isEditable: boolean;
-};
-export type IdOptionalCategory = Omit<CategoryType, 'id'> & {
-  id?: number;
-};
-
-export type ItemType = {
-  text: string;
-  fontType?: TypoType;
-  onTouch?: {
-    onPress: () => void;
-  };
-  toggle?: SwitchProps;
 };

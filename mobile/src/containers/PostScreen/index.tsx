@@ -4,15 +4,15 @@ import { useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/core';
 import { ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
-
-import { LINE, WHITE } from 'theme/Colors';
-import { PostScreenPropsType } from 'types/Route';
-import TextInput from 'components/TextInput';
-import SvgIcon from 'components/SvgIcon';
-import { attachFile, image, settings } from 'assets/svg/icons';
-import { setDescription, setImages } from 'store/slices/newPost';
 import { ScrollView } from 'react-native-gesture-handler';
+
+import { attachFile, image, settings } from 'assets/svg/icons';
+import { LINE, WHITE } from 'theme/Colors';
 import { File } from 'types';
+import { PostScreenPropsType } from 'types/Route';
+import { setDescription, setImages } from 'store/slices/newPost';
+import { TextInput } from 'components/TextInput';
+import SvgIcon from 'components/SvgIcon';
 
 const PostScreen = () => {
   const dispatch = useDispatch();
@@ -33,9 +33,9 @@ const PostScreen = () => {
           setImages(
             response.assets.map(
               (asset): File => ({
-                uri: Platform.OS === 'ios' ? asset.uri!.replace('file://', '') : asset.uri,
-                type: asset.type,
-                name: asset.fileName,
+                uri: Platform.OS === 'ios' ? asset.uri!.replace('file://', '') : asset.uri!,
+                type: asset.type!,
+                name: asset.fileName!,
               }),
             ),
           ),

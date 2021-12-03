@@ -8,7 +8,7 @@ import { GRAY3, GRAY4 } from 'theme/Colors';
 import { ReqMakeSpace } from 'types/Request';
 
 import SvgIcon from 'components/SvgIcon';
-import LineTextInput from 'components/LineTextInput';
+import { LineTextInput } from 'components/TextInput';
 import ProfileImage from 'components/ProfileImage';
 
 interface Props {

@@ -6,8 +6,8 @@ import { BLACK, GRAY1, GRAY2, LINE } from 'theme/Colors';
 import { MemberProfile } from 'types';
 
 import Text from 'components/Text';
-import BirthdayInput from 'components/BirthdayInput';
-import TextInput, { TextInputProps } from 'components/TextInput';
+import { BirthdayInput, TextInput } from 'components/TextInput';
+import { TextInputProps } from 'types/component';
 
 type OwnProps = {
   title?: keyof MemberProfile;

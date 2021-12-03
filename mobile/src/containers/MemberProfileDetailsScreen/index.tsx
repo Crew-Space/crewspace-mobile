@@ -7,7 +7,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { MemberProfileDetailsScreenPropsType } from 'types/Route';
 import { WHITE } from 'theme/Colors';
 import ProfileImage from 'components/ProfileImage';
-import TextInput from 'components/TextInput';
+import { TextInput } from 'components/TextInput';
 import ProfileDetails from './ProfileDetails';
 import { useGetMemberQuery, useUpdateMyProfileMutation } from 'store/services/member';
 import { Button } from 'components/Button';
