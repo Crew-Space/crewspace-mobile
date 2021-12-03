@@ -59,9 +59,7 @@ const SideMenu = ({ children, ...restProps }: ViewProps) => {
             fill={PRIMARY}
             width={24}
             onPress={() => {
-              navigation.navigate('Invitation', {
-                screen: 'MakeSpace',
-              });
+              navigation.navigate('Invitation');
               toggleExpaned();
             }}
           />

@@ -1,7 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
-import { PostType, Space } from 'types';
+import { BaseProfile, PostType, Space } from 'types';
 
 export type RootRouterParamList = {
   Login: undefined;
@@ -28,13 +28,12 @@ export type RootRouterParamList = {
 export type InvitationParamList = {
   SpaceCode: undefined;
   CreateSpace: undefined;
-  EnterSpace: {
-    space: Space;
-  };
+  EnterSpace: undefined;
   MakeSpace: undefined;
   Welcome: {
-    darkTheme?: boolean;
-    data: WelcomeScreenProps;
+    screenType: WelcomeScreenType;
+    profile: BaseProfile;
+    spaceCode?: string;
   };
 };
 

@@ -1,23 +1,19 @@
 import React, { useRef, useState } from 'react';
-import { DeviceEventEmitter, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/core';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
 import { INITIAL_INVITATION_CODE, NUM_OF_INVITATION_CODE } from 'constant';
 import { scaleFont } from 'theme/Typography';
 import { BLACK, GRAY1, GRAY2, GRAY4, RED, WHITE } from 'theme/Colors';
 import { InvitationParams } from 'types/Route';
 import { useCheckInvitationQuery } from 'store/services/space';
-import { setCurrentSpace } from 'store/slices/space';
 
 import { LinkButton } from 'components/Button';
 import Text from 'components/Text';
-import { welcomeParams } from 'constant/welcome';
-import CustomEvent from 'constant/customEvent';
+import { setNewSpace } from 'store/slices/space';
 
 const CodeText = ({ char }: { char: string }) => {
   return (
@@ -40,32 +36,17 @@ const SpaceCodeScreen = () => {
 
   const onSubmitEditing = async () => {
     if (inputCode.filter((str) => str !== '-').length === 6 && data) {
-      navigation.replace('Welcome', {
-        darkTheme: true,
-        data: {
-          ...welcomeParams.enterSpace,
-          profile: {
-            name: data.spaceName,
-            imageUrl: data.spaceImage,
-            description: data.spaceDescription,
-          },
-          space: data,
+      dispatch(setNewSpace(data));
+      navigation.navigate('Welcome', {
+        screenType: 'enterSpace',
+        profile: {
+          name: data.spaceName,
+          image: data.spaceImage,
+          description: data.spaceDescription,
         },
       });
     }
   };
-
-  DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, async (space) => {
-    await AsyncStorage.setItem(ASYNC_STORAGE_KEY.SPACE_ID, space.spaceId.toString());
-    dispatch(setCurrentSpace(space));
-    navigation.replace('EnterSpace', {
-      space,
-    });
-  });
-
-  DeviceEventEmitter.addListener(CustomEvent.welcomeSubButton.name, () =>
-    navigation.replace('SpaceCode'),
-  );
 
   return (
     <SafeAreaView style={styles.container}>

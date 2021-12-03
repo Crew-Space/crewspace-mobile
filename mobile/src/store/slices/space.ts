@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SPACE_INITAL_ID } from 'store/services';
 import { Space } from 'types';
 
-const initialState: { current: Space; mySpaces: Space[] } = {
+const initialState: { current: Space; mySpaces: Space[]; newSpace?: Space } = {
   current: {
     spaceId: SPACE_INITAL_ID,
     spaceName: '',
@@ -23,8 +23,12 @@ export const space = createSlice({
       ...state,
       mySpaces: action.payload,
     }),
+    setNewSpace: (state, action: PayloadAction<Space | undefined>) => ({
+      ...state,
+      newSpace: action.payload,
+    }),
   },
 });
 
-export const { setCurrentSpace, setMySpaces } = space.actions;
+export const { setCurrentSpace, setMySpaces, setNewSpace } = space.actions;
 export default space.reducer;

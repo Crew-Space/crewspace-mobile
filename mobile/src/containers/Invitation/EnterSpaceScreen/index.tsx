@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,10 +9,7 @@ import { arrowLeft } from 'assets/svg/icons';
 import { BLACK, GRAY4, WHITE } from 'theme/Colors';
 import { RootRouterParams } from 'types/Route';
 import { ReqSpaceEnter } from 'types/Request';
-import { welcomeParams } from 'constant/welcome';
-import CustomEvent from 'constant/customEvent';
 import { useEnterSpaceMutation, useGetRegisterInfoQuery } from 'store/services/space';
-import { setCurrentSpace } from 'store/slices/space';
 
 import Text from 'components/Text';
 import SvgIcon from 'components/SvgIcon';
@@ -20,6 +17,7 @@ import { Button } from 'components/Button';
 import CrewOnError from 'components/CrewOnError';
 import Step1 from './Step1';
 import Step2 from './Step2';
+import { setNewSpace } from 'store/slices/space';
 
 type StepType = 1 | 2;
 
@@ -47,8 +45,8 @@ const EnterSpaceScreen = () => {
   const [stepLevel, setStepLevel] = useState<StepType>(1);
   const [userInput, setUserInput] = useState<ReqSpaceEnter>(initialUserInput);
 
-  const { data: spaceInfo, isError } = useGetRegisterInfoQuery();
-  const [enterSpace, { data: userInfo, isError: isUserInfoError }] = useEnterSpaceMutation();
+  const { data: spaceInfo, isError: isGetRegisterInfoError } = useGetRegisterInfoQuery();
+  const [enterSpace, { data: userInfo, isError, isSuccess }] = useEnterSpaceMutation();
 
   const steps: StepsType = {
     1: {
@@ -57,41 +55,33 @@ const EnterSpaceScreen = () => {
     },
     2: {
       descInfo: '추가 프로필을\n입력해 주세요✏️',
-      onPress: () => {
-        if (!userInput) return;
-
-        enterSpace(userInput);
-
-        if (isUserInfoError) {
-          // TODO modal로 예외처리
-        }
-      },
+      onPress: () => enterSpace(userInput),
     },
   };
 
-  DeviceEventEmitter.addListener(CustomEvent.welcomeMainButton.name, (space) => {
-    dispatch(setCurrentSpace(space));
-    navigation.replace('Main');
-  });
+  useEffect(() => {
+    if (isError) {
+      Alert.alert('요청 실패', '동아리 스페이스에 입장하는데 실패했어요');
+    }
+  }, [isError]);
 
   useEffect(() => {
-    userInfo &&
+    if (isSuccess && userInfo) {
+      dispatch(setNewSpace(undefined));
       navigation.replace('Invitation', {
         screen: 'Welcome',
         params: {
-          data: {
-            ...welcomeParams.beMember,
-            profile: {
-              name: userInfo.name,
-              imageUrl: userInfo.profileImage,
-              description: userInfo.categoryName,
-            },
+          screenType: 'beMember',
+          profile: {
+            name: userInfo.name,
+            image: userInfo.profileImage,
+            description: userInfo.categoryName,
           },
         },
       });
-  }, [userInfo]);
+    }
+  }, [isSuccess, userInfo]);
 
-  if (!spaceInfo) return <></>;
   if (isError || !spaceInfo) return <CrewOnError />;
 
   return (

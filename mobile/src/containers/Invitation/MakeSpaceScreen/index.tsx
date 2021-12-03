@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, DeviceEventEmitter, StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
 
 import { arrowLeft } from 'assets/svg/icons';
-import CustomEvent from 'constant/customEvent';
-import { welcomeParams } from 'constant/welcome';
 import { ReqMakeSpace } from 'types/Request';
 import { RootRouterParams } from 'types/Route';
 import { BLACK, GRAY4, WHITE } from 'theme/Colors';
@@ -72,12 +70,6 @@ const MakeSpaceScreen = () => {
     },
   };
 
-  DeviceEventEmitter.addListener(CustomEvent.welcomeSubButton.name, (space) => {
-    resetApiState();
-    dispatch(setCurrentSpace(space));
-    navigation.replace('Main');
-  });
-
   useEffect(() => {
     if (isError) {
       Alert.alert('요청 실패', '동아리를 만드는데 실패했어요');
@@ -86,22 +78,17 @@ const MakeSpaceScreen = () => {
 
   useEffect(() => {
     if (isSuccess && data) {
+      resetApiState();
+      dispatch(setCurrentSpace(data));
       navigation.replace('Invitation', {
         screen: 'Welcome',
         params: {
-          data: {
-            ...welcomeParams.makeSpace,
-            spaceInvitationCode: data.invitationCode,
-            space: {
-              spaceId: data.spaceId,
-              spaceName: data.spaceName,
-              spaceImage: data.spaceImage,
-            },
-            profile: {
-              name: data.spaceName,
-              imageUrl: data.spaceImage,
-              description: '초대코드를 복사하여\n동아리 팀원들을 초대해보세요!',
-            },
+          screenType: 'makeSpace',
+          spaceCode: data.invitationCode,
+          profile: {
+            name: data.spaceName,
+            image: data.spaceImage,
+            description: '초대코드를 복사하여\n동아리 팀원들을 초대해보세요!',
           },
         },
       });
