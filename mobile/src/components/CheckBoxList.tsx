@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { BLACK, GRAY2, LINE, WHITE } from 'theme/Colors';
 import CheckBox from './CheckBox';
 import Text from './Text';
@@ -22,23 +23,21 @@ const CheckBoxList = ({ title, data, value, onValueChange, fill = BLACK, width =
         </View>
       )}
       {data.map((name, index) => (
-        <View key={index} style={[styles.item, styles.checkList]}>
-          <CheckBox
-            isChecked={value[index].value}
-            width={width}
-            fill={fill}
-            onPress={() => {
-              onValueChange([
-                ...value.slice(0, index),
-                { ...value[index], value: !value[index].value },
-                ...value.slice(index + 1),
-              ]);
-            }}
-          />
+        <TouchableOpacity
+          key={index}
+          style={[styles.item, styles.checkList]}
+          onPress={() => {
+            onValueChange([
+              ...value.slice(0, index),
+              { ...value[index], value: !value[index].value },
+              ...value.slice(index + 1),
+            ]);
+          }}>
+          <CheckBox isChecked={value[index].value} width={width} fill={fill} />
           <Text key={index} color={value[index].value ? fill : GRAY2} style={styles.checkText}>
             {name}
           </Text>
-        </View>
+        </TouchableOpacity>
       ))}
     </View>
   );

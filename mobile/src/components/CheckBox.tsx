@@ -7,7 +7,7 @@ interface Props {
   isChecked: boolean;
   width?: number;
   fill?: string;
-  onPress: () => void;
+  onPress?: () => void;
 }
 
 const CheckBox = ({ isChecked, width = 24, fill = BLACK, onPress }: Props) => {
