@@ -20,11 +20,7 @@ const MemberListScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
 
   const { data: categoriesData } = useGetMemberCategoriesQuery();
-  const {
-    data: membersData,
-    isLoading,
-    isError,
-  } = useGetMembersQuery({
+  const { data: membersData, isError } = useGetMembersQuery({
     ...(selectedCategory !== 0 && {
       memberCategoryId: categoriesData
         ? categoriesData.memberCategories[selectedCategory - 1].categoryId
@@ -70,7 +66,7 @@ const MemberListScreen = () => {
         items={[{ categoryName: '전체', categoryId: -1 }, ...categoriesData.memberCategories]}
         onIndexChange={setSelectedCategory}
       />
-      <View style={{ backgroundColor: BACKGROUND }}>
+      <View style={{ backgroundColor: BACKGROUND, flex: 1 }}>
         <ScrollView>
           {myProfile && (
             <>
