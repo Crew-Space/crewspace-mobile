@@ -123,6 +123,7 @@ const CategorySelectorHeader = () => {
 const styles = StyleSheet.create({
   currentItemContainer: {
     zIndex: 1,
+    justifyContent: 'space-between',
   },
   itemContainer: {
     flexDirection: 'row',
