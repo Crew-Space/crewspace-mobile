@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     borderBottomColor: LINE,
     borderBottomWidth: 1,
     backgroundColor: WHITE,
+    height: 53,
   },
   topTabBarFilter: {
     flexDirection: 'row',
