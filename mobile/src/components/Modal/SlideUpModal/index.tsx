@@ -5,7 +5,7 @@ import React from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import Modal from 'react-native-modal';
-import { BLACK, LINE, WHITE } from 'theme/Colors';
+import { LINE, WHITE } from 'theme/Colors';
 import { SCREEN_WIDTH } from 'theme/Metrics';
 
 interface Props extends ViewProps {

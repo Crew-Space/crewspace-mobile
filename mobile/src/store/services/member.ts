@@ -57,6 +57,7 @@ export const memberApi = createApi({
 
 export const {
   useGetMemberCategoriesQuery,
+  useLazyGetMemberCategoriesQuery,
   useGetMembersQuery,
   useGetMemberQuery,
   useUpdateMyProfileMutation,

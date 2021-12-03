@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Platform, StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,11 +13,21 @@ import { PostScreenPropsType } from 'types/Route';
 import { setDescription, setImages } from 'store/slices/newPost';
 import { TextInput } from 'components/TextInput';
 import SvgIcon from 'components/SvgIcon';
+import SlideUpModal from 'components/Modal/SlideUpModal';
+import NoticeSettings from './NoticeSettings';
+import { useLazyGetMemberCategoriesQuery } from 'store/services/member';
 
 const PostScreen = () => {
   const dispatch = useDispatch();
   const { params } = useRoute<PostScreenPropsType>();
   const [photos, setPhotos] = useState<ImagePickerResponse>();
+  const [trigger, { data }] = useLazyGetMemberCategoriesQuery();
+  const [selected, setSelected] = useState<boolean[]>([]);
+
+  const [isModalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   const onChangeText = (text: string, name: string) => {
     if (name === 'description') {
@@ -44,8 +54,24 @@ const PostScreen = () => {
     });
   };
 
+  useEffect(() => {
+    if (params.postType === 'notice') {
+      trigger();
+    }
+  }, [params.postType]);
+
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
+      <SlideUpModal
+        isModalVisible={isModalVisible}
+        title={'공지 설정'}
+        setModalVisible={setModalVisible}>
+        <NoticeSettings
+          defaultValue={selected}
+          membersCategories={data?.memberCategories || []}
+          onValueChange={setSelected}
+        />
+      </SlideUpModal>
       <ScrollView style={styles.input}>
         {params.postType === 'notice' && (
           <View style={styles.inputTitle}>
@@ -73,8 +99,8 @@ const PostScreen = () => {
         <SvgIcon xml={image} onPress={onChoosePhoto} />
         {params.postType === 'notice' && (
           <>
-            <SvgIcon xml={attachFile} />
-            <SvgIcon xml={settings.off} />
+            {/* <SvgIcon xml={attachFile} /> */}
+            <SvgIcon xml={settings.off} onPress={toggleModal} />
           </>
         )}
       </View>
