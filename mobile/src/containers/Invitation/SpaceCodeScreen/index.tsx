@@ -93,7 +93,7 @@ const SpaceCodeScreen = () => {
           onChangeText={(text: string) => {
             if (text.length > NUM_OF_INVITATION_CODE) return;
             setInputCode([
-              ...text.split(''),
+              ...text.toUpperCase().split(''),
               ...INITIAL_INVITATION_CODE.slice(0, NUM_OF_INVITATION_CODE - text.length),
             ]);
           }}
