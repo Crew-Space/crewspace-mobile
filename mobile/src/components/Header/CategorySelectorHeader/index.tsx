@@ -3,31 +3,32 @@ import { Animated, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { SvgXml } from 'react-native-svg';
-import { TouchableHighlight } from 'react-native-gesture-handler';
 
-import { expandMore, info, settings } from 'assets/svg/icons';
+import { expandMore, settings } from 'assets/svg/icons';
 import { Category } from 'types';
 import { RootRouterParams } from 'types/Route';
-import { HEADER_HEIGHT, MY_NOTICE_ID } from 'constant';
-import { BLACK, GRAY4, LINE, PRIMARY, WHITE } from 'theme/Colors';
+import { HEADER_HEIGHT } from 'constant';
+import { BLACK, LINE, WHITE } from 'theme/Colors';
 import { SCREEN_HEIGHT } from 'theme/Metrics';
 import useHeaderAnimation from 'hooks/useHeaderAnimation';
 import { setCategory } from 'store/slices/screen';
 import { postApi, useLazyGetPostCategoriesQuery } from 'store/services/post';
+
 import SvgIcon from 'components/SvgIcon';
 import Text from 'components/Text';
+import CategoryItem from './CategoryItem';
 
 const CategorySelectorHeader = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation<RootRouterParams>();
+  const [categories, setCategories] = useState<Category[]>([]);
+
   const tabName = useSelector((state) => state.screen.tabName);
   const isAdmin = useSelector((state) => state.auth.isAdmin);
   const currentSpaceId = useSelector((state) => state.space.current.spaceId);
   const currentCategory = useSelector((state) => state.screen.category);
-  const [getPostCategories, { data, isSuccess, isFetching }] = useLazyGetPostCategoriesQuery();
-  const [categories, setCategories] = useState<Category[]>([]);
 
+  const [getPostCategories, { data, isSuccess, isFetching }] = useLazyGetPostCategoriesQuery();
   const [categoryLength, setCategoryLength, translateAnim, fadeAnim, expanded, toggleExpaned] =
     useHeaderAnimation();
 
@@ -91,30 +92,12 @@ const CategorySelectorHeader = () => {
           {categories
             .filter((category) => category.categoryId !== currentCategory.categoryId)
             .map((category) => (
-              <TouchableHighlight
-                underlayColor={GRAY4}
+              <CategoryItem
                 key={category.categoryId}
-                style={[styles.itemContainer, { height: HEADER_HEIGHT }]}
-                onPress={() => {
-                  dispatch(setCategory(category));
-                  toggleExpaned();
-                }}>
-                <>
-                  <View>
-                    <Text fontType={'BOLD_18'}>{category.categoryName}</Text>
-                  </View>
-                  {tabName === 'Notice' && category.categoryId === MY_NOTICE_ID && (
-                    <View style={styles.myNotice}>
-                      <SvgXml xml={info} width={16} fill={PRIMARY} style={{ marginRight: 4 }} />
-                      <View style={{ justifyContent: 'center' }}>
-                        <Text fontType={'REGULAR_14'} color={PRIMARY}>
-                          내게 필요한 공지만 모아볼 수 있어요
-                        </Text>
-                      </View>
-                    </View>
-                  )}
-                </>
-              </TouchableHighlight>
+                category={category}
+                toggleExpaned={toggleExpaned}
+                tabName={tabName}
+              />
             ))}
         </Animated.View>
       </View>
@@ -134,15 +117,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderBottomWidth: 1,
     borderBottomColor: LINE,
-  },
-  header: {
-    flexDirection: 'row',
-  },
-  myNotice: {
-    marginLeft: 8,
-    flexDirection: 'row',
-    alignContent: 'center',
-    justifyContent: 'center',
   },
   title: {
     flexDirection: 'row',
