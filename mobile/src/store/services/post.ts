@@ -6,6 +6,7 @@ import { ReqPosts } from 'types/Request';
 import {
   CommunityPost,
   NoticePost,
+  ReqNewNoticePost,
   ReqNewPost,
   ResCommunityPosts,
   ResNoticePosts,
@@ -107,6 +108,28 @@ export const postApi = createApi({
       transformResponse: (response: { data: void }) => response.data,
       invalidatesTags: ['CommunityPost'],
     }),
+    postNotice: builder.mutation<void, ReqNewNoticePost>({
+      query: (newPost) => {
+        const formdata = new FormData();
+        newPost.image?.forEach((img) => formdata.append('image', img));
+        newPost.targets.forEach((target) => formdata.append('targets', target));
+
+        const currentDate = new Date().toISOString();
+        formdata.append('reservedTime', `${currentDate.slice(0, 10)} ${currentDate.slice(11, 19)}`);
+
+        Object.entries(newPost)
+          .filter(([key, _]) => key !== 'image' && key !== 'reservedTime' && key !== 'targets')
+          .forEach(([key, value]) => formdata.append(key, value));
+
+        return {
+          url: `/posts/notice/${newPost.postCategoryId}/post`,
+          method: 'POST',
+          body: formdata,
+        };
+      },
+      transformResponse: (response: { data: void }) => response.data,
+      invalidatesTags: ['NoticePost'],
+    }),
   }),
 });
 
@@ -122,4 +145,5 @@ export const {
   useFixNoticeMutation,
   useUnfixNoticeMutation,
   usePostCommunityMutation,
+  usePostNoticeMutation,
 } = postApi;

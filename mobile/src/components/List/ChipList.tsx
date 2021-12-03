@@ -11,14 +11,16 @@ interface Props {
 }
 
 const ChipList = ({ defaultValue, data, onValueChange, onlyOneSelected = false }: Props) => {
-  const [selected, setSelected] = useState(defaultValue || data.map((_) => false));
+  const [selected, setSelected] = useState(
+    defaultValue && !defaultValue.length ? defaultValue : data.map((_) => false),
+  );
 
   const onTouchEnd = (index: number) => {
     const newState = (onlyOneSelected ? data.map((_) => false) : selected).map((d, idx) =>
       index === idx ? !d : d,
     );
-    setSelected(newState);
     onValueChange(newState);
+    setSelected(newState);
   };
 
   return (

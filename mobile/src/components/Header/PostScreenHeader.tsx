@@ -10,7 +10,11 @@ import { close, expandMore } from 'assets/svg/icons';
 import Text from 'components/Text';
 import { BLACK, LINE, PRIMARY, WHITE } from 'theme/Colors';
 import { SCREEN_HEIGHT } from 'theme/Metrics';
-import { useLazyGetPostCategoriesQuery, usePostCommunityMutation } from 'store/services/post';
+import {
+  useLazyGetPostCategoriesQuery,
+  usePostCommunityMutation,
+  usePostNoticeMutation,
+} from 'store/services/post';
 import { Category } from 'types';
 import TouchableText from 'components/TouchableText';
 import useHeaderAnimation from 'hooks/useHeaderAnimation';
@@ -32,6 +36,7 @@ const PostScreenHeader = () => {
     useHeaderAnimation();
 
   const [communityPost] = usePostCommunityMutation();
+  const [noticePost] = usePostNoticeMutation();
   const newPost = useSelector((state) => state.newPost);
 
   useEffect(() => {
@@ -43,7 +48,6 @@ const PostScreenHeader = () => {
       const categoryData = (
         tabName === 'Notice' ? data.noticeCategories : data.communityCategories
       ).filter((category) => category.categoryId > 0);
-      console.log(tabName, categoryData);
       setCategories(categoryData);
       setSelectedCategory(categoryData[0]);
       setCategoryLength(categoryData.length);
@@ -75,7 +79,15 @@ const PostScreenHeader = () => {
           <TouchableText
             color={PRIMARY}
             onPress={() => {
-              communityPost({ postCategoryId: selectedCategory.categoryId, ...newPost });
+              tabName === 'Notice'
+                ? noticePost({
+                    postCategoryId: selectedCategory.categoryId,
+                    ...newPost.notice,
+                  })
+                : communityPost({
+                    postCategoryId: selectedCategory.categoryId,
+                    ...newPost.community,
+                  });
               navigation.goBack();
             }}>
             등록

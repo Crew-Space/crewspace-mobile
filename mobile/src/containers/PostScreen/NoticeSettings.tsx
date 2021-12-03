@@ -7,12 +7,11 @@ import { GRAY1, GRAY2, PRIMARY } from 'theme/Colors';
 import { Category } from 'types';
 
 interface Props {
-  defaultValue: boolean[];
   membersCategories: Category[];
   onValueChange: (value: boolean[]) => void;
 }
 
-const NoticeSettings = ({ defaultValue, membersCategories, onValueChange }: Props) => {
+const NoticeSettings = ({ membersCategories, onValueChange }: Props) => {
   return (
     <>
       <View style={styles.container}>
@@ -20,7 +19,6 @@ const NoticeSettings = ({ defaultValue, membersCategories, onValueChange }: Prop
           공지 대상
         </Text>
         <ChipList
-          defaultValue={defaultValue}
           data={membersCategories.map((category) => category.categoryName)}
           onValueChange={onValueChange}
         />

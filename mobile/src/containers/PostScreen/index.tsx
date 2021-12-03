@@ -10,7 +10,7 @@ import { attachFile, image, settings } from 'assets/svg/icons';
 import { LINE, WHITE } from 'theme/Colors';
 import { File } from 'types';
 import { PostScreenPropsType } from 'types/Route';
-import { setDescription, setImages } from 'store/slices/newPost';
+import { setDescription, setImages, setTargets, setTitle } from 'store/slices/newPost';
 import { TextInput } from 'components/TextInput';
 import SvgIcon from 'components/SvgIcon';
 import SlideUpModal from 'components/Modal/SlideUpModal';
@@ -22,7 +22,6 @@ const PostScreen = () => {
   const { params } = useRoute<PostScreenPropsType>();
   const [photos, setPhotos] = useState<ImagePickerResponse>();
   const [trigger, { data }] = useLazyGetMemberCategoriesQuery();
-  const [selected, setSelected] = useState<boolean[]>([]);
 
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
@@ -31,7 +30,22 @@ const PostScreen = () => {
 
   const onChangeText = (text: string, name: string) => {
     if (name === 'description') {
-      dispatch(setDescription(text));
+      dispatch(setDescription({ postType: params.postType, description: text }));
+    } else if (name === 'title') {
+      dispatch(setTitle({ postType: params.postType, title: text }));
+    }
+  };
+
+  const setSelected = (values: boolean[]) => {
+    if (data) {
+      dispatch(
+        setTargets({
+          postType: params.postType,
+          targets: data.memberCategories
+            .filter((_, idx) => values[idx])
+            .map((category) => category.categoryId),
+        }),
+      );
     }
   };
 
@@ -40,15 +54,16 @@ const PostScreen = () => {
       if (response && response.assets) {
         setPhotos(response);
         dispatch(
-          setImages(
-            response.assets.map(
+          setImages({
+            postType: params.postType,
+            image: response.assets.map(
               (asset): File => ({
                 uri: Platform.OS === 'ios' ? asset.uri!.replace('file://', '') : asset.uri!,
                 type: asset.type!,
                 name: asset.fileName!,
               }),
             ),
-          ),
+          }),
         );
       }
     });
@@ -62,20 +77,23 @@ const PostScreen = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
-      <SlideUpModal
-        isModalVisible={isModalVisible}
-        title={'공지 설정'}
-        setModalVisible={setModalVisible}>
-        <NoticeSettings
-          defaultValue={selected}
-          membersCategories={data?.memberCategories || []}
-          onValueChange={setSelected}
-        />
-      </SlideUpModal>
+      {data && (
+        <SlideUpModal
+          isModalVisible={isModalVisible}
+          title={'공지 설정'}
+          setModalVisible={setModalVisible}>
+          <NoticeSettings membersCategories={data.memberCategories} onValueChange={setSelected} />
+        </SlideUpModal>
+      )}
       <ScrollView style={styles.input}>
         {params.postType === 'notice' && (
           <View style={styles.inputTitle}>
-            <TextInput fontType={'BOLD_20'} placeholder={'제목'} name={'title'} />
+            <TextInput
+              fontType={'BOLD_20'}
+              placeholder={'제목'}
+              name={'title'}
+              onChangeText={onChangeText}
+            />
           </View>
         )}
         <View style={styles.inputContents}>
