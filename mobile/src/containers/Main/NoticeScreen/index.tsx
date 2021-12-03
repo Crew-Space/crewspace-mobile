@@ -41,7 +41,7 @@ const NoticeScreen = () => {
   const isAdmin = useSelector((state) => state.auth.isAdmin);
   const offset = useRef(-1);
 
-  const { data, refetch, isError, isLoading, isSuccess, isFetching } = useGetNoticePostsQuery({
+  const { data, refetch, isError, isSuccess, isFetching } = useGetNoticePostsQuery({
     ...(currentCategory.categoryId !== POST_ALL_ID && {
       postCategoryId: currentCategory.categoryId,
     }),
@@ -52,10 +52,10 @@ const NoticeScreen = () => {
   });
 
   useEffect(() => {
-    if (!isFetching && !isLoading && isSuccess && data) {
+    if (!isFetching && isSuccess && data) {
       dispatch(addNoticePosts(data.posts));
     }
-  }, [isFetching, isLoading, isSuccess]);
+  }, [isFetching, isSuccess]);
 
   useEffect(() => {
     offset.current = -1;

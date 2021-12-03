@@ -36,7 +36,7 @@ const CommunityScreen = () => {
   const communityPosts = useSelector((state) => state.posts.communityPosts);
   const offset = useRef(-1);
 
-  const { data, refetch, isError, isSuccess } = useGetCommunityPostsQuery({
+  const { data, refetch, isError, isSuccess, isFetching } = useGetCommunityPostsQuery({
     ...(currentCategory.categoryId !== POST_ALL_ID && {
       postCategoryId: currentCategory.categoryId,
     }),
@@ -47,10 +47,10 @@ const CommunityScreen = () => {
   });
 
   useEffect(() => {
-    if (isSuccess && data) {
+    if (!isFetching && isSuccess && data) {
       dispatch(addCommunityPosts(data.posts));
     }
-  }, [data, isSuccess]);
+  }, [isSuccess, isFetching]);
 
   useEffect(() => {
     offset.current = -1;
