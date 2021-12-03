@@ -1,7 +1,8 @@
 import { checkBox } from 'assets/svg/icons';
 import React from 'react';
+
 import { BLACK, GRAY2 } from 'theme/Colors';
-import SvgIcon from './SvgIcon';
+import SvgIcon from 'components/SvgIcon';
 
 interface Props {
   isChecked: boolean;

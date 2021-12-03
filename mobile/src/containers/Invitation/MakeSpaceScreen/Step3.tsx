@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import InfoBox from 'components/InfoBox';
-import { ReadonlyList } from 'components/List';
-import { BACKGROUND, WHITE } from 'theme/Colors';
-import CheckBoxList from 'components/CheckBoxList';
+
 import { SPACE_MEMBER_INFO_OPTIONS_TEXT } from 'constant';
 import { ReqMakeSpace } from 'types/Request';
+import { BACKGROUND, WHITE } from 'theme/Colors';
+
+import InfoBox from 'components/InfoBox';
+import { ReadonlyList } from 'components/List';
+import { CheckBoxList } from 'components/CheckBox';
 
 interface Props {
   setSpaceInput: React.Dispatch<React.SetStateAction<ReqMakeSpace>>;

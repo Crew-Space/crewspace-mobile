@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { BLACK, GRAY2, LINE, WHITE } from 'theme/Colors';
 import CheckBox from './CheckBox';
-import Text from './Text';
+import Text from 'components/Text';
 
 interface Props {
   title?: string;
