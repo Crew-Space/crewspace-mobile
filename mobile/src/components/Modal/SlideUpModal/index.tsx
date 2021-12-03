@@ -21,7 +21,7 @@ const SlideUpModal = ({ children, setModalVisible, isModalVisible, title }: Prop
       isVisible={isModalVisible}
       animationIn={'slideInUp'}
       animationOut={'slideOutDown'}
-      backdropColor={BLACK}
+      backdropOpacity={0.7}
       useNativeDriver>
       <View style={styles.container}>
         {title && (
