@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, DeviceEventEmitter, StyleSheet, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
 
+import { arrowLeft } from 'assets/svg/icons';
 import CustomEvent from 'constant/customEvent';
+import { welcomeParams } from 'constant/welcome';
 import { ReqMakeSpace } from 'types/Request';
 import { RootRouterParams } from 'types/Route';
 import { BLACK, GRAY4, WHITE } from 'theme/Colors';
-import { arrowLeft } from 'assets/svg/icons';
 import { useMakeSpaceMutation } from 'store/services/space';
+import { setCurrentSpace } from 'store/slices/space';
+import { useResetAllApiState } from 'store';
 
 import Text from 'components/Text';
 import SvgIcon from 'components/SvgIcon';
-import Button from 'components/Button';
+import { Button } from 'components/Button';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
-import { setCurrentSpace } from 'store/slices/space';
-import { useDispatch } from 'react-redux';
-import { welcomeParams } from 'constant/welcome';
-import { useResetAllApiState } from 'store';
 
 type StepType = 1 | 2 | 3;
 

@@ -10,7 +10,7 @@ import ProfileImage from 'components/ProfileImage';
 import TextInput from 'components/TextInput';
 import ProfileDetails from './ProfileDetails';
 import { useGetMemberQuery, useUpdateMyProfileMutation } from 'store/services/member';
-import Button from 'components/Button';
+import { Button } from 'components/Button';
 import { ReqUpdateMyProfile } from 'types/Request';
 import CrewOnError from 'components/CrewOnError';
 

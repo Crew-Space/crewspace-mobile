@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { BLACK, GRAY4, WHITE } from 'theme/Colors';
-import Text from 'components/Text';
-import SvgIcon from 'components/SvgIcon';
-import { arrowLeft } from 'assets/svg/icons';
-import Button from 'components/Button';
 import { useNavigation } from '@react-navigation/core';
+
+import { arrowLeft } from 'assets/svg/icons';
+import { BLACK, GRAY4, WHITE } from 'theme/Colors';
 import { RootRouterParams } from 'types/Route';
+import { ReqSpaceEnter } from 'types/Request';
 import { welcomeParams } from 'constant/welcome';
 import CustomEvent from 'constant/customEvent';
+import { useEnterSpaceMutation, useGetRegisterInfoQuery } from 'store/services/space';
+import { setCurrentSpace } from 'store/slices/space';
+
+import Text from 'components/Text';
+import SvgIcon from 'components/SvgIcon';
+import { Button } from 'components/Button';
+import CrewOnError from 'components/CrewOnError';
 import Step1 from './Step1';
 import Step2 from './Step2';
-import { useEnterSpaceMutation, useGetRegisterInfoQuery } from 'store/services/space';
-import { ReqSpaceEnter } from 'types/Request';
-import { useDispatch } from 'react-redux';
-import { setCurrentSpace } from 'store/slices/space';
-import CrewOnError from 'components/CrewOnError';
 
 type StepType = 1 | 2;
 

@@ -9,8 +9,7 @@ import { BLACK, GRAY1, GRAY3, WHITE } from 'theme/Colors';
 import { WelcomeScreenPropsType } from 'types/Route';
 import CustomEvent from 'constant/customEvent';
 import Text from 'components/Text';
-import Button from 'components/Button';
-import LinkButton from 'components/LinkButton';
+import { Button, LinkButton } from 'components/Button';
 import ProfileImage from 'components/ProfileImage';
 import InvitationCode from './InvitationCode';
 
