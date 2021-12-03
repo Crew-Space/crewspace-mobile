@@ -9,8 +9,9 @@ import { RootRouterParams } from 'types/Route';
 import { BACKGROUND, LINE, WHITE } from 'theme/Colors';
 import { postApi, useGetCommunityPostsQuery } from 'store/services/post';
 import { resetCommunityPosts, addCommunityPosts } from 'store/slices/posts';
+
 import PostPreview from 'components/PostPreview';
-import PostButton from 'components/PostButton';
+import { PostButton } from 'components/Button';
 import TopFilterBar from 'components/TopFilterBar';
 import CommunityPostAuthor from 'components/CommunityPostAuthor';
 import CrewOnError from 'components/CrewOnError';

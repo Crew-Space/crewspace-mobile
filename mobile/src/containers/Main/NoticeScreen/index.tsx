@@ -9,8 +9,9 @@ import { NoticeType } from 'types';
 import { RootRouterParams } from 'types/Route';
 import { postApi, useGetNoticePostsQuery } from 'store/services/post';
 import { addNoticePosts, resetNoticePosts } from 'store/slices/posts';
+
 import PostPreview from 'components/PostPreview';
-import PostButton from 'components/PostButton';
+import { PostButton } from 'components/Button';
 import TopFilterBar from 'components/TopFilterBar';
 import CrewOnError from 'components/CrewOnError';
 

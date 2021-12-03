@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { GRAY1, GRAY2, GRAY3, GRAY4, PRIMARY } from 'theme/Colors';
 import Text from 'components/Text';

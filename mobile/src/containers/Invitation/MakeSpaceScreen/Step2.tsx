@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { ScrollView } from 'react-native-gesture-handler';
 import InfoBox from 'components/InfoBox';
-import CategoryEditList from 'components/CategoryEditList';
+import { CategoryEditList } from 'components/List';
 import { CategoryType } from 'types';
 import { ReqMakeSpace } from 'types/Request';
 

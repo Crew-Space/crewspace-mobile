@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { LINE, WHITE } from 'theme/Colors';
-import Text from './Text';
+import Text from 'components/Text';
 
 interface Props {
   title?: string;

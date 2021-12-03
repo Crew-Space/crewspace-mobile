@@ -5,10 +5,10 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import { BACKGROUND, WHITE } from 'theme/Colors';
 import InfoBox from 'components/InfoBox';
-import { CategoryType } from 'types';
-import CategoryEditList from 'components/CategoryEditList';
+import { IdOptionalCategory } from 'types';
+import { CategoryEditList } from 'components/List';
 
-const mock: { [key: string]: CategoryType[] } = {
+const mock: { [key: string]: IdOptionalCategory[] } = {
   notice: [
     {
       id: 0,

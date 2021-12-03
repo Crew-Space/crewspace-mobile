@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { BLACK, GRAY1, GRAY2, LINE } from 'theme/Colors';
-import Text from 'components/Text';
-import { MemberProfile } from 'types';
 import { PROFILE_TEXT } from 'constant';
-import BirthdayInput from './BirthdayInput';
-import TextInput, { TextInputProps } from './TextInput';
+import { BLACK, GRAY1, GRAY2, LINE } from 'theme/Colors';
+import { MemberProfile } from 'types';
+
+import Text from 'components/Text';
+import BirthdayInput from 'components/BirthdayInput';
+import TextInput, { TextInputProps } from 'components/TextInput';
 
 type OwnProps = {
   title?: keyof MemberProfile;

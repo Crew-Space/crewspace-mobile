@@ -11,12 +11,13 @@ import { INITIAL_INVITATION_CODE, NUM_OF_INVITATION_CODE } from 'constant';
 import { scaleFont } from 'theme/Typography';
 import { BLACK, GRAY1, GRAY2, GRAY4, RED, WHITE } from 'theme/Colors';
 import { InvitationParams } from 'types/Route';
-import LinkButton from 'components/LinkButton';
+import { useCheckInvitationQuery } from 'store/services/space';
+import { setCurrentSpace } from 'store/slices/space';
+
+import { LinkButton } from 'components/Button';
 import Text from 'components/Text';
 import { welcomeParams } from 'constant/welcome';
 import CustomEvent from 'constant/customEvent';
-import { useCheckInvitationQuery } from 'store/services/space';
-import { setCurrentSpace } from 'store/slices/space';
 
 const CodeText = ({ char }: { char: string }) => {
   return (

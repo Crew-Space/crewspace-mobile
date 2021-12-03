@@ -1,13 +1,14 @@
 import React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
-
-import { GRAY1, GRAY2, GRAY3, GRAY4, PRIMARY } from 'theme/Colors';
-import SvgIcon from 'components/SvgIcon';
-import { image } from 'assets/svg/icons';
-import LineTextInput from 'components/LineTextInput';
+import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { ReqMakeSpace } from 'types/Request';
 import { launchImageLibrary } from 'react-native-image-picker';
+
+import { image } from 'assets/svg/icons';
+import { GRAY3, GRAY4 } from 'theme/Colors';
+import { ReqMakeSpace } from 'types/Request';
+
+import SvgIcon from 'components/SvgIcon';
+import LineTextInput from 'components/LineTextInput';
 import ProfileImage from 'components/ProfileImage';
 
 interface Props {

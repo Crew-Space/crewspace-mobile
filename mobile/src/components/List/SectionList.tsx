@@ -1,21 +1,12 @@
 import React from 'react';
-import { StyleSheet, SwitchProps, View, ViewStyle } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { Switch, TouchableOpacity } from 'react-native-gesture-handler';
-
-import Text from 'components/Text';
-import { GRAY2, LINE, WHITE } from 'theme/Colors';
-import { TypoType } from 'theme/Typography';
 import { SvgXml } from 'react-native-svg';
-import { expandMore } from 'assets/svg/icons';
 
-export type ItemType = {
-  text: string;
-  fontType?: TypoType;
-  onTouch?: {
-    onPress: () => void;
-  };
-  toggle?: SwitchProps;
-};
+import { expandMore } from 'assets/svg/icons';
+import { ItemType } from 'types';
+import { GRAY2, LINE, WHITE } from 'theme/Colors';
+import Text from 'components/Text';
 
 interface Prop {
   sectionTitle?: string;

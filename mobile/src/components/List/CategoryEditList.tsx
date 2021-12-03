@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-
-import { CategoryType } from 'types';
-import { GRAY2, LINE, PRIMARY, WHITE } from 'theme/Colors';
-import SectionHeader from './SectionHeader';
-import SvgIcon from './SvgIcon';
-import { plus, trash, verified } from 'assets/svg/icons';
-import TextInput from './TextInput';
-import TouchableText from './TouchableText';
-import Text from './Text';
 import { SvgXml } from 'react-native-svg';
-import { PickRenameMulti } from 'utils/types';
+
+import { plus, trash, verified } from 'assets/svg/icons';
+import { IdOptionalCategory } from 'types';
+import { GRAY2, LINE, PRIMARY, WHITE } from 'theme/Colors';
+
+import SectionHeader from 'components/SectionHeader';
+import SvgIcon from 'components/SvgIcon';
+import TextInput from 'components/TextInput';
+import TouchableText from 'components/TouchableText';
+import Text from 'components/Text';
 
 type EditModeType = 'new' | 'none';
-type IdOptionalCategory = PickRenameMulti<CategoryType, { id?: number }>;
 
 interface Props {
   title: string;

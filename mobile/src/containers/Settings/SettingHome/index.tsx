@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { BACKGROUND, GRAY2, LINE, PRIMARY, WHITE } from 'theme/Colors';
+import { ItemType } from 'types';
 import Text from 'components/Text';
 import BottomTabSafeAreaView from 'components/BottomTabSafeAreaView';
-import SectionList, { ItemType } from 'components/SectionList';
+import { SectionList } from 'components/List';
 import TouchableText from 'components/TouchableText';
 
 const SettingHome = () => {
