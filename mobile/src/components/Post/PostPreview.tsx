@@ -26,10 +26,13 @@ const PostPreview = ({
       <PostHeader {...header} isSaved={isSaved} postId={postId} />
       <View style={styles.contents}>
         <View style={{ flex: 1 }}>
-          <Text paragraph fontType={'REGULAR_14'} color={GRAY1}>
-            {`${description.replace(/\n/g, '').slice(0, 100)}${
-              description.length >= 100 ? '...' : ''
-            }`}
+          <Text
+            paragraph
+            fontType={'REGULAR_14'}
+            color={GRAY1}
+            numberOfLines={3}
+            ellipsizeMode='tail'>
+            {`${description.replace(/\n/g, '')}`}
           </Text>
         </View>
         {!!image && <Image source={{ uri: image }} style={styles.image} />}
