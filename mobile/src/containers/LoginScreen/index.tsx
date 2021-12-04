@@ -27,12 +27,7 @@ const LoginScreen = () => {
   useEffect(() => {
     switch (errorCode) {
       case 1:
-        Alert.alert(
-          '토큰이 만료되었습니다',
-          '다시 로그인해주세요!',
-          [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
-          { cancelable: false },
-        );
+        Alert.alert('문제가 발생하였습니다');
         break;
       case 2:
         navigation.navigate('Invitation');

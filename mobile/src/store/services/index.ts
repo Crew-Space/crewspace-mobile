@@ -10,8 +10,10 @@ export const header = (headers: Headers, { getState }: { getState: () => unknown
   if (token) {
     headers.set('Authorization', `Bearer ${token}`);
   }
-  if (spaceId !== SPACE_INITAL_ID) {
-    headers.set('Space-Id', `${newSpace ? newSpace.spaceId : spaceId}`);
+  if (newSpace) {
+    headers.set('Space-Id', `${newSpace.spaceId}`);
+  } else if (spaceId !== SPACE_INITAL_ID) {
+    headers.set('Space-Id', `${spaceId}`);
   }
 
   return headers;
