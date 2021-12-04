@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Alert, LogBox, StatusBar, useColorScheme } from 'react-native';
 import { Provider } from 'react-redux';
-import messaging from '@react-native-firebase/messaging';
+import messaging, { firebase } from '@react-native-firebase/messaging';
 
 import RootNavigation from 'navigation/RootNavigation';
 import store from 'store';
@@ -19,11 +19,17 @@ const requestUserPermission = async () => {
     console.log(fcmToken);
   }
 };
+
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   useEffect(() => {
     requestUserPermission();
+
+    firebase.messaging().onNotificationOpenedApp((remoteMessage) => {
+      Alert.alert('FIREBASE IOS Background', JSON.stringify(remoteMessage));
+    });
+
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
       Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });

@@ -82,8 +82,6 @@ const EnterSpaceScreen = () => {
     }
   }, [isSuccess, userInfo]);
 
-  if (isError || !spaceInfo) return <CrewOnError />;
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ paddingTop: 40, paddingBottom: 20 }}>
@@ -91,19 +89,21 @@ const EnterSpaceScreen = () => {
           {steps[stepLevel].descInfo}
         </Text>
       </View>
-      <KeyboardAwareScrollView
-        style={{ width: '100%' }}
-        contentContainerStyle={{ paddingBottom: 30 }}>
-        {stepLevel === 1 ? (
-          <Step1
-            memberCategories={spaceInfo.memberCategories}
-            setUserInfo={setUserInput}
-            userInfo={userInput}
-          />
-        ) : (
-          <Step2 {...spaceInfo} setUserInfo={setUserInput} userInfo={userInput} />
-        )}
-      </KeyboardAwareScrollView>
+      {spaceInfo && (
+        <KeyboardAwareScrollView
+          style={{ width: '100%' }}
+          contentContainerStyle={{ paddingBottom: 30 }}>
+          {stepLevel === 1 ? (
+            <Step1
+              memberCategories={spaceInfo.memberCategories}
+              setUserInfo={setUserInput}
+              userInfo={userInput}
+            />
+          ) : (
+            <Step2 {...spaceInfo} setUserInfo={setUserInput} userInfo={userInput} />
+          )}
+        </KeyboardAwareScrollView>
+      )}
       <View style={styles.butttonView}>
         {stepLevel === 2 && (
           <>
@@ -119,7 +119,8 @@ const EnterSpaceScreen = () => {
           disabled={
             (stepLevel === 1 &&
               (!userInput.name || !userInput.description || !userInput.memberCategoryId)) ||
-            (stepLevel === 2 &&
+            (spaceInfo &&
+              stepLevel === 2 &&
               ((spaceInfo.hasEmail && !userInput.email) ||
                 (spaceInfo.hasSns && !userInput.sns) ||
                 (spaceInfo.hasContact && !userInput.contact) ||

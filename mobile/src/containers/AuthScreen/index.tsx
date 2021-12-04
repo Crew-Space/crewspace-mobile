@@ -15,7 +15,7 @@ import useSetCurrentSpace from 'hooks/useSetCurrentSpace';
 const AuthScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
   const dispatch = useDispatch();
-  const { isSuccess, errorCode, trigger, currentSpace } = useSetCurrentSpace();
+  const { isSuccess, errorCode, trigger, currentSpace, unsubscribe } = useSetCurrentSpace();
 
   const setUser = async () => {
     const accessToken = await AsyncStorage.getItem(ASYNC_STORAGE_KEY.ACCESS_TOKEN);
@@ -37,12 +37,14 @@ const AuthScreen = () => {
         break;
     }
     SplashScreen.hide();
+    unsubscribe();
   }, [errorCode]);
 
   useEffect(() => {
     if (isSuccess && currentSpace) {
       navigation.navigate('Main');
       SplashScreen.hide();
+      unsubscribe();
     }
   }, [isSuccess, currentSpace]);
 
