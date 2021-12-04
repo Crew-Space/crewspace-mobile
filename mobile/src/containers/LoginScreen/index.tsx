@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { SvgXml } from 'react-native-svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { logo } from 'assets/svg';
 import kakaoLogin from 'assets/svg/kakaoLogin';
@@ -12,6 +13,7 @@ import Text from 'components/Text';
 import { RootRouterParams } from 'types/Route';
 import { crewOnEarth } from 'assets/svg/spacers';
 import useSetCurrentSpace from 'hooks/useSetCurrentSpace';
+import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
@@ -26,8 +28,8 @@ const LoginScreen = () => {
     switch (errorCode) {
       case 1:
         Alert.alert(
-          '무언가 잘못되었습니다...',
-          '운영진에게 도움을 요청해주세요!',
+          '토큰이 만료되었습니다',
+          '다시 로그인해주세요!',
           [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
           { cancelable: false },
         );
@@ -46,7 +48,10 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (token) {
-      console.log('loginScreen', token);
+      console.log('new AccessToken', token);
+      (async function () {
+        await AsyncStorage.setItem(ASYNC_STORAGE_KEY.ACCESS_TOKEN, token);
+      })();
       trigger();
     }
   }, [token]);
