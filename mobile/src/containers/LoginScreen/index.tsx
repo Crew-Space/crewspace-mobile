@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { logo } from 'assets/svg';
 import kakaoLogin from 'assets/svg/kakaoLogin';
-import { BLACK, GRAY2, WHITE } from 'theme/Colors';
+import { BACKGROUND, BLACK, GRAY2, WHITE } from 'theme/Colors';
 import Text from 'components/Text';
 import { RootRouterParams } from 'types/Route';
 import { crewOnEarth } from 'assets/svg/spacers';
@@ -59,9 +59,6 @@ const LoginScreen = () => {
         </Text>
         <SvgXml xml={logo} fill={BLACK} />
       </View>
-      <View style={styles.crewSvg}>
-        <SvgXml xml={crewOnEarth} />
-      </View>
       <View>
         <SvgXml xml={kakaoLogin} onPress={onPress} />
         <Text paragraph fontType={'REGULAR_14'} style={styles.policyText}>
@@ -78,7 +75,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-between',
     flex: 1,
-    backgroundColor: WHITE,
+    backgroundColor: BACKGROUND,
     padding: 32,
   },
   subTitle: { color: BLACK, lineHeight: 30, marginBottom: 14 },
