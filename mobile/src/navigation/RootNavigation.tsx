@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { SvgXml } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { firebase } from '@react-native-firebase/messaging';
 
 import { close } from 'assets/svg/icons';
-import { RootRouterParamList } from 'types/Route';
+import { RootRouterParamList, RootRouterParams } from 'types/Route';
 import { BLACK, PRIMARY } from 'theme/Colors';
 import { InvitationNavigation, MainNavigation } from 'navigation';
 import {
@@ -25,6 +26,18 @@ import { PostScreenHeader, CategorySelectorHeader } from 'components/Header';
 const Stack = createStackNavigator<RootRouterParamList>();
 
 const RootNavigation = () => {
+  const navigation = useNavigation<RootRouterParams>();
+  useEffect(() => {
+    firebase.messaging().onNotificationOpenedApp((remoteMessage) => {
+      navigation.navigate('Main');
+      remoteMessage.data &&
+        navigation.navigate('PostDetails', {
+          postType: 'notice',
+          postId: +remoteMessage.data.postId,
+        });
+    });
+  }, []);
+
   return (
     <Stack.Navigator initialRouteName={'Auth'}>
       <Stack.Screen
