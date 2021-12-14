@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.13",
+    "@react-native-cookies/cookies": "^6.0.11",
     "@react-native-firebase/app": "^13.1.0",
     "@react-native-firebase/messaging": "^13.1.0",
     "@react-native-masked-view/masked-view": "^0.2.6",
