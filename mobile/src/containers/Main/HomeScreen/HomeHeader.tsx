@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react';
-import { Animated, Platform, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Animated, Platform, StyleSheet, View } from 'react-native';
 
-import { search } from 'assets/svg/icons';
-import { BLACK, WHITE } from 'theme/Colors';
+import { camera, plus, search } from 'assets/svg/icons';
+import { BLACK, BLACK_LIGHT, WHITE } from 'theme/Colors';
 import { HEADER_MAX_HEIGHT, HEADER_SCROLL_DISTANCE } from './constant';
 import { HEADER_HEIGHT } from 'constant';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from 'theme/Metrics';
 import HeaderCurrent from 'containers/Main/HomeScreen/HeaderCurrent';
 import { useNavigation } from '@react-navigation/core';
 import { RootRouterParams } from 'types/Route';
-import { useGetMySpacesQuery } from 'store/services/space';
+import { spaceApi, useEditBannerMutation, useGetMySpacesQuery } from 'store/services/space';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentSpace } from 'store/slices/space';
+import SvgIcon from 'components/SvgIcon';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 interface Props {
   scrollYState: Animated.Value;
@@ -22,7 +24,9 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
   const navigation = useNavigation<RootRouterParams>();
   const dispatch = useDispatch();
   const space = useSelector((state) => state.space.current);
+  const isAdmin = useSelector((state) => state.auth.isAdmin);
   const { data, isFetching, isError, isSuccess, isLoading } = useGetMySpacesQuery();
+  const [editBanner] = useEditBannerMutation();
 
   const scrollY = Animated.add(
     scrollYState,
@@ -40,6 +44,19 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
     outputRange: [1, 1, 0],
     extrapolate: 'clamp',
   });
+
+  const onChoosePhoto = () => {
+    launchImageLibrary({ mediaType: 'photo', selectionLimit: 1 }, (response) => {
+      if (response && response.assets) {
+        editBanner({
+          uri: response.assets[0].uri!,
+          type: response.assets[0].type!,
+          name: response.assets[0].fileName!,
+        });
+        spaceApi.util.invalidateTags(['HomeNotice']);
+      }
+    });
+  };
 
   useEffect(() => {
     if (!isLoading && !isFetching && isSuccess && data) {
@@ -66,6 +83,18 @@ const HomeHeader = ({ scrollYState, headerImageUrl }: Props) => {
             uri: headerImageUrl,
           }}
         />
+        {isAdmin && (
+          <View
+            style={{
+              position: 'absolute',
+              width: 30,
+              height: 30,
+              bottom: 12,
+              right: 12,
+            }}>
+            <SvgIcon xml={camera} width={30} onPress={onChoosePhoto} />
+          </View>
+        )}
       </Animated.View>
       <Animated.View
         style={[styles.stickyHeader, { transform: [{ translateY: headerTranslate }] }]}>

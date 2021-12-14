@@ -10,6 +10,7 @@ import {
   ResSpaceEnter,
   ResSpaceHome,
 } from 'types/Response';
+import { File } from 'types';
 
 export const spaceApi = createApi({
   reducerPath: 'spaceApi',
@@ -46,7 +47,7 @@ export const spaceApi = createApi({
     getSpaceHome: builder.query<ResSpaceHome, void>({
       query: () => '/space',
       transformResponse: (response: { data: ResSpaceHome }) => response.data,
-      providesTags: ['Reset', 'New'],
+      providesTags: ['Reset', 'New', 'HomeNotice'],
     }),
     getMySpaces: builder.query<ResMySpaces, void>({
       query: () => '/spaces',
@@ -73,6 +74,20 @@ export const spaceApi = createApi({
       transformResponse: (response: { data: ResMakeSpace }) => response.data,
       invalidatesTags: ['New'],
     }),
+    editBanner: builder.mutation<void, File>({
+      query: (bannerImage) => {
+        const formdata = new FormData();
+        formdata.append('image', bannerImage);
+
+        return {
+          url: '/space/banner',
+          method: 'PATCH',
+          body: formdata,
+        };
+      },
+      transformResponse: (response: { data: void }) => response.data,
+      invalidatesTags: ['HomeNotice'],
+    }),
   }),
 });
 
@@ -84,4 +99,5 @@ export const {
   useEnterSpaceMutation,
   useGetSpaceHomeQuery,
   useMakeSpaceMutation,
+  useEditBannerMutation,
 } = spaceApi;
