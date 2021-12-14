@@ -15,6 +15,7 @@ import { PostPreview } from 'components/Post';
 import { PostButton } from 'components/Button';
 import TopFilterBar from 'components/TopFilterBar';
 import CrewOnError from 'components/CrewOnError';
+import NoneList from 'components/NoneList';
 
 const noticeFilter: { name: string; filterType: NoticeType }[] = [
   {
@@ -76,36 +77,40 @@ const NoticeScreen = () => {
         }}>
         {isAdmin && <PostButton postType={'notice'} />}
       </TopFilterBar>
-      <FlatList
-        data={noticePosts}
-        extraData={noticePosts}
-        contentContainerStyle={styles.flatContentContainerStyle}
-        renderItem={({ item }) => (
-          <PostPreview
-            postId={item.postId}
-            key={item.postId}
-            header={{
-              subText: { left: item.categoryName, right: item.writtenDate },
-              Title: item.title,
-            }}
-            image={item.image}
-            description={item.description?.replace(/\n/g, '')}
-            isSaved={item.isSaved}
-            viewed={item.isRead}
-            onPress={() =>
-              navigation.navigate('PostDetails', {
-                postType: 'notice',
-                postId: item.postId,
-              })
-            }
-          />
-        )}
-        onEndReached={() => {
-          offset.current = data.offset;
-          refetch();
-        }}
-        onEndReachedThreshold={1}
-      />
+      {noticePosts.length !== 0 ? (
+        <FlatList
+          data={noticePosts}
+          extraData={noticePosts}
+          contentContainerStyle={styles.flatContentContainerStyle}
+          renderItem={({ item }) => (
+            <PostPreview
+              postId={item.postId}
+              key={item.postId}
+              header={{
+                subText: { left: item.categoryName, right: item.writtenDate },
+                Title: item.title,
+              }}
+              image={item.image}
+              description={item.description?.replace(/\n/g, '')}
+              isSaved={item.isSaved}
+              viewed={item.isRead}
+              onPress={() =>
+                navigation.navigate('PostDetails', {
+                  postType: 'notice',
+                  postId: item.postId,
+                })
+              }
+            />
+          )}
+          onEndReached={() => {
+            offset.current = data.offset;
+            refetch();
+          }}
+          onEndReachedThreshold={1}
+        />
+      ) : (
+        <NoneList />
+      )}
     </View>
   );
 };

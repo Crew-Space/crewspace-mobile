@@ -15,6 +15,7 @@ import TopFilterBar from 'components/TopFilterBar';
 import { CommunityPostAuthor, PostPreview } from 'components/Post';
 import CrewOnError from 'components/CrewOnError';
 import { POST_ALL_ID } from 'constant';
+import NoneList from 'components/NoneList';
 
 const communityFilter: { name: string; filterType: CommunityType }[] = [
   {
@@ -71,41 +72,45 @@ const CommunityScreen = () => {
         }}>
         <PostButton postType={'community'} />
       </TopFilterBar>
-      <FlatList
-        contentContainerStyle={styles.flatContentContainerStyle}
-        data={communityPosts}
-        extraData={communityPosts}
-        renderItem={({ item }) => (
-          <PostPreview
-            key={item.postId}
-            postId={item.postId}
-            header={{
-              subText: { left: item.categoryName, right: item.writtenDate },
-              Title: () =>
-                CommunityPostAuthor({
-                  memberId: item.authorId,
-                  name: item.authorName,
-                  profileImage: item.authorImage,
-                  memberCategory: item.authorCategoryName,
-                }),
-            }}
-            image={item.image}
-            description={item.description?.replace(/\n/g, '')}
-            isSaved={item.isSaved}
-            onPress={() =>
-              navigation.navigate('PostDetails', {
-                postType: 'community',
-                postId: item.postId,
-              })
-            }
-          />
-        )}
-        onEndReached={() => {
-          offset.current = data.offset;
-          refetch();
-        }}
-        onEndReachedThreshold={1}
-      />
+      {communityPosts.length !== 0 ? (
+        <FlatList
+          contentContainerStyle={styles.flatContentContainerStyle}
+          data={communityPosts}
+          extraData={communityPosts}
+          renderItem={({ item }) => (
+            <PostPreview
+              key={item.postId}
+              postId={item.postId}
+              header={{
+                subText: { left: item.categoryName, right: item.writtenDate },
+                Title: () =>
+                  CommunityPostAuthor({
+                    memberId: item.authorId,
+                    name: item.authorName,
+                    profileImage: item.authorImage,
+                    memberCategory: item.authorCategoryName,
+                  }),
+              }}
+              image={item.image}
+              description={item.description?.replace(/\n/g, '')}
+              isSaved={item.isSaved}
+              onPress={() =>
+                navigation.navigate('PostDetails', {
+                  postType: 'community',
+                  postId: item.postId,
+                })
+              }
+            />
+          )}
+          onEndReached={() => {
+            offset.current = data.offset;
+            refetch();
+          }}
+          onEndReachedThreshold={1}
+        />
+      ) : (
+        <NoneList />
+      )}
     </View>
   );
 };

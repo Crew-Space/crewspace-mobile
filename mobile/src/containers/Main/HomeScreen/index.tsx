@@ -1,11 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Animated, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, Animated, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
+import { firebase } from '@react-native-firebase/messaging';
 
 import { HEADER_HEIGHT } from 'constant';
 import { RootRouterParams } from 'types/Route';
-import { BACKGROUND, GRAY2 } from 'theme/Colors';
+import { BACKGROUND, GRAY2, WHITE } from 'theme/Colors';
 import { setTabName } from 'store/slices/screen';
 import { setHomeNoticePosts } from 'store/slices/posts';
 import { useGetSpaceHomeQuery } from 'store/services/space';
@@ -18,6 +19,7 @@ import CrewOnError from 'components/CrewOnError';
 import { HEADER_MAX_HEIGHT } from './constant';
 import HomeHeader from './HomeHeader';
 import PinnedNoticeList from './PinnedNoticeList';
+import NoneList from 'components/NoneList';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -69,11 +71,13 @@ const HomeScreen = () => {
   }, [isFetching, isSuccess, isLoading]);
 
   if (isError || !homeData) return <CrewOnError />;
+  console.log(homeData.fixedNotices);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, { ...(!homeNoticePosts.length && { backgroundColor: WHITE }) }]}>
       <Animated.ScrollView {...ScrollViewProps}>
-        {!!homeData.fixedNotices.length && (
+        {homeData.fixedNotices.length !== 0 && (
           <PinnedNoticeList
             data={homeData.fixedNotices.map((notice) => ({
               subText: {
@@ -98,26 +102,28 @@ const HomeScreen = () => {
             </Text>
           </TouchableOpacity>
         </SectionHeader>
-        {homeNoticePosts.map((notice) => (
-          <PostPreview
-            key={notice.postId}
-            postId={notice.postId}
-            header={{
-              subText: { left: notice.categoryName, right: notice.writtenDate },
-              Title: notice.title,
-            }}
-            image={notice.image}
-            description={notice.description}
-            isSaved={notice.isSaved}
-            viewed={notice.isRead}
-            onPress={() =>
-              navigation.navigate('PostDetails', {
-                postType: 'notice',
-                postId: notice.postId,
-              })
-            }
-          />
-        ))}
+        {homeNoticePosts.length !== 0 &&
+          homeNoticePosts.map((notice) => (
+            <PostPreview
+              key={notice.postId}
+              postId={notice.postId}
+              header={{
+                subText: { left: notice.categoryName, right: notice.writtenDate },
+                Title: notice.title,
+              }}
+              image={notice.image}
+              description={notice.description}
+              isSaved={notice.isSaved}
+              viewed={notice.isRead}
+              onPress={() =>
+                navigation.navigate('PostDetails', {
+                  postType: 'notice',
+                  postId: notice.postId,
+                })
+              }
+            />
+          ))}
+        {homeNoticePosts.length === 0 && <NoneList />}
       </Animated.ScrollView>
       <HomeHeader scrollYState={scrollYState} headerImageUrl={homeData.bannerImage} />
     </View>
