@@ -34,10 +34,10 @@ const AuthScreen = () => {
         break;
       case 2:
         navigation.navigate('Invitation');
+        unsubscribe();
         break;
     }
     SplashScreen.hide();
-    unsubscribe();
   }, [errorCode]);
 
   useEffect(() => {

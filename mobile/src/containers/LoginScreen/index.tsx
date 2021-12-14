@@ -8,17 +8,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { logo } from 'assets/svg';
 import kakaoLogin from 'assets/svg/kakaoLogin';
-import { BACKGROUND, BLACK, GRAY2, WHITE } from 'theme/Colors';
+import { BLACK, GRAY2, WHITE } from 'theme/Colors';
 import Text from 'components/Text';
 import { RootRouterParams } from 'types/Route';
-import { crewOnEarth } from 'assets/svg/spacers';
 import useSetCurrentSpace from 'hooks/useSetCurrentSpace';
 import { ASYNC_STORAGE_KEY } from 'constant/AsyncStorage';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
   const token = useSelector((state) => state.auth.token);
-  const { isSuccess, errorCode, trigger, currentSpace } = useSetCurrentSpace();
+  const { isSuccess, errorCode, trigger, currentSpace, unsubscribe } = useSetCurrentSpace();
 
   const onPress = async () => {
     navigation.navigate('KaKaoLogin');
@@ -33,11 +32,13 @@ const LoginScreen = () => {
         navigation.navigate('Invitation');
         break;
     }
+    unsubscribe();
   }, [errorCode]);
 
   useEffect(() => {
     if (isSuccess && currentSpace) {
       navigation.navigate('Main');
+      unsubscribe();
     }
   }, [isSuccess, currentSpace]);
 
@@ -57,7 +58,7 @@ const LoginScreen = () => {
         <Text fontType={'REGULAR_16'} style={styles.subTitle}>
           우리 동아리만의{'\n'}모바일 공간
         </Text>
-        <SvgXml xml={logo} fill={BLACK} />
+        <SvgXml xml={logo} fill={WHITE} />
       </View>
       <View>
         <SvgXml xml={kakaoLogin} onPress={onPress} />
@@ -75,11 +76,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-between',
     flex: 1,
-    backgroundColor: BACKGROUND,
+    backgroundColor: BLACK,
     padding: 32,
   },
-  subTitle: { color: BLACK, lineHeight: 30, marginBottom: 14 },
-  crewSvg: { alignItems: 'center', justifyContent: 'center' },
+  subTitle: { color: WHITE, lineHeight: 30, marginBottom: 14 },
   policyText: { color: GRAY2, textAlign: 'center', marginTop: 20 },
 });
 

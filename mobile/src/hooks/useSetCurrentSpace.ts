@@ -18,8 +18,10 @@ const useGetCurrentSpace = () => {
   const dispatch = useDispatch();
   const [currentSpace, setSpace] = useState<Space | null>(null);
   const [errorCode, setErrorCode] = useState<ErrorCode>(0);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [subscribed, setSubscribed] = useState(true);
-  const [trigger, { data, isSuccess, isError: queryError }] = useLazyGetMySpacesQuery();
+  const [trigger, { data, isSuccess: querySuccess, isError: queryError }] =
+    useLazyGetMySpacesQuery();
 
   const unsubscribe = () => setSubscribed(false);
 
@@ -39,7 +41,8 @@ const useGetCurrentSpace = () => {
   }, [currentSpace]);
 
   useEffect(() => {
-    if (subscribed && isSuccess && data) {
+    if (subscribed && querySuccess && data) {
+      setIsSuccess(querySuccess);
       if (data.spaces.length === 0) {
         setErrorCode(2);
       } else {
@@ -53,7 +56,7 @@ const useGetCurrentSpace = () => {
         })();
       }
     }
-  }, [isSuccess, data]);
+  }, [querySuccess, data]);
 
   return { isSuccess, errorCode, trigger, currentSpace, unsubscribe };
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
@@ -14,10 +14,9 @@ import { useEnterSpaceMutation, useGetRegisterInfoQuery } from 'store/services/s
 import Text from 'components/Text';
 import SvgIcon from 'components/SvgIcon';
 import { Button } from 'components/Button';
-import CrewOnError from 'components/CrewOnError';
 import Step1 from './Step1';
 import Step2 from './Step2';
-import { setNewSpace } from 'store/slices/space';
+import { setCurrentSpace, setNewSpace } from 'store/slices/space';
 
 type StepType = 1 | 2;
 
@@ -44,6 +43,7 @@ const EnterSpaceScreen = () => {
   const navigation = useNavigation<RootRouterParams>();
   const [stepLevel, setStepLevel] = useState<StepType>(1);
   const [userInput, setUserInput] = useState<ReqSpaceEnter>(initialUserInput);
+  const newSpace = useSelector((state) => state.space.newSpace);
 
   const { data: spaceInfo, isError: isGetRegisterInfoError } = useGetRegisterInfoQuery();
   const [enterSpace, { data: userInfo, isError, isSuccess }] = useEnterSpaceMutation();
@@ -67,6 +67,7 @@ const EnterSpaceScreen = () => {
 
   useEffect(() => {
     if (isSuccess && userInfo) {
+      newSpace && dispatch(setCurrentSpace(newSpace));
       dispatch(setNewSpace(undefined));
       navigation.replace('Invitation', {
         screen: 'Welcome',

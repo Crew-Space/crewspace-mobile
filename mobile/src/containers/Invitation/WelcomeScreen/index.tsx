@@ -8,7 +8,7 @@ import WelcomeToMakeSpace from './WelcomeToMakeSpace';
 
 const WelcomeScreen = () => {
   const { params } = useRoute<WelcomeScreenPropsType>();
-  const { screenType, profile } = params;
+  const { screenType, profile, spaceCode } = params;
 
   return (
     <>
@@ -17,7 +17,7 @@ const WelcomeScreen = () => {
       ) : screenType === 'enterSpace' ? (
         <WelcomeToSpace profile={profile} />
       ) : (
-        <WelcomeToMakeSpace profile={profile} />
+        <WelcomeToMakeSpace profile={profile} spaceCode={spaceCode} />
       )}
     </>
   );
