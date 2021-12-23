@@ -2,13 +2,13 @@ import { dehydrate, QueryClient, useQuery } from 'react-query';
 
 import { getPostData } from '@/api/post';
 
-const Post = ({ id }) => {
+const Post = ({ id }: { id: number }) => {
   const { data } = useQuery('posts', () => getPostData(id));
 
   return (
     <div>
       ??
-      <div>{data.data.description}</div>
+      <div>{JSON.stringify(data)}</div>
     </div>
   );
 };
@@ -33,8 +33,7 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps({ params }) {
-  console.log('getStaticProps', params);
+export async function getStaticProps({ params }: { params: { id: number } }) {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery('posts', () => getPostData(params.id));
